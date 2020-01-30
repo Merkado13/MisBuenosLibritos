@@ -3,7 +3,7 @@
 Se trata de una aplicación de catalogación de lecturas en la que los usuarios pueden crear y gestionar su propia colección de libros, ver la puntuación que éstos tienen o los libros escritos por cada autor.
 
 * **Funcionalidad pública:** Buscar libros y autores.
-* **Funcionalidad privada:** Añadir libros a la colección, puntuar libros, crear y gestionar colecciónes de libros en diferentes listas. Los autores y editoriales además podrán incluir nuevos libros a la base de datos.
+* **Funcionalidad privada:** Crear y gestionar colecciónes de libros en diferentes listas, añadir libros a las diferentes colecciónes y puntuarlos. Los autores y editoriales además podrán incluir nuevos libros a la base de datos.
 
 ---
 
