@@ -15,7 +15,7 @@ Se trata de una aplicación de catalogación de lecturas en la que los usuarios 
 *Relaciones descriptivas*
 ![alt text](/ImgsREADME/ImgRelaciones.png "relaciones descriptivas")
 
-**Funcionalidades servicio interno:** ???
+**Funcionalidades servicio interno:** Envío de correos electrónicos a usuarios
 
 ---
 
