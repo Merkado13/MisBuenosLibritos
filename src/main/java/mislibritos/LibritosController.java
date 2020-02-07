@@ -61,6 +61,8 @@ public class LibritosController{
 	@RequestMapping("/perfil")
 	public String perfil(Model model) {
 		
+		model.addAttribute("user", userRepository.findAll());
+		
 		return "perfil";
 		
 	}
