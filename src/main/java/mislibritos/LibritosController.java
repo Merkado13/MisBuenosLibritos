@@ -3,7 +3,6 @@ package mislibritos;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,8 +25,12 @@ public class LibritosController{
 		BookCollection librosSagrados = new BookCollection("Libros Sagrados");
 		librosSagrados.AddBook(bookRepository.findByName("La Biblia"));
 		librosSagrados.AddBook(bookRepository.findByName("El Necronomicón"));
+		BookCollection librosPrueba = new BookCollection("Libros Prueba");
+		librosPrueba.AddBook(bookRepository.findByName("La Biblia"));
+		
 		
 		bookCollectionRepository.save(librosSagrados);
+		bookCollectionRepository.save(librosPrueba);
 		
 	}
 	
