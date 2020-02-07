@@ -49,6 +49,7 @@ public class LibritosController{
 	@RequestMapping("/colecciones")
 	public String colecciones(Model model) {
 		//model.addAttribute("pagina_anterior", anterior);
+		model.addAttribute("user", userRepository.findAll());
 		return "colecciones";
 		
 	}
