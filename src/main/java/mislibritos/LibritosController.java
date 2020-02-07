@@ -15,6 +15,8 @@ public class LibritosController{
 	private BookRepository bookRepository;
 	@Autowired
 	private BookCollectionRepository bookCollectionRepository;
+	@Autowired
+	private UserRepository userRepository;
 	
 	@PostConstruct
 	public void init() {
@@ -28,10 +30,12 @@ public class LibritosController{
 		BookCollection librosPrueba = new BookCollection("Libros Prueba");
 		librosPrueba.AddBook(bookRepository.findByName("La Biblia"));
 		
-		
 		bookCollectionRepository.save(librosSagrados);
 		bookCollectionRepository.save(librosPrueba);
 		
+		User user1 = new User("God");
+		user1.AddCollection(librosSagrados);
+		userRepository.save(user1);
 	}
 	
 	@RequestMapping("/home")
