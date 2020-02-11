@@ -16,6 +16,7 @@ public class BookCollection {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
 	private String name;
+	private String description;
 	
 	@ManyToMany
 	private List<Book> books;
@@ -24,9 +25,10 @@ public class BookCollection {
 		// TODO Auto-generated constructor stub
 	}
 
-	public BookCollection(String name) {
+	public BookCollection(String name, String description) {
 		this.name = name;
 		books = new LinkedList<Book>();
+		this.description = description;
 	}
 	
 	public void AddBook(Book b) {

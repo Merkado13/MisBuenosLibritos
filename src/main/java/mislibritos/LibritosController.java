@@ -38,10 +38,10 @@ public class LibritosController{
 		b1 = new Book("El Necronomicón", 4.5, 20, "Ocurren cosas oscuras", genres.RELIGION);
 		bookRepository.save(b1);
 		
-		BookCollection librosSagrados = new BookCollection("Libros Sagrados");
+		BookCollection librosSagrados = new BookCollection("Libros Sagrados", "Los mejores libros que podrás encontrar");
 		librosSagrados.AddBook(bookRepository.findByTitle("La Biblia"));
 		librosSagrados.AddBook(bookRepository.findByTitle("El Necronomicón"));
-		BookCollection librosPrueba = new BookCollection("Libros Prueba");
+		BookCollection librosPrueba = new BookCollection("Libros Prueba", "Mis libritos de prueba");
 		librosPrueba.AddBook(bookRepository.findByTitle("La Biblia"));
 		
 		bookCollectionRepository.save(librosSagrados);
