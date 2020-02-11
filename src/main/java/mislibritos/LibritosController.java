@@ -33,9 +33,12 @@ public class LibritosController{
 //		tags.add(genres.RELIGION); 
 //		tags.add(genres.HISTORICAL_FICTION);
 		
-		Book b1 = new Book("La Biblia", 3, 30, "Jesusito nace, se muere, vuelve a la vida, y siguen pasando cosas", genres.RELIGION);		
+		Book b1 = new Book("La Biblia", 3, 30, "Jesusito nace, se muere, vuelve a la vida, y siguen pasando cosas", Genre.ACTION,new ArrayList());		
 		bookRepository.save(b1);	
-		b1 = new Book("El Necronomicón", 4.5, 20, "Ocurren cosas oscuras", genres.RELIGION);
+		List<Genre> generos = new ArrayList();
+		generos.add(Genre.AUTOBIOGRAPHY);
+		generos.add(Genre.RELIGION);
+		b1 = new Book("El Necronomicón", 4.5, 20, "Ocurren cosas oscuras", Genre.BIOGRAPHY, generos);
 		bookRepository.save(b1);
 		
 		BookCollection librosSagrados = new BookCollection("Libros Sagrados", "Los mejores libros que podrás encontrar");
