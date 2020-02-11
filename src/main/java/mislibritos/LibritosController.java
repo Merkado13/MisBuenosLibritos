@@ -17,6 +17,8 @@ public class LibritosController{
 	private BookCollectionRepository bookCollectionRepository;
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private AuthorRepository authorRepository;
 	
 	@PostConstruct
 	public void init() {
@@ -36,6 +38,9 @@ public class LibritosController{
 		User user1 = new User("God");
 		user1.AddCollection(librosSagrados);
 		userRepository.save(user1);
+		
+		Author autor1 = new Author("Escritorcito");
+		authorRepository.save(autor1);
 	}
 	
 	@RequestMapping("/home")
