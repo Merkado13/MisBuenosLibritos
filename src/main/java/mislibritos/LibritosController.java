@@ -1,5 +1,8 @@
 package mislibritos;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,15 +25,24 @@ public class LibritosController{
 	
 	@PostConstruct
 	public void init() {
+//		
+//		List<genres> tags = new ArrayList<genres>();
+//		
+//		tags.add(genres.DRAMA);
+//		tags.add(genres.BIOGRAPHY);
+//		tags.add(genres.RELIGION); 
+//		tags.add(genres.HISTORICAL_FICTION);
 		
-		bookRepository.save(new Book("La Biblia"));
-		bookRepository.save(new Book("El Necronomicón"));
+		Book b1 = new Book("La Biblia", 3, 30, "Jesusito nace, se muere, vuelve a la vida, y siguen pasando cosas", genres.RELIGION);		
+		bookRepository.save(b1);	
+		b1 = new Book("El Necronomicón", 4.5, 20, "Ocurren cosas oscuras", genres.RELIGION);
+		bookRepository.save(b1);
 		
 		BookCollection librosSagrados = new BookCollection("Libros Sagrados");
-		librosSagrados.AddBook(bookRepository.findByName("La Biblia"));
-		librosSagrados.AddBook(bookRepository.findByName("El Necronomicón"));
+		librosSagrados.AddBook(bookRepository.findByTitle("La Biblia"));
+		librosSagrados.AddBook(bookRepository.findByTitle("El Necronomicón"));
 		BookCollection librosPrueba = new BookCollection("Libros Prueba");
-		librosPrueba.AddBook(bookRepository.findByName("La Biblia"));
+		librosPrueba.AddBook(bookRepository.findByTitle("La Biblia"));
 		
 		bookCollectionRepository.save(librosSagrados);
 		bookCollectionRepository.save(librosPrueba);
