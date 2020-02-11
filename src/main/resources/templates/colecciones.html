@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+ <meta charset="UTF-8">
 </head>
 <body>
 <h1> SOY LA PÁGINA DE COLECCIONES :'D</h1>
@@ -15,7 +16,19 @@
 	</form>
 	<a href="/perfil">Mi perfil</a>
 </nav>
+	<p><b>Mis colecciones</b></p>
 	
+	<ul>	
+		{{#user}}{{#bookCollection}}
+			{{name}}
+			<ul>
+			{{#books}}
+				<il>{{name}}</il>
+			{{/books}}
+			</ul>
+		{{/bookCollection}}{{/user}}
+		
+	</ul>
 
 	</form>
 </body>

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+ <meta charset="UTF-8">
 </head>
 <body>
 <h1> SOY LA PÁGINA DE HOME :3</h1>
@@ -14,6 +15,18 @@
 		<input type='submit' value='Buscar'>
 	</form>
 	<a href="/colecciones">Mi perfil</a>
+	<ul>
+	{{#bookitos}}
+		<ul>
+		{{name}}
+		<ul>
+		{{#books}}
+			<il>{{name}}</il>
+		{{/books}}
+		</ul>
+		</ul>
+	{{/bookitos}}
+	</ul>
 	</nav>
 
 	
