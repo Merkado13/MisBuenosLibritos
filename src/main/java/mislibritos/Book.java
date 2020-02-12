@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 
 enum Genre{ACTION, ART, AUTOBIOGRAPHY, BIOGRAPHY, CHILDREN, COMIC, COOKBOOK, 
@@ -23,6 +24,8 @@ enum Genre{ACTION, ART, AUTOBIOGRAPHY, BIOGRAPHY, CHILDREN, COMIC, COOKBOOK,
 	SCIENCE, SCIENCE_FICTION, SELF_HELP, SHORT_STORY, SUSPENSE, THRILLER, TRAVEL,
 	TRUE_CRIME, YOUNG_ADULT
 	}
+
+enum BookState{NONE, TO_READ, READING, READ}
 
 @Entity
 public class Book {
@@ -34,6 +37,9 @@ public class Book {
 	private double rating;
 	private int numRatings; 
 	private String description; 
+	
+	@Enumerated(EnumType.STRING)
+	private BookState state;
 	
 	@ElementCollection //especifica que es una colección de elementos, va a crear una tabla adicional
 	///////Estructura de la tabla
@@ -50,20 +56,25 @@ public class Book {
 	@ManyToMany
 	private List<Author> authors;
 	
-	//@ManyToOne
-	//private List<Editorial> editorial;
+	@ManyToOne
+	private Publisher publisher;
 	
 		
 	public Book() {}
 	
-	public Book(String title, double rating, int numRatings, String description, Genre genre, List<Genre> tags) {
-		super();
+	public Book(String title, List<Author> authors, Publisher publisher, Genre genre, List<Genre> tags, 
+			String description, double rating, int numRatings) {
 		this.title = title;
-		this.rating = rating;
-		this.numRatings = numRatings;
-		this.description = description;
+		this.authors = authors;
+		this.publisher = publisher;
 		this.genre = genre;
 		this.tags = tags;
+		this.description = description;
+		this.rating = rating;
+		this.numRatings = numRatings;
+		
+		
+		this.state = BookState.NONE;
 	}
 	
 }

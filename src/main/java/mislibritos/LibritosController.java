@@ -1,6 +1,7 @@
 package mislibritos;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -22,24 +23,35 @@ public class LibritosController{
 	private UserRepository userRepository;
 	@Autowired
 	private AuthorRepository authorRepository;
+	@Autowired
+	private PublisherRepository publisherRepository;
 	
 	@PostConstruct
 	public void init() {
-//		
-//		List<genres> tags = new ArrayList<genres>();
-//		
-//		tags.add(genres.DRAMA);
-//		tags.add(genres.BIOGRAPHY);
-//		tags.add(genres.RELIGION); 
-//		tags.add(genres.HISTORICAL_FICTION);
+
+		List<Genre> tagsBiblia = Arrays.asList(Genre.ACTION,Genre.RELIGION);	
+		List<Genre> tagsNecronomicon = Arrays.asList(Genre.AUTOBIOGRAPHY,Genre.RELIGION);		
 		
-		Book b1 = new Book("La Biblia", 3, 30, "Jesusito nace, se muere, vuelve a la vida, y siguen pasando cosas", Genre.ACTION,new ArrayList());		
+		
+		List<Author> autoresBiblia = Arrays.asList(new Author("San Pablo"),new Author("San Marcos"),new Author("San Mateo"),new Author("San Lucas"));
+		List<Author> autoresNecronomicon = Arrays.asList(new Author("Jose"),new Author("Ortega"),new Author("Gasset"));
+		
+		List<Author> allAuthors = new ArrayList(autoresBiblia);
+		allAuthors.addAll(autoresNecronomicon);
+		
+		for(Author a : allAuthors){
+			authorRepository.save(a);
+		}
+		
+		
+		Publisher holyPublisher = new Publisher("HolyPublisher",0,"holy.god");
+		publisherRepository.save(holyPublisher);
+		
+		
+		Book b1 = new Book("La Biblia", autoresBiblia, holyPublisher, Genre.ACTION, tagsBiblia, "Jesusito nace, se muere, vuelve a la vida, y siguen pasando cosas", 3, 30);		
 		bookRepository.save(b1);	
-		List<Genre> generos = new ArrayList();
-		generos.add(Genre.AUTOBIOGRAPHY);
-		generos.add(Genre.RELIGION);
-		b1 = new Book("El Necronomicón", 4.5, 20, "Ocurren cosas oscuras", Genre.BIOGRAPHY, generos);
-		bookRepository.save(b1);
+		Book b2 = new Book("El Necronomicón", autoresNecronomicon, holyPublisher, Genre.AUTOBIOGRAPHY, tagsNecronomicon, "Ocurren cosas oscuras", 4.5, 45);		
+		bookRepository.save(b2);
 		
 		BookCollection librosSagrados = new BookCollection("Libros Sagrados", "Los mejores libros que podrás encontrar");
 		librosSagrados.AddBook(bookRepository.findByTitle("La Biblia"));
@@ -54,8 +66,7 @@ public class LibritosController{
 		user1.AddCollection(librosSagrados);
 		userRepository.save(user1);
 		
-		Author autor1 = new Author("Escritorcito");
-		authorRepository.save(autor1);
+		
 	}
 	
 	@RequestMapping("/home")

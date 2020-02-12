@@ -14,8 +14,9 @@ public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long Id; 
-	private String name; 
+	protected long id; 
+	protected String name; 
+	protected String description;
 	
 	@OneToMany
 	private List<BookCollection> bookCollection;
@@ -34,5 +35,5 @@ public class User {
 		bookCollection.add(bc);
 		
 	}
-
+	
 }
