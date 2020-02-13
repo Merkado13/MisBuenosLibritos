@@ -1,35 +1,43 @@
 <!DOCTYPE html>
 <html>
 <head>
- <meta charset="UTF-8">
- <link rel= "stylesheet" type= "text/css" href= "/mystyle.css">
+<meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" href="/mystyle.css">
 </head>
 <body>
-<h1> SOY LA PÁGINA DE HOME :3</h1>
+	<h1>SOY LA PÁGINA DE HOME :3</h1>
 	<nav>
-	
-	<a href="/home">Home</a>
-	<a href="/colecciones">Colecciones</a>
-	
-	<form style="display: inline-block;" action="/busqueda" method = "get">
-		<input type ='input' name = 'input'>
-		<input type='submit' value='Buscar'>
-	</form>
-	<a href="/colecciones">Mi perfil</a>
-	<ul>
-	{{#bookitos}}
+
+		<a href="/home">Home</a> <a href="/colecciones">Colecciones</a>
+
+		<form style="display: inline-block;" action="/busqueda" method="get">
+			<input type='input' name='input'> <input type='submit'
+				value='Buscar'>
+		</form>
+		<a href="/colecciones">Mi perfil</a>
+
 		<ul>
-		{{name}}
+			{{#collections}}
+			<ul>
+				{{name}}
+				<ul>
+					{{#books}}
+					<il>{{title}}</il>
+					{{/books}}
+				</ul>
+			</ul>
+			{{/collections}}
+		</ul>
+
+
 		<ul>
-		{{#books}}
-			<il>{{name}}</il>
-		{{/books}}
+			{{#all_books}}
+			<il>
+			<a href="/books/{{title}}">{{title}}</a></il>
+			{{/all_books}}
 		</ul>
-		</ul>
-	{{/bookitos}}
-	</ul>
 	</nav>
 
-	
+
 </body>
 </html>

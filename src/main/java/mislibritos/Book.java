@@ -69,5 +69,43 @@ public class Book {
 		this.numRatings = numRatings;
 		
 	}
+
+	public long getIsbn() {
+		return isbn;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public double getRating() {
+		return rating;
+	}
+
+	public int getNumRatings() {
+		return numRatings;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public List<Genre> getTags() {
+		return tags;
+	}
+
+	public Genre getGenre() {
+		return genre;
+	}
+
+	public List<Author> getAuthors() {
+		return authors;
+	}
+
+	public Publisher getPublisher() {
+		return publisher;
+	}
+	
+	
 	
 }
