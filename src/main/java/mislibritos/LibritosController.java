@@ -133,9 +133,9 @@ public class LibritosController {
 		Book book = bookRepository.findByTitle(bookTitle);
 
 		if (book != null)
-			model.addAttribute("bookTitle", book.getTitle());
+			model.addAttribute("book", book);
 		else
-			model.addAttribute("bookTitle", "undefined");
+			model.addAttribute("book", "undefined");
 
 		return "books";
 
@@ -143,7 +143,7 @@ public class LibritosController {
 
 	@PostMapping("/books/{bookTitle}")
 	public String addBook(HttpSession session, Model model, @RequestParam String bookTitle) {
-		model.addAttribute("bookTitle", bookTitle + " AGREGADO");
+		//model.addAttribute("bookTitle", bookTitle + " AGREGADO");
 		//pillar la sesion, el usuario y meterle el libro en una lista
 		Book book = bookRepository.findByTitle((bookTitle));
 		

@@ -5,7 +5,7 @@
  <link rel= "stylesheet" type= "text/css" href= "/mystyle.css">
 </head>
 <body>
-<h1> SOY LA PÁGINA DEL LIBRO {{bookTitle}} :3</h1>
+<h1> SOY LA PÁGINA DEL LIBRO {{#book}}{{title}}{{/book}} :3</h1>
 	<nav>
 	
 	<a href="/home">Home</a>
@@ -17,9 +17,43 @@
 	</form>
 	<a href="/colecciones">Mi perfil</a>
 	</nav>
-	
-	<form method="post" action="/books/{{bookTitle}}">
-		<input hidden type ='input' name = 'bookTitle' value = "{{bookTitle}}">
+	<h1 align = "center"> {{#book}}{{title}}{{/book}} </h1>
+	<p>
+		<img src="/god.jpeg" alt="User photo" align = "left">			
+			
+			<h2>Valoración: {{#book}}{{rating}}{{/book}} Número de valoraciones: {{#book}}{{numRatings}}{{/book}}</h2>
+			
+			<b>Autor/es: </b>
+			<ul>	
+				{{#book}}{{#authors}}					
+					<ul>					
+						<il>{{name}}</il>
+						<!-- Referencia a la página del autor -->											
+					</ul>
+					{{/authors}}{{/book}}
+				
+				</ul>
+			<h3> Editorial:  {{#book}}{{#publisher}}{{name}}{{/publisher}}{{/book}} </h3>
+			<!-- Referencia a la editorial -->
+			
+			<h3>Descripción: </h3>
+			<p> {{#book}}{{description}}{{/book}}</p>
+			<h3>Detalles del libro: </h3>
+			<p> <b>ISBN: </b>{{#book}}{{isbn}}{{/book}}
+				<p><b>Género: </b> <p> {{#book}}{{genre}}{{/book}}</p>
+			</p>
+			
+			
+			<p> <b>Tags: </b>
+				<ul>	
+					<il>{{#book}}{{tags}}{{/book}}	</il>
+								
+				</ul>
+			</p>
+			
+	</p>
+	<form method="post" action="/books/{{#book}}{{bookTitle}}{{/book}}">
+		<input hidden type ='input' name = 'bookTitle' value = "{{#book}}{{title}}{{/book}}">
     	<input type='submit' value='Agregar a Quiero Leer'>
 	</form>
 	
