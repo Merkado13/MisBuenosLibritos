@@ -26,8 +26,9 @@ public class User {
 	}
 
 
-	public User(String name) {		
+	public User(String name, String description) {		
 		this.name = name;
+		this.description = description;
 		bookCollection = new LinkedList<BookCollection>();
 	}
 	

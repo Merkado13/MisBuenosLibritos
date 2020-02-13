@@ -32,18 +32,20 @@ public class LibritosController{
 	
 	@PostConstruct
 	public void init() throws ParseException {
-
+		
+		String s = "Soy una descripción";
+		
 		List<Genre> tagsBiblia = Arrays.asList(Genre.ACTION,Genre.RELIGION);	
 		List<Genre> tagsNecronomicon = Arrays.asList(Genre.AUTOBIOGRAPHY,Genre.RELIGION);		
 		
 		
-		List<Author> autoresBiblia = Arrays.asList(new Author("San Pablo", new SimpleDateFormat("dd/MM/yyyy").parse("05/05/0005"), "www.soyjesusito.com"),
-				new Author("San Marcos", new SimpleDateFormat("dd/MM/yyyy").parse("02/02/0002"), "www.soyjesusito.com"),
-				new Author("San Mateo", new SimpleDateFormat("dd/MM/yyyy").parse("07/07/0007"), "www.soyjesusito.com"),
-				new Author("San Lucas", new SimpleDateFormat("dd/MM/yyyy").parse("12/12/0012"), "www.soyjesusito.com"));
-		List<Author> autoresNecronomicon = Arrays.asList(new Author("Jose", new SimpleDateFormat("dd/MM/yyyy").parse("09/05/1883"), "www.soyjose.com"),
-				new Author("Ortega", new SimpleDateFormat("dd/MM/yyyy").parse("09/05/1883"), "www.soyortega.com"),
-				new Author("Gasset", new SimpleDateFormat("dd/MM/yyyy").parse("09/05/1883"), "www.juntosformamosjoseortegaygasset.com"));
+		List<Author> autoresBiblia = Arrays.asList(new Author("San Pablo", s, new SimpleDateFormat("dd/MM/yyyy").parse("05/05/0005"), "Turquía", "www.vivajesusito.com"),
+				new Author("San Marcos", s, new SimpleDateFormat("dd/MM/yyyy").parse("02/02/0002"), "Grecia", "www.vivajesusito.com"),
+				new Author("San Mateo",s,  new SimpleDateFormat("dd/MM/yyyy").parse("07/07/0007"), "Israel", "www.vivajesusito.com"),
+				new Author("San Lucas", s, new SimpleDateFormat("dd/MM/yyyy").parse("12/12/0012"),"Turquía", "www.vivajesusito.com"));
+		List<Author> autoresNecronomicon = Arrays.asList(new Author("Jose", s, new SimpleDateFormat("dd/MM/yyyy").parse("09/05/1883"), "Españita", "www.soyjose.com"),
+				new Author("Ortega",s, new SimpleDateFormat("dd/MM/yyyy").parse("09/05/1883"),"Españita",  "www.soyortega.com"),
+				new Author("Gasset",s, new SimpleDateFormat("dd/MM/yyyy").parse("09/05/1883"), "ESpañita", "www.juntosformamosjoseortegaygasset.com"));
 		
 		List<Author> allAuthors = new ArrayList(autoresBiblia);
 		allAuthors.addAll(autoresNecronomicon);
@@ -53,7 +55,7 @@ public class LibritosController{
 		}
 		
 		
-		Publisher holyPublisher = new Publisher("HolyPublisher",0,"holy.god");
+		Publisher holyPublisher = new Publisher("HolyPublisher",s, 0,"holy.god");
 		publisherRepository.save(holyPublisher);
 		
 		
@@ -71,7 +73,7 @@ public class LibritosController{
 		bookCollectionRepository.save(librosSagrados);
 		bookCollectionRepository.save(librosPrueba);
 		
-		User user1 = new User("God");
+		User user1 = new User("God", s);
 		user1.AddCollection(librosSagrados);
 		userRepository.save(user1);
 		
