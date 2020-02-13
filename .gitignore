@@ -19,6 +19,7 @@
 .springBeans
 /code
 MANIFEST.MF
+pom.properties
 _site/
 activemq-data
 bin
