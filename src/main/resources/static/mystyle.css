@@ -1,5 +1,20 @@
 body{
-	background-color: grey;
+	background-color: #D5D5FF;
+	
+}
+#navbar{
+	text-align:center;
+	
+}
+
+
+#name{
+	text-align:center;
+}
+
+
+button, img{
+	margin: 25px 50px 75px;
 	
 }
 

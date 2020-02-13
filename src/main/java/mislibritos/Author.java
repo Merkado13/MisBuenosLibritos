@@ -25,4 +25,9 @@ public class Author extends User{
 		this.country = country;
 	}
 	
+	public void addPublishedBook(Book book) {
+		publishedBooks.addBook(book);
+		
+	}
+	
 }
