@@ -32,47 +32,44 @@ public class LibritosController {
 	private AuthorRepository authorRepository;
 	@Autowired
 	private PublisherRepository publisherRepository;
-
+	
+	Book b1;
+	
+	
 	@PostConstruct
 	public void init() throws ParseException {
 
 		String s = "Soy una descripción";
-
-		List<Genre> tagsBiblia = Arrays.asList(Genre.ACTION, Genre.RELIGION);
-		List<Genre> tagsNecronomicon = Arrays.asList(Genre.AUTOBIOGRAPHY, Genre.RELIGION);
-
-		List<Author> autoresBiblia = Arrays.asList(
-				new Author("San Pablo", s, new SimpleDateFormat("dd/MM/yyyy").parse("05/05/0005"), "Turquía",
-						"www.vivajesusito.com"),
-				new Author("San Marcos", s, new SimpleDateFormat("dd/MM/yyyy").parse("02/02/0002"), "Grecia",
-						"www.vivajesusito.com"),
-				new Author("San Mateo", s, new SimpleDateFormat("dd/MM/yyyy").parse("07/07/0007"), "Israel",
-						"www.vivajesusito.com"),
-				new Author("San Lucas", s, new SimpleDateFormat("dd/MM/yyyy").parse("12/12/0012"), "Turquía",
-						"www.vivajesusito.com"));
-		List<Author> autoresNecronomicon = Arrays.asList(
-				new Author("Jose", s, new SimpleDateFormat("dd/MM/yyyy").parse("09/05/1883"), "Españita",
-						"www.soyjose.com"),
-				new Author("Ortega", s, new SimpleDateFormat("dd/MM/yyyy").parse("09/05/1883"), "Españita",
-						"www.soyortega.com"),
-				new Author("Gasset", s, new SimpleDateFormat("dd/MM/yyyy").parse("09/05/1883"), "ESpañita",
-						"www.juntosformamosjoseortegaygasset.com"));
-
+		
+		List<Genre> tagsBiblia = Arrays.asList(Genre.ACTION,Genre.RELIGION);	
+		List<Genre> tagsNecronomicon = Arrays.asList(Genre.AUTOBIOGRAPHY,Genre.RELIGION);		
+		
+		Author autor = new Author("San Pablo", s, new SimpleDateFormat("dd/MM/yyyy").parse("05/05/0005"), "Turquía", "www.vivajesusito.com");
+		
+		
+		List<Author> autoresBiblia = Arrays.asList(autor,
+				new Author("San Marcos", s, new SimpleDateFormat("dd/MM/yyyy").parse("02/02/0002"), "Grecia", "www.vivajesusito.com"),
+				new Author("San Mateo",s,  new SimpleDateFormat("dd/MM/yyyy").parse("07/07/0007"), "Israel", "www.vivajesusito.com"),
+				new Author("San Lucas", s, new SimpleDateFormat("dd/MM/yyyy").parse("12/12/0012"),"Turquía", "www.vivajesusito.com"));
+		List<Author> autoresNecronomicon = Arrays.asList(new Author("Jose", s, new SimpleDateFormat("dd/MM/yyyy").parse("09/05/1883"), "Españita", "www.soyjose.com"),
+				new Author("Ortega",s, new SimpleDateFormat("dd/MM/yyyy").parse("09/05/1883"),"Españita",  "www.soyortega.com"),
+				new Author("Gasset",s, new SimpleDateFormat("dd/MM/yyyy").parse("09/05/1883"), "ESpañita", "www.juntosformamosjoseortegaygasset.com"));
+		
 		List<Author> allAuthors = new ArrayList(autoresBiblia);
 		allAuthors.addAll(autoresNecronomicon);
-
-		for (Author a : allAuthors) {
+		
+		
+		for(Author a : allAuthors){
 			authorRepository.save(a);
-		}
-
-		Publisher holyPublisher = new Publisher("HolyPublisher", s, 0, "holy.god");
+		}		
+		
+		Publisher holyPublisher = new Publisher("HolyPublisher",s, 0,"holy.god");
 		publisherRepository.save(holyPublisher);
-
-		Book b1 = new Book("La Biblia", autoresBiblia, holyPublisher, Genre.ACTION, tagsBiblia,
-				"Jesusito nace, se muere, vuelve a la vida, y siguen pasando cosas", 3, 30);
-		bookRepository.save(b1);
-		Book b2 = new Book("El Necronomicón", autoresNecronomicon, holyPublisher, Genre.AUTOBIOGRAPHY, tagsNecronomicon,
-				"Ocurren cosas oscuras", 4.5, 45);
+		
+		
+		b1 = new Book("La Biblia", autoresBiblia, holyPublisher, Genre.ACTION, tagsBiblia, "Jesusito nace, se muere, vuelve a la vida, y siguen pasando cosas", 3, 30);		
+		bookRepository.save(b1);	
+		Book b2 = new Book("El Necronomicón", autoresNecronomicon, holyPublisher, Genre.AUTOBIOGRAPHY, tagsNecronomicon, "Ocurren cosas oscuras", 4.5, 45);		
 		bookRepository.save(b2);
 
 		BookCollection librosSagrados = new BookCollection("Libros Sagrados",
@@ -88,7 +85,6 @@ public class LibritosController {
 		User user1 = new User("God", s);
 		user1.AddCollection(librosSagrados);
 		userRepository.save(user1);
-
 	}
 
 	@RequestMapping("/home")
@@ -159,16 +155,23 @@ public class LibritosController {
 
 	@RequestMapping("/busqueda")
 	public String busqueda(Model model, @RequestParam String input) {
+		
+		
 		model.addAttribute("input", input);
 		return "busqueda";
 
 	}
 
 	@RequestMapping("/perfil")
-	public String perfil(Model model) {
-
+	public String perfil(Model model) {	
+		
 		model.addAttribute("user", userRepository.findByName("God"));
-
+		//model.addAttribute("user", authorRepository.findByName("San Pablo"));
+		//model.addAttribute("user", publisherRepository.findByName("HolyPublisher"));
+		model.addAttribute("isAuthor", false);
+		model.addAttribute("isPublisher", false);
+		
+		
 		return "perfil";
 
 	}

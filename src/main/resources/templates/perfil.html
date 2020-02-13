@@ -2,9 +2,10 @@
 <html>
 <head>
  <meta charset="UTF-8">
+ <link rel= "stylesheet" type= "text/css" href= "/mystyle.css">
 </head>
 <body>
-<h1>MI PERFIL uwu</h1>
+<h1>MI PERFIL</h1>
 <nav>
 	
 	<a href="/home">Home</a>
@@ -16,11 +17,82 @@
 	</form>
 	<a href="/perfil">Mi perfil</a>
 </nav>
-	
-	<p>Aqui te sale tu perfil :')</p>
-	<ul>
-		Me llamo {{#user}}{{name}}{{/user}}
-	</ul>
-	
+
+<h1 id = "name">{{#user}}{{name}}{{/user}}</h1>		
+	<p>
+		<img src="god.jpeg" alt="User photo" align = "left">	
+		
+			
+			{{#isAuthor}}
+		    	<p id = "info">URL: <b>{{#user}}{{website}}{{/user}}</b> Fecha de nacimiento: <b>{{#user}}{{birth}}{{/user}}</b>	 
+		    	País: <b>{{#user}}{{country}}{{/user}}</b>  </p>
+			{{/isAuthor}}
+			
+			{{#isPublisher}}
+		    	<p id = "info">URL: <b>{{#user}}{{website}}{{/user}}</b>	Año: <b>{{#user}}{{year}}{{/user}}</b></p>
+			{{/isPublisher}}					
+			
+			<h2>Descripción</h2>
+			<p>{{#user}}{{description}}{{/user}}</p>
+			
+			{{#isAuthor}}
+		    	<ul>	
+				{{#user}}{{#publishedBooks}}
+					<b>Libros publicados: </b>
+					<ul>
+					{{#books}}
+						<il>{{title}}; </il>
+						<!--  Habría que hacer anchor a la página del libro en cuestión -->
+					{{/books}}
+					</ul>
+					{{/publishedBooks}}{{/user}}
+				
+				</ul>
+		
+			{{/isAuthor}}
+			
+			
+			{{#isPublisher}}
+		    	<ul>	
+				{{#user}}{{#publishedBooks}}
+					<b>Libros publicados: </b>
+					<ul>
+					{{#books}}
+						<il>{{title}}; </il>
+						<!--  Habría que hacer anchor a la página del libro en cuestión -->
+					{{/books}}
+					</ul>
+					{{/publishedBooks}}{{/user}}
+				
+				</ul>
+		
+			{{/isPublisher}}
+			
+			
+			
+			<a href="/colecciones"> <h2>Mis colecciones:</h2> </a>
+			<ul>	
+				{{#user}}{{#bookCollection}}
+					<b>{{name}}</b>
+					<ul>
+					{{#books}}
+						<il>{{title}}; </il>
+						<!--  Habría que hacer anchor a la página del libro en cuestión -->
+					{{/books}}
+					</ul>
+				{{/bookCollection}}{{/user}}
+				
+			</ul>
+			
+		{{#isAuthor}}
+			<button align = "left" type = "button"> Añadir libro </button>		
+		{{/isAuthor}}
+		
+		{{#isPublisher}}
+			<button align = "left" type = "button"> Añadir libro </button>
+		{{/isPublisher}}
+		
+	</p>
+
 </body>
 </html>
