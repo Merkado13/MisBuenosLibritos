@@ -31,7 +31,7 @@ public class BookCollection {
 		this.description = description;
 	}
 	
-	public void AddBook(Book b) {
+	public void addBook(Book b) {
 		books.add(b);
 	}
 	
