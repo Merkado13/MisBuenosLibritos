@@ -126,7 +126,34 @@ public class LibritosController {
 		return "colecciones";
 
 	}
+	
+	@GetMapping("/perfil/{name}")
+	public String user(Model model, @PathVariable String name) {
 
+		User user = userRepository.findByName(name);
+		
+		if (user instanceof Author) {
+			model.addAttribute("user", user);
+			model.addAttribute("isAuthor", true);
+			model.addAttribute("isPublisher", false);
+			System.out.println("Está autor");
+		}
+
+		else if (user instanceof Publisher) {
+			model.addAttribute("user", user);
+			model.addAttribute("isAuthor", false);	
+			model.addAttribute("isPublisher", true);
+			System.out.println("Está publisher");
+		}
+		else {
+			model.addAttribute("name", "undefined");
+						
+		}
+		return "perfil";
+
+	}
+	
+	
 	@GetMapping("/books/{bookTitle}")
 	public String books(Model model, @PathVariable String bookTitle) {
 
@@ -136,16 +163,47 @@ public class LibritosController {
 			model.addAttribute("book", book);
 		else
 			model.addAttribute("book", "undefined");
-
+		
+		model.addAttribute("added", false);
 		return "books";
 
 	}
+	
+	@GetMapping("/usuario/{name}")
+	public String autor(Model model, @PathVariable String name) {
+
+		Author author = authorRepository.findByName(name);
+
+		if (author != null) {
+			model.addAttribute("user", author);
+			model.addAttribute("isAuthor", true);
+		}else {
+			Publisher publisher = publisherRepository.findByName(name);
+			if (publisher != null) {
+				model.addAttribute("user", publisher);
+				
+				
+			}
+			else {
+				model.addAttribute("user", "undefined");
+				
+			}
+			model.addAttribute("isAuthor", false);
+		
+		}
+		return "usuario";
+
+	}
+	
+	
 
 	@PostMapping("/books/{bookTitle}")
 	public String addBook(HttpSession session, Model model, @RequestParam String bookTitle) {
 		//model.addAttribute("bookTitle", bookTitle + " AGREGADO");
 		//pillar la sesion, el usuario y meterle el libro en una lista
 		Book book = bookRepository.findByTitle((bookTitle));
+		model.addAttribute("book", book);
+		model.addAttribute("added", true);
 		
 		//meter libro en la lista de "want to read"
 		User testUser = (User)session.getAttribute("user");

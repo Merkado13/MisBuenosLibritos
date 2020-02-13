@@ -16,6 +16,8 @@
 		<input type='submit' value='Buscar'>
 	</form>
 	<a href="/colecciones">Mi perfil</a>
+	<a href="/perfil/Jose">Perfil de Autor</a>
+	<a href="/perfil/HolyPublisher">Perfil de Editorial</a>
 	</nav>
 	<h1 align = "center"> {{#book}}{{title}}{{/book}} </h1>
 	<p>
@@ -23,18 +25,22 @@
 			
 			<h2>Valoración: {{#book}}{{rating}}{{/book}} Número de valoraciones: {{#book}}{{numRatings}}{{/book}}</h2>
 			
-			<b>Autor/es: </b>
+			<h3>Autor/es: </h3>
 			<ul>	
 				{{#book}}{{#authors}}					
 					<ul>					
-						<il>{{name}}</il>
-						<!-- Referencia a la página del autor -->											
+						<il>
+						<!-- Referencia a la página del autor -->	
+						<a href="/usuario/{{name}}">{{name}}</a>
+						</il>																
 					</ul>
 					{{/authors}}{{/book}}
 				
 				</ul>
-			<h3> Editorial:  {{#book}}{{#publisher}}{{name}}{{/publisher}}{{/book}} </h3>
-			<!-- Referencia a la editorial -->
+				<!-- Referencia a la editorial -->
+			<h3> Editorial:  <a href="/usuario/{{#book}}{{#publisher}}{{name}}{{/publisher}}{{/book}}">
+				<h5>{{#book}}{{#publisher}}{{name}}{{/publisher}}{{/book}}</h5> </a> </h3>
+				
 			
 			<h3>Descripción: </h3>
 			<p> {{#book}}{{description}}{{/book}}</p>
@@ -52,10 +58,19 @@
 			</p>
 			
 	</p>
-	<form method="post" action="/books/{{#book}}{{bookTitle}}{{/book}}">
-		<input hidden type ='input' name = 'bookTitle' value = "{{#book}}{{title}}{{/book}}">
-    	<input type='submit' value='Agregar a Quiero Leer'>
-	</form>
+	
+	<p>
+		{{^added}}
+		<form method="post" action="/books/{{#book}}{{title}}{{/book}}">
+			<input hidden type ='input' name = 'bookTitle' value = "{{#book}}{{title}}{{/book}}">
+	    	<input type='submit' value='Agregar a Quiero Leer'>
+		</form>
+		{{/added}}
+		
+		{{#added}}
+ 			Ha sido añadido
+		{{/added}}
+	</p>
 	
 </body>
 </html>

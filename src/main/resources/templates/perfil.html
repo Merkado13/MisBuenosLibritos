@@ -16,11 +16,13 @@
 		<input type='submit' value='Buscar'>
 	</form>
 	<a href="/perfil">Mi perfil</a>
+	<a href="/perfil/Jose">Perfil de Autor</a>
+	<a href="/perfil/HolyPublisher">Perfil de Editorial</a>
 </nav>
 
 <h1 id = "name">{{#user}}{{name}}{{/user}}</h1>		
 	<p>
-		<img src="god.jpeg" alt="User photo" align = "left">	
+		<img src="/god.jpeg" alt="User photo" align = "left">	
 		
 			
 			{{#isAuthor}}
@@ -74,12 +76,6 @@
 			<ul>	
 				{{#user}}{{#bookCollection}}
 					<b>{{name}}</b>
-					<ul>
-					{{#books}}
-						<il>{{title}}; </il>
-						<!--  Habría que hacer anchor a la página del libro en cuestión -->
-					{{/books}}
-					</ul>
 				{{/bookCollection}}{{/user}}
 				
 			</ul>
