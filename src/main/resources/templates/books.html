@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="UTF-8">
+ <link rel= "stylesheet" type= "text/css" href= "/mystyle.css">
+</head>
+<body>
+<h1> SOY LA PÁGINA DEL LIBRO {{bookTitle}} :3</h1>
+	<nav>
+	
+	<a href="/home">Home</a>
+	<a href="/colecciones">Colecciones</a>
+	
+	<form style="display: inline-block;" action="/busqueda" method = "get">
+		<input type ='input' name = 'input'>
+		<input type='submit' value='Buscar'>
+	</form>
+	<a href="/colecciones">Mi perfil</a>
+	</nav>
+	
+	<form method="post" action="/books/{{bookTitle}}">
+		<input hidden type ='input' name = 'bookTitle' value = "{{bookTitle}}">
+    	<input type='submit' value='Agregar a Quiero Leer'>
+	</form>
+	
+</body>
+</html>
