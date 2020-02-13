@@ -1,36 +1,29 @@
 package mislibritos;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Publisher extends User{
 
-	
-	@OneToMany(mappedBy="publisher")
-	private List<Book> books;
+	@OneToOne
+	private BookCollection publishedBooks; 
 	
 	private int year;
 	private String website;
 	
-	public Publisher() {
-		
+	public Publisher() {		
 	}
 	
-	public Publisher(String name, int year, String website) {
+	public Publisher(String name, String description, int year, String website) {
+		super(name, description);
 		this.name = name;
 		this.year = year;
 		this.website = website;
-		books = new ArrayList<Book>();
+		
 	}
 	
-	public void AddBook(Book book) {
-		books.add(book);
+	public void AddPublishedBook(Book book) {
+		publishedBooks.addBook(book);
 	}
 }

@@ -1,5 +1,9 @@
+
 package mislibritos;
 
+import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,14 +31,21 @@ public class LibritosController{
 	private PublisherRepository publisherRepository;
 	
 	@PostConstruct
-	public void init() {
-
+	public void init() throws ParseException {
+		
+		String s = "Soy una descripción";
+		
 		List<Genre> tagsBiblia = Arrays.asList(Genre.ACTION,Genre.RELIGION);	
 		List<Genre> tagsNecronomicon = Arrays.asList(Genre.AUTOBIOGRAPHY,Genre.RELIGION);		
 		
 		
-		List<Author> autoresBiblia = Arrays.asList(new Author("San Pablo"),new Author("San Marcos"),new Author("San Mateo"),new Author("San Lucas"));
-		List<Author> autoresNecronomicon = Arrays.asList(new Author("Jose"),new Author("Ortega"),new Author("Gasset"));
+		List<Author> autoresBiblia = Arrays.asList(new Author("San Pablo", s, new SimpleDateFormat("dd/MM/yyyy").parse("05/05/0005"), "Turquía", "www.vivajesusito.com"),
+				new Author("San Marcos", s, new SimpleDateFormat("dd/MM/yyyy").parse("02/02/0002"), "Grecia", "www.vivajesusito.com"),
+				new Author("San Mateo",s,  new SimpleDateFormat("dd/MM/yyyy").parse("07/07/0007"), "Israel", "www.vivajesusito.com"),
+				new Author("San Lucas", s, new SimpleDateFormat("dd/MM/yyyy").parse("12/12/0012"),"Turquía", "www.vivajesusito.com"));
+		List<Author> autoresNecronomicon = Arrays.asList(new Author("Jose", s, new SimpleDateFormat("dd/MM/yyyy").parse("09/05/1883"), "Españita", "www.soyjose.com"),
+				new Author("Ortega",s, new SimpleDateFormat("dd/MM/yyyy").parse("09/05/1883"),"Españita",  "www.soyortega.com"),
+				new Author("Gasset",s, new SimpleDateFormat("dd/MM/yyyy").parse("09/05/1883"), "ESpañita", "www.juntosformamosjoseortegaygasset.com"));
 		
 		List<Author> allAuthors = new ArrayList(autoresBiblia);
 		allAuthors.addAll(autoresNecronomicon);
@@ -44,7 +55,7 @@ public class LibritosController{
 		}
 		
 		
-		Publisher holyPublisher = new Publisher("HolyPublisher",0,"holy.god");
+		Publisher holyPublisher = new Publisher("HolyPublisher",s, 0,"holy.god");
 		publisherRepository.save(holyPublisher);
 		
 		
@@ -54,15 +65,15 @@ public class LibritosController{
 		bookRepository.save(b2);
 		
 		BookCollection librosSagrados = new BookCollection("Libros Sagrados", "Los mejores libros que podrás encontrar");
-		librosSagrados.AddBook(bookRepository.findByTitle("La Biblia"));
-		librosSagrados.AddBook(bookRepository.findByTitle("El Necronomicón"));
+		librosSagrados.addBook(bookRepository.findByTitle("La Biblia"));
+		librosSagrados.addBook(bookRepository.findByTitle("El Necronomicón"));
 		BookCollection librosPrueba = new BookCollection("Libros Prueba", "Mis libritos de prueba");
-		librosPrueba.AddBook(bookRepository.findByTitle("La Biblia"));
+		librosPrueba.addBook(bookRepository.findByTitle("La Biblia"));
 		
 		bookCollectionRepository.save(librosSagrados);
 		bookCollectionRepository.save(librosPrueba);
 		
-		User user1 = new User("God");
+		User user1 = new User("God", s);
 		user1.AddCollection(librosSagrados);
 		userRepository.save(user1);
 		
