@@ -18,18 +18,18 @@
 		<a href="/perfil/Jose">Perfil de Autor</a>
 		<a href="/perfil/HolyPublisher">Perfil de Editorial</a>
 
-		<ul>
-			{{#collections}}
-			<ul>
-				{{name}}
+		<ul>	
+			{{#user}}{{#bookCollection}}
+				<p><b>{{name}}:</b> {{description}} </p>
 				<ul>
-					{{#books}}
+				{{#books}}
 					<a href = "/books/{{title}}">
-					<il>{{title}}</il></a>
-					{{/books}}
+					<il>{{title}}; </il>
+					</a>
+				{{/books}}
 				</ul>
-			</ul>
-			{{/collections}}
+			{{/bookCollection}}{{/user}}
+			
 		</ul>
 
 

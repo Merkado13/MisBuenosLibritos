@@ -121,9 +121,9 @@ public class LibritosController {
 		}
 		
 		//mostrar las listas del test user
-		List<BookCollection> userCollections = ((User)session.getAttribute("user")).getBookCollection();
+		User testUser = (User)session.getAttribute("user");
 		
-		model.addAttribute("collections",userCollections);
+		model.addAttribute("user", userRepository.findById(testUser.getId()));
 		
 		model.addAttribute("all_books", bookRepository.findAll());
 
@@ -134,7 +134,7 @@ public class LibritosController {
 	public String colecciones(Model model, HttpSession session) {
 		User testUser = (User)session.getAttribute("user");
 		
-		model.addAttribute("user", userRepository.findAll());
+		model.addAttribute("user", userRepository.findById(testUser.getId()));
 		return "colecciones";
 
 	}
@@ -147,7 +147,7 @@ public class LibritosController {
 		userRepository.insertBookCollectionToUser(testUser.id, bc.getId());
 		//model.addAttribute("collections", testUser.getBookCollection());
 		
-		model.addAttribute("user", userRepository.findAll());
+		model.addAttribute("user", userRepository.findById(testUser.getId()));
 		return "colecciones";
 
 	}

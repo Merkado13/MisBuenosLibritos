@@ -41,4 +41,8 @@ public class User {
 		return bookCollection;
 	}
 	
+	public long getId() {
+		return id;
+		
+	}
 }

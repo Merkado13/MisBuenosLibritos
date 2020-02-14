@@ -42,11 +42,12 @@
 		
 	    	<ul>	
 			{{#user}}{{#publishedBooks}}
-				<b>Libros publicados: </b>
+				<h2>Libros publicados: </h2>
 				<ul>
 				{{#books}}
-					<il>{{title}}; </il>
-					<!--  Habría que hacer anchor a la página del libro en cuestión -->
+					<a href = "/books/{{title}}">
+						<il>{{title}}; </il>
+					</a>
 				{{/books}}
 				</ul>
 				{{/publishedBooks}}{{/user}}				
@@ -59,6 +60,13 @@
 			<ul>	
 				{{#user}}{{#bookCollection}}
 					<b>{{name}}</b>
+					<ul>
+					{{#books}}
+						<a href = "/books/{{title}}">
+							<il>{{title}}; </il>
+						</a>
+					{{/books}}
+					</ul>
 				{{/bookCollection}}{{/user}}
 				
 			</ul>					

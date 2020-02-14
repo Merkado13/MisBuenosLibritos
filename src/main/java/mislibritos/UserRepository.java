@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 public interface UserRepository extends JpaRepository<User,Long>{	
 	
 	User findByName(String name);
+	User findById(long id);
 	
 	@Modifying
 	@Query (value = "insert into user_book_collection (user_id, book_collection_id) VALUES(:idUser, :idColl)", nativeQuery = true)
