@@ -57,14 +57,20 @@ public class LibritosController {
 				new Author("Gasset",s, new SimpleDateFormat("dd/MM/yyyy").parse("09/05/1883"), "ESpañita", "www.juntosformamosjoseortegaygasset.com"));
 		
 		List<Author> allAuthors = new ArrayList(autoresBiblia);
-		allAuthors.addAll(autoresNecronomicon);
+		allAuthors.addAll(autoresNecronomicon);	
 		
 		
 		for(Author a : allAuthors){
+			BookCollection bc = new BookCollection("Published Books de " +a.getName(), "Los libritos que he publicado ");		
+			bookCollectionRepository.save(bc);	
+			a.addPublishedCollection(bc);
 			authorRepository.save(a);
 		}		
 		
 		Publisher holyPublisher = new Publisher("HolyPublisher",s, 2010,"holy.god");
+		BookCollection bc = new BookCollection("Published Books", "Los libritos que he publicado");	
+		bookCollectionRepository.save(bc);
+		holyPublisher.addPublishedCollection(bc);
 		publisherRepository.save(holyPublisher);
 		
 		
@@ -87,7 +93,7 @@ public class LibritosController {
 		user1.AddCollection(librosSagrados);
 		userRepository.save(user1);
 		
-		
+	
 		
 		
 	}
@@ -270,17 +276,21 @@ public class LibritosController {
 			@RequestParam Genre genre, @RequestParam List<Genre> tags) {
 		
 		//Falta por meter el ISBN en el libro, cuando quitemos que sea autogenerado y le pongamos un id cool
-		Author a = authorRepository.findByName(author);
-		
+		Author a = authorRepository.findByName(author);		
 		Publisher p = publisherRepository.findByName(publisher);
 		if(a == null || p == null) {
 			model.addAttribute("ok", false);
 			model.addAttribute("genres", Genre.values());
 			return "nuevolibro";
-		}
+		}		
 		
 		Book b = new Book(title, Arrays.asList(a), p, genre, tags, description, 0.0,0);
 		bookRepository.save(b);
+		a.getPublishedBooks().addBook(b);
+		bookCollectionRepository.save(a.getPublishedBooks());	
+		
+		p.getPublishedBooks().addBook(b);
+		bookCollectionRepository.save(p.getPublishedBooks());
 		// meter libro en lista de libros escritos por el autor
 		// meter libro en lista de libros publicados por la editorial
 		model.addAttribute("ok", true);

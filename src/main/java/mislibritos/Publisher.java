@@ -23,7 +23,16 @@ public class Publisher extends User{
 		
 	}
 	
-	public void AddPublishedBook(Book book) {
-		publishedBooks.addBook(book);
+//	public void AddPublishedBook(Book book) {
+//		publishedBooks.addBook(book);
+//	}
+	
+	public void addPublishedCollection(BookCollection bc) {
+		publishedBooks = bc;
+		
+	}
+	
+	public BookCollection getPublishedBooks() {
+		return publishedBooks;
 	}
 }

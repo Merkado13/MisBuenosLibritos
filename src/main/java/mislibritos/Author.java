@@ -25,10 +25,21 @@ public class Author extends User{
 		this.country = country;
 	}
 	
-	public void addPublishedBook(Book book) {
-		publishedBooks.addBook(book);
+//	public void addPublishedBook(Book book) {
+//		publishedBooks.addBook(book);
+//		
+//	}
+	
+	public void addPublishedCollection(BookCollection bc) {
+		publishedBooks = bc;
 		
 	}
 	
+	public BookCollection getPublishedBooks() {
+		return publishedBooks;
+	}
 	
+	public String getName() {
+		return name;
+	}
 }
