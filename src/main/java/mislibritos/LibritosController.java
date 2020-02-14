@@ -11,6 +11,7 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -63,7 +64,7 @@ public class LibritosController {
 			authorRepository.save(a);
 		}		
 		
-		Publisher holyPublisher = new Publisher("HolyPublisher",s, 0,"holy.god");
+		Publisher holyPublisher = new Publisher("HolyPublisher",s, 2010,"holy.god");
 		publisherRepository.save(holyPublisher);
 		
 		
@@ -85,6 +86,10 @@ public class LibritosController {
 		User user1 = new User("God", s);
 		user1.AddCollection(librosSagrados);
 		userRepository.save(user1);
+		
+		
+		
+		
 	}
 
 	@RequestMapping("/home")
@@ -150,15 +155,13 @@ public class LibritosController {
 		if (user instanceof Author) {
 			model.addAttribute("user", user);
 			model.addAttribute("isAuthor", true);
-			model.addAttribute("isPublisher", false);
-			System.out.println("Está autor");
+			model.addAttribute("isPublisher", false);			
 		}
 
 		else if (user instanceof Publisher) {
 			model.addAttribute("user", user);
 			model.addAttribute("isAuthor", false);	
-			model.addAttribute("isPublisher", true);
-			System.out.println("Está publisher");
+			model.addAttribute("isPublisher", true);			
 		}
 		else {
 			model.addAttribute("name", "undefined");
@@ -235,7 +238,9 @@ public class LibritosController {
 	@RequestMapping("/busqueda")
 	public String busqueda(Model model, @RequestParam String input) {
 		
-		
+		model.addAttribute("books",bookRepository.findByTitleContaining(input));
+		model.addAttribute("authors", authorRepository.findByNameContaining(input));
+		model.addAttribute("publishers", publisherRepository.findByNameContaining(input));
 		model.addAttribute("input", input);
 		return "busqueda";
 
@@ -261,8 +266,10 @@ public class LibritosController {
 	}
 	@PostMapping("/addBook")
 	public String addedBook(Model model, @RequestParam String title, @RequestParam String description, 
-			@RequestParam String author, @RequestParam String publisher, @RequestParam Genre genre, @RequestParam List<Genre> tags) {
+			@RequestParam String author, @RequestParam String publisher, @RequestParam String isbn,
+			@RequestParam Genre genre, @RequestParam List<Genre> tags) {
 		
+		//Falta por meter el ISBN en el libro, cuando quitemos que sea autogenerado y le pongamos un id cool
 		Author a = authorRepository.findByName(author);
 		
 		Publisher p = publisherRepository.findByName(publisher);
