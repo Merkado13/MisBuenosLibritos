@@ -40,4 +40,5 @@ public class User {
 	public List<BookCollection> getBookCollection() {
 		return bookCollection;
 	}
+	
 }

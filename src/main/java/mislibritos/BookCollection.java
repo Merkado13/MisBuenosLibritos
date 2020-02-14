@@ -37,4 +37,5 @@ public class BookCollection {
 	public long getId() {
 		return id;
 	}
+	
 }

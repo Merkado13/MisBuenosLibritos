@@ -131,6 +131,7 @@ public class LibritosController {
 		BookCollection bc = new BookCollection(name, description);
 		bookCollectionRepository.save(bc);
 		User testUser = (User)session.getAttribute("user");
+		testUser.AddCollection(bc);
 		userRepository.insertBookCollectionToUser(testUser.id, bc.getId());
 		model.addAttribute("user", userRepository.findAll());
 		return "colecciones";
@@ -166,7 +167,7 @@ public class LibritosController {
 	
 	
 	@GetMapping("/books/{bookTitle}")
-	public String books(Model model, @PathVariable String bookTitle) {
+	public String books(Model model, HttpSession session, @PathVariable String bookTitle) {
 
 		Book book = bookRepository.findByTitle(bookTitle);
 
@@ -176,6 +177,8 @@ public class LibritosController {
 			model.addAttribute("book", "undefined");
 		
 		model.addAttribute("added", false);
+		User testUser = (User)session.getAttribute("user");
+		model.addAttribute("collections", testUser.getBookCollection());
 		return "books";
 
 	}
@@ -209,8 +212,9 @@ public class LibritosController {
 	
 
 	@PostMapping("/books/{bookTitle}")
-	public String addBook(HttpSession session, Model model, @RequestParam String bookTitle) {
+	public String addBook(HttpSession session, Model model, @RequestParam String bookTitle, @RequestParam String collName) {
 		//model.addAttribute("bookTitle", bookTitle + " AGREGADO");
+		
 		//pillar la sesion, el usuario y meterle el libro en una lista
 		Book book = bookRepository.findByTitle((bookTitle));
 		model.addAttribute("book", book);
@@ -218,9 +222,10 @@ public class LibritosController {
 		
 		//meter libro en la lista de "want to read"
 		User testUser = (User)session.getAttribute("user");
-		testUser.getBookCollection().get(0).addBook(book);
+		BookCollection bc = bookCollectionRepository.findByName(collName);
+		
 		//bookCollectionRepository.save(testUser.getBookCollection().get(0));
-		bookCollectionRepository.insertBookToCollection(testUser.getBookCollection().get(0).getId(), book.getIsbn());
+		bookCollectionRepository.insertBookToCollection(bc.getId(), book.getIsbn());
 		return "books";
 	}
 

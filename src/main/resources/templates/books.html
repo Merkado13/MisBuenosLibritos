@@ -63,7 +63,15 @@
 		{{^added}}
 		<form method="post" action="/books/{{#book}}{{title}}{{/book}}">
 			<input hidden type ='input' name = 'bookTitle' value = "{{#book}}{{title}}{{/book}}">
-	    	<input type='submit' value='Agregar a Quiero Leer'>
+			<input list="collName" name="collName">
+					  <datalist id="collName">
+					  <select>
+					  {{#collections}}
+					  <option value="{{name}}">
+					  {{/collections}}
+					  </select>
+					  </datalist>
+	    	<input type='submit' value='Agregar a colección'>
 		</form>
 		{{/added}}
 		
