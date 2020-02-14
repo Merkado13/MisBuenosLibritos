@@ -34,5 +34,7 @@ public class BookCollection {
 	public void addBook(Book b) {
 		books.add(b);
 	}
-	
+	public long getId() {
+		return id;
+	}
 }

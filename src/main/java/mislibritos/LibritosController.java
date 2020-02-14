@@ -208,6 +208,8 @@ public class LibritosController {
 		//meter libro en la lista de "want to read"
 		User testUser = (User)session.getAttribute("user");
 		testUser.getBookCollection().get(0).addBook(book);
+		//bookCollectionRepository.save(testUser.getBookCollection().get(0));
+		bookCollectionRepository.insertBookToCollection(testUser.getBookCollection().get(0).getId(), book.getIsbn());
 		return "books";
 	}
 
