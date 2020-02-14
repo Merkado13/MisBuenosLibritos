@@ -63,7 +63,7 @@
 		{{^added}}
 		<form method="post" action="/books/{{#book}}{{title}}{{/book}}">
 			<input hidden type ='input' name = 'bookTitle' value = "{{#book}}{{title}}{{/book}}">
-			<input list="collName" name="collName">
+			<input list="collName" name="collName" autocomplete="off">
 					  <datalist id="collName">
 					  <select>
 					  {{#collections}}
