@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="UTF-8">
+ <link rel= "stylesheet" type= "text/css" href= "/mystyle.css">
+</head>
+<body>
+<h1> SOY LA PÁGINA DE AÑADIR LIBRO</h1>
+	<nav>
+	
+	<a href="/home">Home</a>
+	<a href="/colecciones">Colecciones</a>
+	
+	<form style="display: inline-block;" action="/busqueda" method = "get">
+		<input type ='input' name = 'input'>
+		<input type='submit' value='Buscar'>
+	</form>
+	<a href="/colecciones">Mi perfil</a>
+	<a href="/perfil/Jose">Perfil de Autor</a>
+	<a href="/perfil/HolyPublisher">Perfil de Editorial</a>
+	</nav>
+
+	{{#ok}}
+	<p>El libro se ha guardado correctamente</p>
+	{{/ok}}
+	<form action="/addBook" method = "post">
+	<p>Título: <input type='input' name='title' value=''></p>
+	<p>Sinopsis: <input type='input' name='description' value=''></p>
+	<p>Autor: <input type='input' name='author'></p>
+	<p>Editorial:<input type='input' name='publisher'></p>
+	
+	<p>Género </p>
+	{{#genres}}
+		<input type="radio" id="genre{{-index}}" name="genre" value="{{.}}">
+ 		 <label for="genre{{-index}}"> {{.}}</label><br>
+	{{/genres}}
+	
+	<p>Tags </p>
+	{{#genres}}
+		<input type="checkbox" id="tags{{-index}}" name="tags" value="{{.}}">
+ 		 <label for="tags{{-index}}"> {{.}}</label><br>
+	{{/genres}}
+	
+	<input type='submit' value='Aceptar'>
+	</form>
+
+
+
+</body>
+</html>

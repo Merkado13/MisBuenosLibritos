@@ -235,5 +235,32 @@ public class LibritosController {
 		return "perfil";
 
 	}
+	@GetMapping("/addBook")
+	public String addBook(Model model) {
+		
+		model.addAttribute("genres", Genre.values());
+		return "nuevolibro";
+	}
+	@PostMapping("/addBook")
+	public String addedBook(Model model, @RequestParam String title, @RequestParam String description, 
+			@RequestParam String author, @RequestParam String publisher, @RequestParam Genre genre, @RequestParam List<Genre> tags) {
+		
+		Author a = authorRepository.findByName(author);
+		
+		Publisher p = publisherRepository.findByName(publisher);
+		if(a == null || p == null) {
+			model.addAttribute("ok", false);
+			model.addAttribute("genres", Genre.values());
+			return "nuevolibro";
+		}
+		
+		Book b = new Book(title, Arrays.asList(a), p, genre, tags, description, 0.0,0);
+		bookRepository.save(b);
+		// meter libro en lista de libros escritos por el autor
+		// meter libro en lista de libros publicados por la editorial
+		model.addAttribute("ok", true);
+		model.addAttribute("genres", Genre.values());
+		return "nuevolibro";
+	}
 
 }
