@@ -19,6 +19,8 @@
 	<a href="/perfil/HolyPublisher">Perfil de Editorial</a>
 </nav>
 	<p><b>Mis colecciones</b></p>
+	<button onclick="myFunction()">Añadir colección</button>
+	<p id='add'></p>
 	
 	<ul>	
 		{{#user}}{{#bookCollection}}
@@ -33,7 +35,12 @@
 		{{/bookCollection}}{{/user}}
 		
 	</ul>
-
 	</form>
+	
+	<script>
+function myFunction() {
+  document.getElementById("add").innerHTML = "<form action='/newCollection' method='post'> <p>Nombre: <input type='input' name='name' value=''></p> <p>Descripción: <input type='input' name='description' value=''><input type='submit' value='Crear'></p></form>";
+}
+</script>
 </body>
 </html>

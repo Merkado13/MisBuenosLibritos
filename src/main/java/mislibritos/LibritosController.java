@@ -119,13 +119,24 @@ public class LibritosController {
 		return "home";
 	}
 
-	@RequestMapping("/colecciones")
+	@GetMapping("/colecciones")
 	public String colecciones(Model model) {
-		// model.addAttribute("pagina_anterior", anterior);
+		
 		model.addAttribute("user", userRepository.findAll());
 		return "colecciones";
 
 	}
+	@PostMapping("/newCollection")
+	public String addCollection(Model model, HttpSession session, @RequestParam String name, @RequestParam String description) {
+		BookCollection bc = new BookCollection(name, description);
+		bookCollectionRepository.save(bc);
+		User testUser = (User)session.getAttribute("user");
+		userRepository.insertBookCollectionToUser(testUser.id, bc.getId());
+		model.addAttribute("user", userRepository.findAll());
+		return "colecciones";
+
+	}
+
 	
 	@GetMapping("/perfil/{name}")
 	public String user(Model model, @PathVariable String name) {
