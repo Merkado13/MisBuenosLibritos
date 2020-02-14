@@ -2,6 +2,7 @@
 <html>
 <head>
  <meta charset="UTF-8">
+  <link rel= "stylesheet" type= "text/css" href= "/mystyle.css">
 </head>
 <body>
 <h1> SOY LA PÁGINA DE COLECCIONES :'D</h1>
@@ -24,7 +25,7 @@
 	
 	<ul>	
 		{{#user}}{{#bookCollection}}
-			{{name}}
+			<p><b>{{name}}:</b> {{description}} </p>
 			<ul>
 			{{#books}}
 				<a href = "/books/{{title}}">

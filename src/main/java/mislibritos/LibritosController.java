@@ -99,7 +99,7 @@ public class LibritosController {
 			bookCollectionRepository.save(readingCollection);
 			bookCollectionRepository.save(readCollection);
 			
-			User testUser = new User(session.getId(),"Usuario de testeo: " + session.getId());
+			User testUser = new User("Usuario de testeo", "Hola soy un usuario, hijo de Dios. Nací en Nazaret y me gustan los libros de acción y aventuras");
 			testUser.AddCollection(wantToReadCollection);
 			testUser.AddCollection(readingCollection);
 			testUser.AddCollection(readCollection);
@@ -120,7 +120,8 @@ public class LibritosController {
 	}
 
 	@GetMapping("/colecciones")
-	public String colecciones(Model model) {
+	public String colecciones(Model model, HttpSession session) {
+		User testUser = (User)session.getAttribute("user");
 		
 		model.addAttribute("user", userRepository.findAll());
 		return "colecciones";
@@ -133,6 +134,8 @@ public class LibritosController {
 		User testUser = (User)session.getAttribute("user");
 		testUser.AddCollection(bc);
 		userRepository.insertBookCollectionToUser(testUser.id, bc.getId());
+		//model.addAttribute("collections", testUser.getBookCollection());
+		
 		model.addAttribute("user", userRepository.findAll());
 		return "colecciones";
 
@@ -220,7 +223,7 @@ public class LibritosController {
 		model.addAttribute("book", book);
 		model.addAttribute("added", true);
 		
-		//meter libro en la lista de "want to read"
+		//meter libro en la lista 
 		User testUser = (User)session.getAttribute("user");
 		BookCollection bc = bookCollectionRepository.findByName(collName);
 		
@@ -239,9 +242,8 @@ public class LibritosController {
 	}
 
 	@RequestMapping("/perfil")
-	public String perfil(Model model) {	
-		
-		model.addAttribute("user", userRepository.findByName("God"));
+	public String perfil(Model model, HttpSession session) {	
+		model.addAttribute("user", (User)session.getAttribute("user"));
 		//model.addAttribute("user", authorRepository.findByName("San Pablo"));
 		//model.addAttribute("user", publisherRepository.findByName("HolyPublisher"));
 		model.addAttribute("isAuthor", false);
