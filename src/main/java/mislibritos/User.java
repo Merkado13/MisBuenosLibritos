@@ -18,7 +18,7 @@ public class User {
 	protected String name; 
 	protected String description;
 	
-	@OneToMany
+	@OneToMany(mappedBy = "user")
 	private List<BookCollection> bookCollection;
 	
 	public User() {

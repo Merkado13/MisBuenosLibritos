@@ -23,8 +23,9 @@ public class UserService {
 	public User getNewUser(String name, String description) {
 		
 		User user = new User(name, description);
-		user.AddCollection(prepareDefaultCollections(user));
 		userRepository.save(user);
+		user.AddCollection(prepareDefaultCollections(user));
+		
 		return user;		
 	}
 	
@@ -32,8 +33,9 @@ public class UserService {
 	public Author getNewAuthor(String name, String description, Date birth, String country, String website) {
 		
 		Author author = new Author(name, description, birth, country, website);
-		author.AddCollection(prepareDefaultCollections(author));
 		authorRepository.save(author);
+		author.AddCollection(prepareDefaultCollections(author));
+		
 		return author;
 	}
 	
@@ -41,8 +43,9 @@ public class UserService {
 	public Publisher getNewPublisher(String name, String description, int year, String website) {
 		
 		Publisher publisher = new Publisher(name, description,year,website);
-		publisher.AddCollection(prepareDefaultCollections(publisher));
 		publisherRepository.save(publisher);
+		publisher.AddCollection(prepareDefaultCollections(publisher));
+		
 		return publisher;
 	}
 	
@@ -64,6 +67,7 @@ public class UserService {
 		if(user.getClass() == Author.class) {
 			Author au = (Author) user;
 			BookCollection publishedBooks = new BookCollection("Published Books de " + au.getName(), "Los libritos que he publicado ", BookCollection.DEFAULT);
+			publishedBooks.setUser(user);
 			au.setPublishedCollection(publishedBooks);
 			bookCollectionRepository.save(publishedBooks);
 		}
@@ -71,11 +75,13 @@ public class UserService {
 		if(user.getClass() == Publisher.class) {
 			Publisher pu = (Publisher) user;
 			BookCollection publishedBooks = new BookCollection("Published Books por " + pu.getName(), "Los libritos que he publicado ", BookCollection.DEFAULT);
+			publishedBooks.setUser(user);
 			pu.setPublishedCollection(publishedBooks);
 			bookCollectionRepository.save(publishedBooks);
 		}
 		
 		for(BookCollection col : defaultColl) {
+			col.setUser(user);
 			bookCollectionRepository.save(col);
 		}
 		
