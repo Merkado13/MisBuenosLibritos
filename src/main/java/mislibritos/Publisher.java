@@ -27,7 +27,11 @@ public class Publisher extends User{
 //		publishedBooks.addBook(book);
 //	}
 	
-	public void addPublishedCollection(BookCollection bc) {
+	public String getName() {
+		return name;
+	}
+	
+	public void setPublishedCollection(BookCollection bc) {
 		publishedBooks = bc;
 		
 	}

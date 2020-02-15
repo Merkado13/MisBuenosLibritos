@@ -25,7 +25,6 @@ public class User {
 		
 	}
 
-
 	public User(String name, String description) {		
 		this.name = name;
 		this.description = description;
@@ -35,6 +34,10 @@ public class User {
 	public void AddCollection(BookCollection bc) {
 		bookCollection.add(bc);
 		
+	}
+	
+	public void AddCollection(List<BookCollection> bcl) {
+		bookCollection.addAll(bcl);
 	}
 	
 	public List<BookCollection> getBookCollection() {

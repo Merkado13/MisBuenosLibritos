@@ -15,4 +15,6 @@ public interface UserRepository extends JpaRepository<User,Long>{
 	@Query (value = "insert into user_book_collection (user_id, book_collection_id) VALUES(:idUser, :idColl)", nativeQuery = true)
 	@Transactional
 	void insertBookCollectionToUser(@Param("idUser") long idUser, @Param("idColl") long idColl);
+	
+	BookCollection findByBookCollection_Name(String name);
 }

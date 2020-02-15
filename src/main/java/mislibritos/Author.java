@@ -30,7 +30,7 @@ public class Author extends User{
 //		
 //	}
 	
-	public void addPublishedCollection(BookCollection bc) {
+	public void setPublishedCollection(BookCollection bc) {
 		publishedBooks = bc;
 		
 	}

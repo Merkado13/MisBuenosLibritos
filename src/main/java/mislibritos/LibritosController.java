@@ -34,6 +34,9 @@ public class LibritosController {
 	@Autowired
 	private PublisherRepository publisherRepository;
 	
+	@Autowired
+	private UserService userService;
+	
 	Book b1;
 	
 	
@@ -45,33 +48,34 @@ public class LibritosController {
 		List<Genre> tagsBiblia = Arrays.asList(Genre.ACTION,Genre.RELIGION);	
 		List<Genre> tagsNecronomicon = Arrays.asList(Genre.AUTOBIOGRAPHY,Genre.RELIGION);		
 		
-		Author autor = new Author("San Pablo", s, new SimpleDateFormat("dd/MM/yyyy").parse("05/05/0005"), "Turquía", "www.vivajesusito.com");
+		Author autor = userService.getNewAuthor("San Pablo", s, new SimpleDateFormat("dd/MM/yyyy").parse("05/05/0005"), "Turquía", "www.vivajesusito.com");
 		
 		
 		List<Author> autoresBiblia = Arrays.asList(autor,
-				new Author("San Marcos", s, new SimpleDateFormat("dd/MM/yyyy").parse("02/02/0002"), "Grecia", "www.vivajesusito.com"),
-				new Author("San Mateo",s,  new SimpleDateFormat("dd/MM/yyyy").parse("07/07/0007"), "Israel", "www.vivajesusito.com"),
-				new Author("San Lucas", s, new SimpleDateFormat("dd/MM/yyyy").parse("12/12/0012"),"Turquía", "www.vivajesusito.com"));
-		List<Author> autoresNecronomicon = Arrays.asList(new Author("Jose", s, new SimpleDateFormat("dd/MM/yyyy").parse("09/05/1883"), "Españita", "www.soyjose.com"),
-				new Author("Ortega",s, new SimpleDateFormat("dd/MM/yyyy").parse("09/05/1883"),"Españita",  "www.soyortega.com"),
-				new Author("Gasset",s, new SimpleDateFormat("dd/MM/yyyy").parse("09/05/1883"), "ESpañita", "www.juntosformamosjoseortegaygasset.com"));
+				userService.getNewAuthor("San Marcos", s, new SimpleDateFormat("dd/MM/yyyy").parse("02/02/0002"), "Grecia", "www.vivajesusito.com"),
+				userService.getNewAuthor("San Mateo",s,  new SimpleDateFormat("dd/MM/yyyy").parse("07/07/0007"), "Israel", "www.vivajesusito.com"),
+				userService.getNewAuthor("San Lucas", s, new SimpleDateFormat("dd/MM/yyyy").parse("12/12/0012"),"Turquía", "www.vivajesusito.com"));
+		List<Author> autoresNecronomicon = Arrays.asList(
+				userService.getNewAuthor("Jose", s, new SimpleDateFormat("dd/MM/yyyy").parse("09/05/1883"), "Españita", "www.soyjose.com"),
+				userService.getNewAuthor("Ortega",s, new SimpleDateFormat("dd/MM/yyyy").parse("09/05/1883"),"Españita",  "www.soyortega.com"),
+				userService.getNewAuthor("Gasset",s, new SimpleDateFormat("dd/MM/yyyy").parse("09/05/1883"), "ESpañita", "www.juntosformamosjoseortegaygasset.com"));
 		
+		/*
 		List<Author> allAuthors = new ArrayList(autoresBiblia);
 		allAuthors.addAll(autoresNecronomicon);	
-		
 		
 		for(Author a : allAuthors){
 			BookCollection bc = new BookCollection("Published Books de " +a.getName(), "Los libritos que he publicado ");		
 			bookCollectionRepository.save(bc);	
-			a.addPublishedCollection(bc);
+			a.setPublishedCollection(bc);
 			authorRepository.save(a);
-		}		
+		}*/		
 		
-		Publisher holyPublisher = new Publisher("HolyPublisher",s, 2010,"holy.god");
-		BookCollection bc = new BookCollection("Published Books", "Los libritos que he publicado");	
+		Publisher holyPublisher = userService.getNewPublisher("HolyPublisher",s, 2010,"holy.god");
+		/*BookCollection bc = new BookCollection("Published Books", "Los libritos que he publicado");	
 		bookCollectionRepository.save(bc);
 		holyPublisher.addPublishedCollection(bc);
-		publisherRepository.save(holyPublisher);
+		publisherRepository.save(holyPublisher);*/
 		
 		
 		b1 = new Book("La Biblia", autoresBiblia, holyPublisher, Genre.ACTION, tagsBiblia, "Jesusito nace, se muere, vuelve a la vida, y siguen pasando cosas", 3, 30,1234567891012L);		
@@ -80,18 +84,18 @@ public class LibritosController {
 		bookRepository.save(b2);
 
 		BookCollection librosSagrados = new BookCollection("Libros Sagrados",
-				"Los mejores libros que podrás encontrar");
+				"Los mejores libros que podrás encontrar", BookCollection.CUSTOM);
 		librosSagrados.addBook(bookRepository.findByTitle("La Biblia"));
 		librosSagrados.addBook(bookRepository.findByTitle("El Necronomicón"));
-		BookCollection librosPrueba = new BookCollection("Libros Prueba", "Mis libritos de prueba");
+		BookCollection librosPrueba = new BookCollection("Libros Prueba", "Mis libritos de prueba", BookCollection.CUSTOM);
 		librosPrueba.addBook(bookRepository.findByTitle("La Biblia"));
 
 		bookCollectionRepository.save(librosSagrados);
 		bookCollectionRepository.save(librosPrueba);
 
-		User user1 = new User("God", s);
+		User user1 = userService.getNewUser("God", s);
 		user1.AddCollection(librosSagrados);
-		userRepository.save(user1);
+		//userRepository.save(user1);
 		
 	
 		
@@ -100,24 +104,12 @@ public class LibritosController {
 
 	@RequestMapping("/home")
 	public String home(HttpSession session, Model model) {
-
-		if (session.isNew()) {
-			BookCollection wantToReadCollection = new BookCollection("To Read", "Books you want to read");
-			BookCollection readingCollection = new BookCollection("Reading", "Books you are currently reading");
-			BookCollection readCollection = new BookCollection("Read", "Books you have read");
-
-			bookCollectionRepository.save(wantToReadCollection);
-			bookCollectionRepository.save(readingCollection);
-			bookCollectionRepository.save(readCollection);
-			
-			User testUser = new User("TestUser#" + session.getId(), "Hola soy un usuario" + session.getId() + " , hijo de Dios. Nací en Nazaret y me gustan los libros de acción y aventuras");
-			testUser.AddCollection(wantToReadCollection);
-			testUser.AddCollection(readingCollection);
-			testUser.AddCollection(readCollection);
-			userRepository.save(testUser);
+		
+		if (session.isNew()) {			
+			User testUser = userService.getNewUser("TestUser#" + session.getId(), "Hola soy un usuario" + session.getId() 
+				+ " , hijo de Dios. Nací en Nazaret y me gustan los libros de acción y aventuras");
 			
 			session.setAttribute("user", testUser);
-			
 		}
 		
 		//mostrar las listas del test user
@@ -140,7 +132,7 @@ public class LibritosController {
 	}
 	@PostMapping("/newCollection")
 	public String addCollection(Model model, HttpSession session, @RequestParam String name, @RequestParam String description) {
-		BookCollection bc = new BookCollection(name, description);
+		BookCollection bc = new BookCollection(name, description, BookCollection.CUSTOM);
 		bookCollectionRepository.save(bc);
 		User testUser = (User)session.getAttribute("user");
 		testUser.AddCollection(bc);
@@ -234,7 +226,8 @@ public class LibritosController {
 		
 		//meter libro en la lista 
 		User testUser = (User)session.getAttribute("user");
-		BookCollection bc = bookCollectionRepository.findByName(collName);
+		//BookCollection bc = bookCollectionRepository.findByName(collName);
+		BookCollection bc = userRepository.findByBookCollection_Name(collName);
 		
 		//bookCollectionRepository.save(testUser.getBookCollection().get(0));
 		bookCollectionRepository.insertBookToCollection(bc.getId(), book.getId());

@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import org.springframework.data.annotation.Transient;
+
 @Entity
 public class BookCollection {
  
@@ -17,6 +19,12 @@ public class BookCollection {
 	private long id;
 	private String name;
 	private String description;
+	private boolean custom;
+	
+	@Transient
+	public final static boolean DEFAULT = false;
+	@Transient
+	public final static boolean CUSTOM = true;
 	
 	@ManyToMany
 	private List<Book> books;
@@ -25,9 +33,10 @@ public class BookCollection {
 		// TODO Auto-generated constructor stub
 	}
 
-	public BookCollection(String name, String description) {
+	public BookCollection(String name, String description, boolean custom) {
 		this.name = name;
 		books = new LinkedList<Book>();
+		this.custom = custom;
 		this.description = description;
 	}
 	
