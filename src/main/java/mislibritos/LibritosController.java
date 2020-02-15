@@ -110,7 +110,7 @@ public class LibritosController {
 			bookCollectionRepository.save(readingCollection);
 			bookCollectionRepository.save(readCollection);
 			
-			User testUser = new User("Usuario de testeo", "Hola soy un usuario, hijo de Dios. Nací en Nazaret y me gustan los libros de acción y aventuras");
+			User testUser = new User("TestUser#" + session.getId(), "Hola soy un usuario" + session.getId() + " , hijo de Dios. Nací en Nazaret y me gustan los libros de acción y aventuras");
 			testUser.AddCollection(wantToReadCollection);
 			testUser.AddCollection(readingCollection);
 			testUser.AddCollection(readCollection);
@@ -237,7 +237,7 @@ public class LibritosController {
 		BookCollection bc = bookCollectionRepository.findByName(collName);
 		
 		//bookCollectionRepository.save(testUser.getBookCollection().get(0));
-		bookCollectionRepository.insertBookToCollection(bc.getId(), book.getIsbn());
+		bookCollectionRepository.insertBookToCollection(bc.getId(), book.getId());
 		return "books";
 	}
 
