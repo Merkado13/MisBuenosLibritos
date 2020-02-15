@@ -254,7 +254,8 @@ public class LibritosController {
 
 	@RequestMapping("/perfil")
 	public String perfil(Model model, HttpSession session) {	
-		model.addAttribute("user", (User)session.getAttribute("user"));
+		User currentUser = (User)session.getAttribute("user");
+		model.addAttribute("user", userRepository.findById(currentUser.getId()));
 		//model.addAttribute("user", authorRepository.findByName("San Pablo"));
 		//model.addAttribute("user", publisherRepository.findByName("HolyPublisher"));
 		model.addAttribute("isAuthor", false);
