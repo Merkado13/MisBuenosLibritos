@@ -29,6 +29,7 @@ public class Book {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	private long id;
 	private long isbn;
 	private String title;
 	private double rating;
@@ -58,7 +59,7 @@ public class Book {
 	public Book() {}
 	
 	public Book(String title, List<Author> authors, Publisher publisher, Genre genre, List<Genre> tags, 
-			String description, double rating, int numRatings) {
+			String description, double rating, int numRatings, long isbn) {
 		this.title = title;
 		this.authors = authors;
 		this.publisher = publisher;
@@ -67,9 +68,14 @@ public class Book {
 		this.description = description;
 		this.rating = rating;
 		this.numRatings = numRatings;
+		this.isbn = isbn;
 		
 	}
 
+	public long getId() {
+		return id;
+	}
+	
 	public long getIsbn() {
 		return isbn;
 	}

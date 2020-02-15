@@ -74,9 +74,9 @@ public class LibritosController {
 		publisherRepository.save(holyPublisher);
 		
 		
-		b1 = new Book("La Biblia", autoresBiblia, holyPublisher, Genre.ACTION, tagsBiblia, "Jesusito nace, se muere, vuelve a la vida, y siguen pasando cosas", 3, 30);		
+		b1 = new Book("La Biblia", autoresBiblia, holyPublisher, Genre.ACTION, tagsBiblia, "Jesusito nace, se muere, vuelve a la vida, y siguen pasando cosas", 3, 30,1234567891012L);		
 		bookRepository.save(b1);	
-		Book b2 = new Book("El Necronomicón", autoresNecronomicon, holyPublisher, Genre.AUTOBIOGRAPHY, tagsNecronomicon, "Ocurren cosas oscuras", 4.5, 45);		
+		Book b2 = new Book("El Necronomicón", autoresNecronomicon, holyPublisher, Genre.AUTOBIOGRAPHY, tagsNecronomicon, "Ocurren cosas oscuras", 4.5, 45,9876543211012L);		
 		bookRepository.save(b2);
 
 		BookCollection librosSagrados = new BookCollection("Libros Sagrados",
@@ -278,13 +278,13 @@ public class LibritosController {
 		//Falta por meter el ISBN en el libro, cuando quitemos que sea autogenerado y le pongamos un id cool
 		Author a = authorRepository.findByName(author);		
 		Publisher p = publisherRepository.findByName(publisher);
-		if(a == null || p == null) {
+		if(a == null || p == null || isbn.length() != 13) {
 			model.addAttribute("ok", false);
 			model.addAttribute("genres", Genre.values());
 			return "nuevolibro";
 		}		
 		
-		Book b = new Book(title, Arrays.asList(a), p, genre, tags, description, 0.0,0);
+		Book b = new Book(title, Arrays.asList(a), p, genre, tags, description, 0.0,0, Long.parseLong(isbn));
 		bookRepository.save(b);
 		a.getPublishedBooks().addBook(b);
 		bookCollectionRepository.save(a.getPublishedBooks());	
