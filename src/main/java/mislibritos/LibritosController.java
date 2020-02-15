@@ -36,6 +36,8 @@ public class LibritosController {
 	
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private BookService bookService;
 	
 	@PostConstruct
 	public void init() throws ParseException {
@@ -138,24 +140,6 @@ public class LibritosController {
 
 	}
 	
-	
-	@GetMapping("/books/{bookTitle}")
-	public String books(Model model, HttpSession session, @PathVariable String bookTitle) {
-
-		Book book = bookRepository.findByTitle(bookTitle);
-
-		if (book != null)
-			model.addAttribute("book", book);
-		else
-			model.addAttribute("book", "undefined");
-		
-		model.addAttribute("added", false);
-		User testUser = (User)session.getAttribute("user");
-		model.addAttribute("collections", testUser.getBookCollection());
-		return "books";
-
-	}
-	
 	@GetMapping("/usuario/{name}")
 	public String autor(Model model, @PathVariable String name) {
 
@@ -167,23 +151,37 @@ public class LibritosController {
 		}else {
 			Publisher publisher = publisherRepository.findByName(name);
 			if (publisher != null) {
-				model.addAttribute("user", publisher);
-				
-				
+				model.addAttribute("user", publisher);			
 			}
 			else {
 				model.addAttribute("user", "undefined");
-				
 			}
 			model.addAttribute("isAuthor", false);
-		
 		}
 		return "usuario";
+	}
+	
+	@GetMapping("/books/{bookTitle}")
+	public String books(Model model, HttpSession session, @PathVariable String bookTitle) {
+
+		//Pillar el usuario a parti de la sesion
+		User testUser = (User)session.getAttribute("user");
+		Book book = bookRepository.findByTitle(bookTitle);
+
+		if (book != null)
+			model.addAttribute("book", book);
+		else
+			model.addAttribute("book", "undefined");
+		
+		model.addAttribute("added", false);
+		
+		bookService.assertBookState(model, book, testUser);
+		
+		model.addAttribute("collections", testUser.getBookCollection());
+		return "books";
 
 	}
 	
-	
-
 	@PostMapping("/books/{bookTitle}")
 	public String addBook(HttpSession session, Model model, @RequestParam String bookTitle, @RequestParam String collName) {
 
@@ -201,9 +199,11 @@ public class LibritosController {
 		//insertar el libro en la base de datos
 		bookCollectionRepository.insertBookToCollection(bc.getId(), book.getId());
 		
+		bookService.assertBookState(model, book, testUser);
+		
 		return "books";
 	}
-
+	
 	@RequestMapping("/busqueda")
 	public String busqueda(Model model, @RequestParam String input) {
 		

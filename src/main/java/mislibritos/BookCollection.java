@@ -27,6 +27,13 @@ public class BookCollection {
 	@Transient
 	public final static boolean CUSTOM = true;
 	
+	@Transient
+	public final static String TO_READ_COLLECTION_NAME = "To Read";
+	@Transient
+	public final static String READING_COLLECTION_NAME = "Reading";
+	@Transient
+	public final static String READ_COLLECTION_NAME = "Read";
+	
 	@ManyToMany
 	private List<Book> books;
 	
@@ -44,11 +51,19 @@ public class BookCollection {
 		this.description = description;
 	}
 	
+	public boolean containsBooks(Book b) {
+		return books.contains(b);
+	}
+	
 	public void addBook(Book b) {
 		books.add(b);
 	}
 	public long getId() {
 		return id;
+	}
+	
+	public String getName() {
+		return name;
 	}
 	
 	public User getUser() {

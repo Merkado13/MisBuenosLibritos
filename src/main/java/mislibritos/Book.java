@@ -24,6 +24,8 @@ enum Genre{ACTION, ART, AUTOBIOGRAPHY, BIOGRAPHY, CHILDREN, COMIC, COOKBOOK,
 	TRAVEL,	TRUE_CRIME, YOUNG_ADULT
 	}
 
+enum BookState{TO_READ,READING,READ,NONE}
+
 @Entity
 public class Book {
 
@@ -34,7 +36,7 @@ public class Book {
 	private String title;
 	private double rating;
 	private int numRatings; 
-	private String description; 
+	private String description;
 
 	
 	@ElementCollection //especifica que es una colección de elementos, va a crear una tabla adicional

@@ -3,6 +3,9 @@ package mislibritos;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
 import org.springframework.data.jpa.repository.*;
 public interface BookCollectionRepository extends JpaRepository<BookCollection,Long>{	
 	
@@ -13,4 +16,8 @@ public interface BookCollectionRepository extends JpaRepository<BookCollection,L
 	
 	BookCollection findByNameAndUser(String name, User user);
 	
+	List<BookCollection> findFirst3ByNameContainingAndUser(String name, User user);
+	
+	@Query( value = "select * from book_collection_books where book_collection_id = ?1 and books_id = ?2", nativeQuery = true)
+	Object getRowFromBookCollectionBooks(long bcId, long bookId);
 }
