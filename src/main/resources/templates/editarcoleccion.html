@@ -41,6 +41,14 @@
 		
 		<input type='submit' value='Guardar'>
 	</form>
+	
+	{{#canBeEdited}}
+	<form method = "post" action = "/colecciones">
+		<input type ='hidden' name='colId' value = "{{id}}">
+		<input type='submit' value='Borrar Lista'>
+	</form>
+	{{/canBeEdited}}
+	
 	<ul>
 	{{#books}}
 			<li id = {{id}}> <a href="/books/{{title}}">{{title}}</a>

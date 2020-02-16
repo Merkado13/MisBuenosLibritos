@@ -24,5 +24,8 @@ public interface BookCollectionRepository extends JpaRepository<BookCollection,L
 	@Query( value = "select * from book_collection_books where book_collection_id = ?1 and books_id = ?2", nativeQuery = true)
 	Object getRowFromBookCollectionBooks(long bcId, long bookId);
 	
+	@Transactional
+	long deleteById(long id);
+	
 	//void updateNameAndDescription(String name, String description);
 }

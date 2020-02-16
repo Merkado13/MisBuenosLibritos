@@ -98,6 +98,17 @@ public class LibritosController {
 		return "colecciones";
 
 	}
+	@PostMapping("/colecciones")
+	public String colecciones(Model model, HttpSession session, @RequestParam String colId) {
+		User testUser = (User)session.getAttribute("user");
+		
+		bookCollectionRepository.deleteById(Long.parseLong(colId));
+		
+		model.addAttribute("user", userRepository.findById(testUser.getId()));
+		return "colecciones";
+
+	}
+	
 	@PostMapping("/newCollection")
 	public String addCollection(Model model, HttpSession session, @RequestParam String name, @RequestParam String description) {
 		
@@ -312,12 +323,14 @@ public class LibritosController {
 		
 		User user = (User)session.getAttribute("user");
 		BookCollection bc = bookCollectionRepository.findById(colId);
-		model.addAttribute("canBeEdited", true);
+		/*model.addAttribute("canBeEdited", true);
 		
 		if(!bc.getCustom()) {
 			model.addAttribute("canBeEdited", false);
 				
-		}
+		}*/
+		model.addAttribute("canBeEdited",bc.getCustom());
+		
 		model.addAttribute("collection",bc);
 		
 		return "editarcoleccion";
@@ -345,6 +358,7 @@ public class LibritosController {
 		
 		bookCollectionRepository.save(bc);
 		
+		model.addAttribute("canBeEdited",bc.getCustom());
 		model.addAttribute("collection",bc);
 		
 		return "editarcoleccion";
