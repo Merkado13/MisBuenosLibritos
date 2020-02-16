@@ -58,6 +58,11 @@ public class BookCollection {
 	public void addBook(Book b) {
 		books.add(b);
 	}
+	
+	public void removeBook(Book b) {
+		books.remove(b);
+	}
+	
 	public long getId() {
 		return id;
 	}

@@ -27,15 +27,28 @@
 	<form method = "post" action="/editarcoleccion/{{id}}">
 		<p>Nombre: <input type ='input' name='name' value = "{{name}}"></p>
 		<p>Descripción: <input type ='input' name='description' value = "{{description}}"></p>
+		<p id="removerText">Libros eliminados: </p>
+		<input hidden id = "remover" type = 'input' name = 'removedBooks'>
+		
 		<input type='submit' value='Guardar'>
 	</form>
-	
+	<ul>
 	{{#books}}
-		<ul>
-			<li> <a href="/books/{{title}}">{{title}}</a></li>
-		</ul>
+			<li id = {{id}}> <a href="/books/{{title}}">{{title}}</a>
+				<button onclick= "addBookToRemover({{id}},&quot;{{title}}&quot;)">Borrar</button>
+			</li>
 	{{/books}}
+	</ul>
+	
 	{{/collection}}
+	
+	<script>
+	function addBookToRemover(id, title) {
+		document.getElementById(id).style.visibility = "hidden"
+  		document.getElementById("remover").value += id + ";";
+		document.getElementById("removerText").innerHTML += title + " | ";
+	}
+</script>
 	
 </body>
 </html>

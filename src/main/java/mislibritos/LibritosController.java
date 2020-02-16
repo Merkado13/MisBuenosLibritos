@@ -296,18 +296,28 @@ public class LibritosController {
 	
 	@PostMapping("/editarcoleccion/{colId}")
 	public String editCollection(HttpSession session, Model model, @PathVariable long colId, 
-				@RequestParam String name, @RequestParam String description) {
+				@RequestParam String name, @RequestParam String description, @RequestParam String removedBooks) {
 		
 		User user = (User)session.getAttribute("user");
 		BookCollection bc = bookCollectionRepository.findById(colId);
 		
-		model.addAttribute("collection",bc);
+		String[] removedIdBooks = removedBooks.split(";"); 
+		
+		for(String id : removedIdBooks) {
+			if(id != "") {
+				Book b = bookRepository.findById(Long.parseLong(id));
+				bc.removeBook(b);
+			}
+		}
+		
 		
 		//llamada al repo de BookCollection para updatear la tabla
 		bc.setName(name);
 		bc.setDescription(description);
 		
 		bookCollectionRepository.save(bc);
+		
+		model.addAttribute("collection",bc);
 		
 		return "editarcoleccion";
 	}
