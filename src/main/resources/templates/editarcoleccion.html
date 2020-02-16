@@ -5,7 +5,7 @@
   <link rel= "stylesheet" type= "text/css" href= "/mystyle.css">
 </head>
 <body>
-<h1> SOY LA PÁGINA DE COLECCIONES :'D</h1>
+<h1> SOY LA PÁGINA DE EDICCIÓN DE COLECCIONES >:D</h1>
 <nav>
 	
 	<a href="/home">Home</a>
@@ -19,22 +19,20 @@
 	<a href="/perfil/Jose">Perfil de Autor</a>
 	<a href="/perfil/HolyPublisher">Perfil de Editorial</a>
 </nav>
-	<h2>Mis colecciones >> {{#collection}}{{name}}{{/collection}}</h2>
-	<h3>{{#collection}}{{name}}{{/collection}}</h3>
+
+	<h2>Editar >> {{#collection}}{{name}}{{/collection}}</h2>
 	
 	{{#collection}}
-	<form action="/editarcoleccion/{{id}}">
-		<input type='submit' value='Editar'>
+	
+	<form method = "post" action="/editarcoleccion/{{id}}">
+		<p>Nombre: <input type ='input' name='name' value = "{{name}}"></p>
+		<p>Descripción: <input type ='input' name='description' value = "{{description}}"></p>
+		<input type='submit' value='Guardar'>
 	</form>
+	
 	{{#books}}
 		<ul>
-			
-			<li>
-			
-			<a href="/books/{{title}}">{{title}}</a>
-			</li>
-			
-			
+			<li> <a href="/books/{{title}}">{{title}}</a></li>
 		</ul>
 	{{/books}}
 	{{/collection}}

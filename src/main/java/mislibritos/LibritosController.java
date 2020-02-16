@@ -197,7 +197,10 @@ public class LibritosController {
 		BookCollection bc = bookCollectionRepository.findByNameAndUser(collName, testUser);
 		
 		//insertar el libro en la base de datos
-		bookCollectionRepository.insertBookToCollection(bc.getId(), book.getId());
+		//bookCollectionRepository.insertBookToCollection(bc.getId(), book.getId());
+		
+		bc.addBook(book);
+		bookCollectionRepository.save(bc);
 		
 		bookService.assertBookState(model, book, testUser);
 		
@@ -278,6 +281,35 @@ public class LibritosController {
 		model.addAttribute("collection",bc);
 		
 		return "micoleccion";
+	}
+	
+	@GetMapping("/editarcoleccion/{colId}")
+	public String editCollection(HttpSession session, Model model, @PathVariable long colId) {
+		
+		User user = (User)session.getAttribute("user");
+		BookCollection bc = bookCollectionRepository.findById(colId);
+		
+		model.addAttribute("collection",bc);
+		
+		return "editarcoleccion";
+	}
+	
+	@PostMapping("/editarcoleccion/{colId}")
+	public String editCollection(HttpSession session, Model model, @PathVariable long colId, 
+				@RequestParam String name, @RequestParam String description) {
+		
+		User user = (User)session.getAttribute("user");
+		BookCollection bc = bookCollectionRepository.findById(colId);
+		
+		model.addAttribute("collection",bc);
+		
+		//llamada al repo de BookCollection para updatear la tabla
+		bc.setName(name);
+		bc.setDescription(description);
+		
+		bookCollectionRepository.save(bc);
+		
+		return "editarcoleccion";
 	}
 	
 }

@@ -26,14 +26,17 @@
 	<ul>	
 		{{#user}}{{#bookCollection}}
 			<p><a href = /micoleccion/{{id}}><b>{{name}}:</b></a> {{description}} </p>
-			<ul>
+			
 			{{#books}}
 				<a href = "/books/{{title}}">
 				<il>{{title}}; </il>
 				</a>
 			{{/books}}
 			</ul>
-			
+			<form action="/editarcoleccion/{{id}}">
+				<input type='submit' value='Editar'>
+			</form>
+			<ul>
 		{{/bookCollection}}{{/user}}
 		
 	</ul>
