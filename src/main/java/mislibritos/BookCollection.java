@@ -91,4 +91,8 @@ public class BookCollection {
 		this.user = user;
 	}
 	
+	public boolean getCustom() {
+		return custom;
+	}
+	
 }

@@ -15,7 +15,7 @@ public interface BookCollectionRepository extends JpaRepository<BookCollection,L
 	void insertBookToCollection(@Param("idCollection") long idCollection, @Param("idBook") long idBook);
 	
 	BookCollection findByNameAndUser(String name, User user);
-	
+	List<BookCollection> findByUser(User user);
 	List<BookCollection> findFirst3ByNameContainingAndUser(String name, User user);
 	List<BookCollection> findFirst3ByDescriptionContainingAndUser(String description, User user);
 	

@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface BookRepository extends JpaRepository<Book,Long>{
 	
-	List<Book> findByIsbn(long isbn);
+	Book findByIsbn(long isbn);
 	Book findByTitle(String title);
 	Book findById(long id);
 	List<Book> findByTitleContaining(String search);

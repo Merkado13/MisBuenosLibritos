@@ -177,14 +177,16 @@ public class LibritosController {
 		
 		bookService.assertBookState(model, book, testUser);
 		
-		model.addAttribute("collections", testUser.getBookCollection());
+		//model.addAttribute("collections", testUser.getBookCollection());
+		model.addAttribute("collections", bookCollectionRepository.findByUser(testUser));
 		return "books";
 
 	}
 	
 	@PostMapping("/books/{bookTitle}")
 	public String addBook(HttpSession session, Model model, @RequestParam String bookTitle, @RequestParam String collName) {
-
+		
+							
 		//pillar el usuario de la sesión
 		User testUser = (User)session.getAttribute("user");
 		
@@ -195,15 +197,27 @@ public class LibritosController {
 		
 		//pillar la coleccion de la base de datos
 		BookCollection bc = bookCollectionRepository.findByNameAndUser(collName, testUser);
+		if(bc == null) {
+			model.addAttribute("added", false);
+			
+		}else {
+			bookService.insertBookIntoBookCollection(model, book, bc, testUser);			
+		}
 		
+		
+		/*
 		//insertar el libro en la base de datos
-		//bookCollectionRepository.insertBookToCollection(bc.getId(), book.getId());
+		//bookCollectionRepository.insertBookToCollection(bc.getId(), book.getId());	
+		if(bc !=null) {
+			bc.addBook(book);
+			bookCollectionRepository.save(bc);		
+				
+		}else {
+			model.addAttribute("added", false);
+		}*/
 		
-		bc.addBook(book);
-		bookCollectionRepository.save(bc);
 		
 		bookService.assertBookState(model, book, testUser);
-		
 		return "books";
 	}
 	
@@ -240,26 +254,37 @@ public class LibritosController {
 	@PostMapping("/addBook")
 	public String addedBook(Model model, @RequestParam String title, @RequestParam String description, 
 			@RequestParam String author, @RequestParam String publisher, @RequestParam String isbn,
-			@RequestParam Genre genre, @RequestParam List<Genre> tags) {
-		
+			@RequestParam Genre genre, @RequestParam List<Genre> tags) {		
 		
 		Author a = authorRepository.findByName(author);		
 		Publisher p = publisherRepository.findByName(publisher);
-		model.addAttribute("isbnCorrect", true);
 		
-		if(a == null || p == null || isbn.length() != 13) {
-			model.addAttribute("ok", false);			
-			model.addAttribute("genres", Genre.values());
-			
+		model.addAttribute("isbnIncorrect", false);
+		model.addAttribute("bookTitleExists", false);
+		model.addAttribute("isbnExists", false);
+		model.addAttribute("ok", false);
+		
+		model.addAttribute("genres", Genre.values());	
+		
+		if(a == null || p == null || isbn.length() != 13) {						
 			if(isbn.length()!=13) {
-				model.addAttribute("isbnCorrect", false);
-			}
-			
+				model.addAttribute("isbnIncorrect", true);
+			}			
+			return "nuevolibro";
+		}		
+		Book auxB = bookRepository.findByTitle(title);
+		if(auxB!=null) {		
+			model.addAttribute("bookTitleExists", true);
+			return "nuevolibro";
+		}
+		auxB = bookRepository.findByIsbn(Long.parseLong(isbn));
+		if(auxB!=null) {		
+			model.addAttribute("isbnExists", true);		
 			return "nuevolibro";
 		}		
 		
 		Book b = new Book(title, Arrays.asList(a), p, genre, tags, description, 0.0,0, Long.parseLong(isbn));
-		bookRepository.save(b);
+		bookRepository.save(b);		
 		
 		a.getPublishedBooks().addBook(b);
 		bookCollectionRepository.save(a.getPublishedBooks());	
@@ -267,8 +292,7 @@ public class LibritosController {
 		p.getPublishedBooks().addBook(b);
 		bookCollectionRepository.save(p.getPublishedBooks());
 		
-		model.addAttribute("ok", true);
-		model.addAttribute("genres", Genre.values());
+		model.addAttribute("ok", true);		
 		return "nuevolibro";
 	}
 
@@ -288,7 +312,12 @@ public class LibritosController {
 		
 		User user = (User)session.getAttribute("user");
 		BookCollection bc = bookCollectionRepository.findById(colId);
+		model.addAttribute("canBeEdited", true);
 		
+		if(!bc.getCustom()) {
+			model.addAttribute("canBeEdited", false);
+				
+		}
 		model.addAttribute("collection",bc);
 		
 		return "editarcoleccion";
@@ -308,8 +337,7 @@ public class LibritosController {
 				Book b = bookRepository.findById(Long.parseLong(id));
 				bc.removeBook(b);
 			}
-		}
-		
+		}		
 		
 		//llamada al repo de BookCollection para updatear la tabla
 		bc.setName(name);
@@ -321,5 +349,7 @@ public class LibritosController {
 		
 		return "editarcoleccion";
 	}
+	
+	
 	
 }

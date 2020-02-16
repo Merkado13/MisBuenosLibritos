@@ -25,9 +25,18 @@
 	{{#collection}}
 	
 	<form method = "post" action="/editarcoleccion/{{id}}">
-		<p>Nombre: <input type ='input' name='name' value = "{{name}}"></p>
-		<p>Descripción: <input type ='input' name='description' value = "{{description}}"></p>
-		<p id="removerText">Libros eliminados: </p>
+		
+		{{#canBeEdited}}
+			<p><b>Nombre:</b> <input type ='input' name='name' value = "{{name}}"> </p>
+			<p><b>Descripción: </b><input type ='input' name='description' value = "{{description}}"></p>
+		{{/canBeEdited}}
+		{{^canBeEdited}}
+			<p><b>Nombre: </b><input type ='hidden' name='name' value = "{{name}}"> {{name}}</p>
+			<p><b>Descripción: </b> </b><input type ='hidden' name='description' value = "{{description}}" >
+			{{description}}</p>
+		{{/canBeEdited}}
+		
+		<p id="removerText"><b>Libros eliminados:</b> </p>
 		<input hidden id = "remover" type = 'input' name = 'removedBooks'>
 		
 		<input type='submit' value='Guardar'>

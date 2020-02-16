@@ -23,15 +23,22 @@
 	{{#ok}}
 		<p>El libro se ha guardado correctamente</p>
 	{{/ok}}
-	{{^isbnCorrect}}
+	{{#isbnIncorrect}}
 		<p>El ISBN introducido no es correcto. Inténtalo de nuevo. </p>
-	{{/isbnCorrect}}
+	{{/isbnIncorrect}}
+	{{#bookTitleExists}}
+		<p> Ya existe un libro con ese nombre </p>
+	{{/bookTitleExists}}
+	{{#isbnExists}}
+		<p> Ya existe un libro con ese ISBN </p>
+	{{/isbnExists}}
+	
 	<form action="/addBook" method = "post">
 	<p>Título: <input type='input' name='title' value=''></p>
 	<p>Sinopsis: <input type='input' name='description' value=''></p>
 	<p>Autor: <input type='input' name='author'></p>
 	<p>Editorial:<input type='input' name='publisher'></p>
-	<p>ISBN:<input type='number' name='isbn'></p>
+	<p>ISBN:<input type='number' name='isbn'> Debe contener 13 dígitos</p>
 	
 	<p>Género </p>
 	{{#genres}}

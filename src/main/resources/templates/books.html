@@ -70,11 +70,11 @@
 			<input hidden type ='input' name = 'bookTitle' value = "{{#book}}{{title}}{{/book}}">
 			<input list="collName" name="collName" autocomplete="off">
 					  <datalist id="collName">
-					  <select>
-					  {{#collections}}
-					  <option value="{{name}}">
-					  {{/collections}}
-					  </select>
+						  <select>
+						  {{#collections}}
+						  <option value="{{name}}">
+						  {{/collections}}
+						  </select>
 					  </datalist>
 	    	<input type='submit' value='Agregar a colección'>
 		</form>
