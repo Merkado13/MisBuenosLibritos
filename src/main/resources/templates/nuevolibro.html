@@ -21,8 +21,11 @@
 	</nav>
 
 	{{#ok}}
-	<p>El libro se ha guardado correctamente</p>
+		<p>El libro se ha guardado correctamente</p>
 	{{/ok}}
+	{{^isbnCorrect}}
+		<p>El ISBN introducido no es correcto. Inténtalo de nuevo. </p>
+	{{/isbnCorrect}}
 	<form action="/addBook" method = "post">
 	<p>Título: <input type='input' name='title' value=''></p>
 	<p>Sinopsis: <input type='input' name='description' value=''></p>

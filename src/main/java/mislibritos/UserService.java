@@ -59,25 +59,27 @@ public class UserService {
 		
 		List<BookCollection> defaultColl = new LinkedList<BookCollection>(); 
 		
-		defaultColl.add(new BookCollection(BookCollection.TO_READ_COLLECTION_NAME, "Books you want to read", BookCollection.DEFAULT));
-		defaultColl.add(new BookCollection(BookCollection.READING_COLLECTION_NAME, "Books you are currently reading", BookCollection.DEFAULT));
-		defaultColl.add(new BookCollection(BookCollection.READ_COLLECTION_NAME, "Books you have read", BookCollection.DEFAULT));
+		defaultColl.add(new BookCollection(BookCollection.TO_READ_COLLECTION_NAME, "Libros que quiero leer", BookCollection.DEFAULT));
+		defaultColl.add(new BookCollection(BookCollection.READING_COLLECTION_NAME, "Libros que estoy leyendo", BookCollection.DEFAULT));
+		defaultColl.add(new BookCollection(BookCollection.READ_COLLECTION_NAME, "Libros que he leído", BookCollection.DEFAULT));
 
 		//Se podria mejorar para no mirar que clases son, pero por ahora hace el trabajo
 		if(user.getClass() == Author.class) {
 			Author au = (Author) user;
-			BookCollection publishedBooks = new BookCollection("Published Books de " + au.getName(), "Los libritos que he publicado ", BookCollection.DEFAULT);
+			BookCollection publishedBooks = new BookCollection("Libros publicados por " + au.getName(), "Los libritos que he publicado ", BookCollection.DEFAULT);
 			publishedBooks.setUser(user);
-			au.setPublishedCollection(publishedBooks);
+			au.setPublishedCollection(publishedBooks);			
 			bookCollectionRepository.save(publishedBooks);
+			authorRepository.save(au);
 		}
 		
 		if(user.getClass() == Publisher.class) {
 			Publisher pu = (Publisher) user;
-			BookCollection publishedBooks = new BookCollection("Published Books por " + pu.getName(), "Los libritos que he publicado ", BookCollection.DEFAULT);
+			BookCollection publishedBooks = new BookCollection("Libros publicados por " + pu.getName(), "Los libritos que he publicado ", BookCollection.DEFAULT);
 			publishedBooks.setUser(user);
-			pu.setPublishedCollection(publishedBooks);
+			pu.setPublishedCollection(publishedBooks);			
 			bookCollectionRepository.save(publishedBooks);
+			publisherRepository.save(pu);
 		}
 		
 		for(BookCollection col : defaultColl) {

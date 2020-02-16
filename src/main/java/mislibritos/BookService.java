@@ -26,7 +26,7 @@ public class BookService {
 	
 	private String getBookState(Book book, User user) {
 		//Pillar las collecciones del usuario
-		List<BookCollection> defaultCollections = bookCollectionRepository.findFirst3ByNameContainingAndUser("Read", user);
+		List<BookCollection> defaultCollections = bookCollectionRepository.findFirst3ByDescriptionContainingAndUser("Libros que", user);
 		
 		BookState state = BookState.NONE;
 		

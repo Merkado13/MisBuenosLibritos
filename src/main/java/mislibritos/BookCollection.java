@@ -28,11 +28,11 @@ public class BookCollection {
 	public final static boolean CUSTOM = true;
 	
 	@Transient
-	public final static String TO_READ_COLLECTION_NAME = "To Read";
+	public final static String TO_READ_COLLECTION_NAME = "Por leer";
 	@Transient
-	public final static String READING_COLLECTION_NAME = "Reading";
+	public final static String READING_COLLECTION_NAME = "Leyendo";
 	@Transient
-	public final static String READ_COLLECTION_NAME = "Read";
+	public final static String READ_COLLECTION_NAME = "Leído";
 	
 	@ManyToMany
 	private List<Book> books;

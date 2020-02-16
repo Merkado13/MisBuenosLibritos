@@ -239,24 +239,31 @@ public class LibritosController {
 			@RequestParam String author, @RequestParam String publisher, @RequestParam String isbn,
 			@RequestParam Genre genre, @RequestParam List<Genre> tags) {
 		
-		//Falta por meter el ISBN en el libro, cuando quitemos que sea autogenerado y le pongamos un id cool
+		
 		Author a = authorRepository.findByName(author);		
 		Publisher p = publisherRepository.findByName(publisher);
+		model.addAttribute("isbnCorrect", true);
+		
 		if(a == null || p == null || isbn.length() != 13) {
-			model.addAttribute("ok", false);
+			model.addAttribute("ok", false);			
 			model.addAttribute("genres", Genre.values());
+			
+			if(isbn.length()!=13) {
+				model.addAttribute("isbnCorrect", false);
+			}
+			
 			return "nuevolibro";
 		}		
 		
 		Book b = new Book(title, Arrays.asList(a), p, genre, tags, description, 0.0,0, Long.parseLong(isbn));
 		bookRepository.save(b);
+		
 		a.getPublishedBooks().addBook(b);
 		bookCollectionRepository.save(a.getPublishedBooks());	
 		
 		p.getPublishedBooks().addBook(b);
 		bookCollectionRepository.save(p.getPublishedBooks());
-		// meter libro en lista de libros escritos por el autor
-		// meter libro en lista de libros publicados por la editorial
+		
 		model.addAttribute("ok", true);
 		model.addAttribute("genres", Genre.values());
 		return "nuevolibro";
