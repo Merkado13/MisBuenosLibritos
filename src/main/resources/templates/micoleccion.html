@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="UTF-8">
+  <link rel= "stylesheet" type= "text/css" href= "/mystyle.css">
+</head>
+<body>
+<h1> SOY LA PÁGINA DE COLECCIONES :'D</h1>
+<nav>
+	
+	<a href="/home">Home</a>
+	<a href="/colecciones">Colecciones</a>
+	
+	<form style="display: inline-block;" action="/busqueda" method = "get">
+		<input type ='input' name = 'input'>
+		<input type='submit' value='Buscar'>
+	</form>
+	<a href="/perfil">Mi perfil</a>
+	<a href="/perfil/Jose">Perfil de Autor</a>
+	<a href="/perfil/HolyPublisher">Perfil de Editorial</a>
+</nav>
+	<h2>Mis colecciones >> {{#collection}}{{name}}{{/collection}}</h2>
+	{{#collection}}
+	{{#books}}
+		<ul>
+			<li> <a href="/books/{{title}}">{{title}}</a></li>
+		</ul>
+	{{/books}}
+	{{/collection}}
+	
+</body>
+</html>

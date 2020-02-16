@@ -19,6 +19,8 @@ public interface BookCollectionRepository extends JpaRepository<BookCollection,L
 	List<BookCollection> findFirst3ByNameContainingAndUser(String name, User user);
 	List<BookCollection> findFirst3ByDescriptionContainingAndUser(String description, User user);
 	
+	BookCollection findById(long colId);
+	
 	@Query( value = "select * from book_collection_books where book_collection_id = ?1 and books_id = ?2", nativeQuery = true)
 	Object getRowFromBookCollectionBooks(long bcId, long bookId);
 }

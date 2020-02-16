@@ -167,7 +167,7 @@ public class LibritosController {
 		//Pillar el usuario a parti de la sesion
 		User testUser = (User)session.getAttribute("user");
 		Book book = bookRepository.findByTitle(bookTitle);
-
+		
 		if (book != null)
 			model.addAttribute("book", book);
 		else
@@ -269,4 +269,15 @@ public class LibritosController {
 		return "nuevolibro";
 	}
 
+	@GetMapping("/micoleccion/{colId}")
+	public String showCollection(HttpSession session, Model model, @PathVariable long colId) {
+		
+		User user = (User)session.getAttribute("user");
+		BookCollection bc = bookCollectionRepository.findById(colId);
+		
+		model.addAttribute("collection",bc);
+		
+		return "micoleccion";
+	}
+	
 }
