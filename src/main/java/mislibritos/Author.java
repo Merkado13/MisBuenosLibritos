@@ -24,11 +24,7 @@ public class Author extends User{
 		this.website = website;
 		this.country = country;
 	}
-	
-//	public void addPublishedBook(Book book) {
-//		publishedBooks.addBook(book);
-//		
-//	}
+
 	
 	public void setPublishedCollection(BookCollection bc) {
 		publishedBooks = bc;

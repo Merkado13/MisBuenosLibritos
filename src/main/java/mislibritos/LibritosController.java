@@ -65,6 +65,7 @@ public class LibritosController {
 		
 		Book b1 = new Book("La Biblia", autoresBiblia, holyPublisher, Genre.ACTION, tagsBiblia, "Jesusito nace, se muere, vuelve a la vida, y siguen pasando cosas", 3, 30,1234567891012L);		
 		bookRepository.save(b1);	
+		//Author a1 = authorRepository.ge
 		Book b2 = new Book("El Necronomicón", autoresNecronomicon, holyPublisher, Genre.AUTOBIOGRAPHY, tagsNecronomicon, "Ocurren cosas oscuras", 4.5, 45,9876543211012L);		
 		bookRepository.save(b2);
 
@@ -186,8 +187,8 @@ public class LibritosController {
 		
 		model.addAttribute("added", false);
 		
-		bookService.assertBookState(model, book, testUser);
-		
+		String bookState = bookService.assertBookState(model, book, testUser);
+		model.addAttribute("bookState", bookState);
 		//model.addAttribute("collections", testUser.getBookCollection());
 		model.addAttribute("collections", bookCollectionRepository.findByUser(testUser));
 		return "books";
@@ -216,19 +217,9 @@ public class LibritosController {
 		}
 		
 		
-		/*
-		//insertar el libro en la base de datos
-		//bookCollectionRepository.insertBookToCollection(bc.getId(), book.getId());	
-		if(bc !=null) {
-			bc.addBook(book);
-			bookCollectionRepository.save(bc);		
-				
-		}else {
-			model.addAttribute("added", false);
-		}*/
+		String bookState = bookService.assertBookState(model, book, testUser);
+		model.addAttribute("bookState", bookState);
 		
-		
-		bookService.assertBookState(model, book, testUser);
 		return "books";
 	}
 	

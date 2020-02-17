@@ -33,28 +33,41 @@
 		<p> Ya existe un libro con ese ISBN </p>
 	{{/isbnExists}}
 	
-	<form action="/addBook" method = "post">
-	<p>Título: <input type='input' name='title' value=''></p>
-	<p>Sinopsis: <input type='input' name='description' value=''></p>
-	<p>Autor: <input type='input' name='author'></p>
-	<p>Editorial:<input type='input' name='publisher'></p>
-	<p>ISBN:<input type='number' name='isbn'> Debe contener 13 dígitos</p>
+	<form action="/addBook" method = "post" onsubmit="return validate(this)" > <!-- onsubmit="return validate(this)" -->
+	<p>Título: <input type='input' name='title' value='' required></p>
+	<p>Sinopsis: <input type='input' name='description' value='' required></p>
+	<p>Autor: <input type='input' name='author' required></p>
+	<p>Editorial:<input type='input' name='publisher' required></p>
+	<p>ISBN:<input type='number' name='isbn' required> Debe contener 13 dígitos</p>
 	
 	<p>Género </p>
 	{{#genres}}
-		<input type="radio" id="genre{{-index}}" name="genre" value="{{.}}">
+		<input type="radio" id="genre{{-index}}" name="genre" value="{{.}}" required>
  		 <label for="genre{{-index}}"> {{.}}</label><br>
 	{{/genres}}
 	
 	<p>Tags </p>
 	{{#genres}}
-		<input type="checkbox" id="tags{{-index}}" name="tags" value="{{.}}">
+		<input type="checkbox" id="tags{{-index}}" name="tags" value="{{.}}" >
  		 <label for="tags{{-index}}"> {{.}}</label><br>
 	{{/genres}}
 	
-	<input type='submit' value='Aceptar'>
+	<input type='submit' value='Aceptar' >
 	</form>
-
+	
+<script type="text/javascript">
+function validate(form) {
+	var okay = false;
+	const checkboxes = form.querySelectorAll('input[type=checkbox]');
+		for(let i = 0; i<checkboxes.length; i++){
+			if(checkboxes[i].checked){
+				return true
+			}
+		}
+		alert ('Selecciona al menos un tag');
+		return false;
+}
+</script>
 
 
 </body>

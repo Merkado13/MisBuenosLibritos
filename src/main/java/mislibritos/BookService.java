@@ -14,13 +14,15 @@ public class BookService {
 	private BookCollectionRepository bookCollectionRepository;
 	
 	
-	public void assertBookState(Model model, Book book, User user) {
+	public String assertBookState(Model model, Book book, User user) {
 		String bookState = getBookState(book,user);
 		
 		if(bookState.equals(BookState.NONE.toString())) {
 			model.addAttribute("bookState", "No Info");
+			return "No info";
 		}else {
 			model.addAttribute("bookState",bookState);
+			return bookState;
 		}	
 	}
 	
