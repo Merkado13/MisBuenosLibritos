@@ -14,19 +14,20 @@ public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long Id; 
-	private String name; 
+	protected long id; 
+	protected String name; 
+	protected String description;
 	
-	@OneToMany
+	@OneToMany(mappedBy = "user")
 	private List<BookCollection> bookCollection;
 	
 	public User() {
 		
 	}
 
-
-	public User(String name) {		
+	public User(String name, String description) {		
 		this.name = name;
+		this.description = description;
 		bookCollection = new LinkedList<BookCollection>();
 	}
 	
@@ -34,5 +35,17 @@ public class User {
 		bookCollection.add(bc);
 		
 	}
-
+	
+	public void AddCollection(List<BookCollection> bcl) {
+		bookCollection.addAll(bcl);
+	}
+	
+	public List<BookCollection> getBookCollection() {
+		return bookCollection;
+	}
+	
+	public long getId() {
+		return id;
+		
+	}
 }

@@ -1,10 +1,8 @@
 package mislibritos;
 
-import java.sql.Date;
-import java.util.List;
+import java.util.Date;
 
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -20,8 +18,24 @@ public class Author extends User{
 	public Author() {
 		
 	}
-	public Author(String name) {
-		super(name);
+	public Author(String name, String description, Date birth, String country, String website) {
+		super(name, description);
+		this.birth = birth; 
+		this.website = website;
+		this.country = country;
+	}
+
+	
+	public void setPublishedCollection(BookCollection bc) {
+		publishedBooks = bc;
+		
 	}
 	
+	public BookCollection getPublishedBooks() {
+		return publishedBooks;
+	}
+	
+	public String getName() {
+		return name;
+	}
 }

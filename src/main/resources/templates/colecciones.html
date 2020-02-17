@@ -2,6 +2,7 @@
 <html>
 <head>
  <meta charset="UTF-8">
+  <link rel= "stylesheet" type= "text/css" href= "/mystyle.css">
 </head>
 <body>
 <h1> SOY LA PÁGINA DE COLECCIONES :'D</h1>
@@ -15,21 +16,36 @@
 		<input type='submit' value='Buscar'>
 	</form>
 	<a href="/perfil">Mi perfil</a>
+	<a href="/perfil/Jose">Perfil de Autor</a>
+	<a href="/perfil/HolyPublisher">Perfil de Editorial</a>
 </nav>
-	<p><b>Mis colecciones</b></p>
+	<h2>Mis colecciones</h2>
+	<button onclick="myFunction()">Añadir colección</button>
+	<p id='add'></p>
 	
 	<ul>	
 		{{#user}}{{#bookCollection}}
-			{{name}}
-			<ul>
+			<p><a href = /micoleccion/{{id}}><b>{{name}}:</b></a> {{description}} </p>
+			
 			{{#books}}
-				<il>{{name}}</il>
+				<a href = "/books/{{title}}">
+				<il>{{title}}; </il>
+				</a>
 			{{/books}}
 			</ul>
+			<form action="/editarcoleccion/{{id}}">
+				<input type='submit' value='Editar'>
+			</form>
+			<ul>
 		{{/bookCollection}}{{/user}}
 		
 	</ul>
-
 	</form>
+	
+	<script>
+function myFunction() {
+  document.getElementById("add").innerHTML = "<form action='/newCollection' method='post'> <p>Nombre: <input type='input' name='name' value=''></p> <p>Descripción: <input type='input' name='description' value=''><input type='submit' value='Crear'></p></form>";
+}
+</script>
 </body>
 </html>

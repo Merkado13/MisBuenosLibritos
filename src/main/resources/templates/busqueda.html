@@ -2,9 +2,10 @@
 <html>
 <head>
  <meta charset="UTF-8">
+ <link rel= "stylesheet" type= "text/css" href= "/mystyle.css">
 </head>
 <body>
-<h1>Soy la pagina de buscar cosas OuO</h1>
+<h1>Buscador</h1>
 <nav>
 	
 	<a href="/home">Home</a>
@@ -15,10 +16,34 @@
 		<input type='submit' value='Buscar'>
 	</form>
 	<a href="/perfil">Mi perfil</a>
+	<a href="/perfil/Jose">Perfil de Autor</a>
+	<a href="/perfil/HolyPublisher">Perfil de Editorial</a>
 </nav>
 	
-	<p>Aqui te salen todos los libritos que has buscado con la palabra {{input}}</p>
-
+	<h2>Libros que contienen "{{input}}": </h2>	
+	<ul>
+	{{#books}}
+		<a href = "/books/{{title}}">
+		<il>{{title}}; </il>
+		</a>
+	{{/books}}
+	</ul>
+	<h2>Autores que contienen "{{input}}": </h2>	
+	<ul>
+	{{#authors}}
+		<a href = "/usuario/{{name}}">
+		<il>{{name}}; </il>
+		</a>
+	{{/authors}}
+	</ul>
+	<h2>Editoriales que contienen "{{input}}": </h2>	
+	<ul>
+	{{#publishers}}
+		<a href = "/usuario/{{name}}">
+		<il>{{name}}; </il>
+		</a>
+	{{/publishers}}
+	</ul>
 	
 </body>
 </html>
