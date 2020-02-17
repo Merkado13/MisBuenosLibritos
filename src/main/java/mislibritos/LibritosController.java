@@ -44,13 +44,13 @@ public class LibritosController {
 
 		String s = "Soy una descripción";
 		
-		List<Genre> tagsBiblia = Arrays.asList(Genre.ACTION,Genre.RELIGION);	
-		List<Genre> tagsNecronomicon = Arrays.asList(Genre.AUTOBIOGRAPHY,Genre.RELIGION);		
+	//	List<Genre> tagsBiblia = Arrays.asList(Genre.ACTION,Genre.RELIGION);	
+	//	List<Genre> tagsNecronomicon = Arrays.asList(Genre.AUTOBIOGRAPHY,Genre.RELIGION);		
 		
-		Author autor = userService.getNewAuthor("San Pablo", s, new SimpleDateFormat("dd/MM/yyyy").parse("05/05/0005"), "Turquía", "www.vivajesusito.com");
+	//	Author autor = userService.getNewAuthor("San Pablo", s, new SimpleDateFormat("dd/MM/yyyy").parse("05/05/0005"), "Turquía", "www.vivajesusito.com");
 		
 		
-		List<Author> autoresBiblia = Arrays.asList(autor,
+	/*	List<Author> autoresBiblia = Arrays.asList(autor,
 				userService.getNewAuthor("San Marcos", s, new SimpleDateFormat("dd/MM/yyyy").parse("02/02/0002"), "Grecia", "www.vivajesusito.com"),
 				userService.getNewAuthor("San Mateo",s,  new SimpleDateFormat("dd/MM/yyyy").parse("07/07/0007"), "Israel", "www.vivajesusito.com"),
 				userService.getNewAuthor("San Lucas", s, new SimpleDateFormat("dd/MM/yyyy").parse("12/12/0012"),"Turquía", "www.vivajesusito.com"));
@@ -78,7 +78,7 @@ public class LibritosController {
 		for (Author a : autoresNecronomicon) {
 			a.getPublishedBooks().addBook(b2);
 			bookCollectionRepository.save(a.getPublishedBooks());
-		}
+		}*/
 
 	}
 
