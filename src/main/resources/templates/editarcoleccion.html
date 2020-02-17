@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="UTF-8">
+  <link rel= "stylesheet" type= "text/css" href= "/mystyle.css">
+</head>
+<body>
+<h1> SOY LA PÁGINA DE EDICCIÓN DE COLECCIONES >:D</h1>
+<nav>
+	
+	<a href="/home">Home</a>
+	<a href="/colecciones">Colecciones</a>
+	
+	<form style="display: inline-block;" action="/busqueda" method = "get">
+		<input type ='input' name = 'input'>
+		<input type='submit' value='Buscar'>
+	</form>
+	<a href="/perfil">Mi perfil</a>
+	<a href="/perfil/Jose">Perfil de Autor</a>
+	<a href="/perfil/HolyPublisher">Perfil de Editorial</a>
+</nav>
+
+	<h2>Editar >> {{#collection}}{{name}}{{/collection}}</h2>
+	
+	{{#collection}}
+	
+	<form method = "post" action="/editarcoleccion/{{id}}">
+		
+		{{#canBeEdited}}
+			<p><b>Nombre:</b> <input type ='input' name='name' value = "{{name}}"> </p>
+			<p><b>Descripción: </b><input type ='input' name='description' value = "{{description}}"></p>
+		{{/canBeEdited}}
+		{{^canBeEdited}}
+			<p><b>Nombre: </b><input type ='hidden' name='name' value = "{{name}}"> {{name}}</p>
+			<p><b>Descripción: </b> </b><input type ='hidden' name='description' value = "{{description}}" >
+			{{description}}</p>
+		{{/canBeEdited}}
+		
+		<p id="removerText"><b>Libros eliminados:</b> </p>
+		<input hidden id = "remover" type = 'input' name = 'removedBooks'>
+		
+		<input type='submit' value='Guardar'>
+	</form>
+	
+	{{#canBeEdited}}
+	<form method = "post" action = "/colecciones">
+		<input type ='hidden' name='colId' value = "{{id}}">
+		<input type='submit' value='Borrar Lista'>
+	</form>
+	{{/canBeEdited}}
+	
+	<ul>
+	{{#books}}
+			<li id = {{id}}> <a href="/books/{{title}}">{{title}}</a>
+				<button onclick= "addBookToRemover({{id}},&quot;{{title}}&quot;)">Borrar</button>
+			</li>
+	{{/books}}
+	</ul>
+	
+	{{/collection}}
+	
+	<script>
+	function addBookToRemover(id, title) {
+		document.getElementById(id).style.visibility = "hidden"
+  		document.getElementById("remover").value += id + ";";
+		document.getElementById("removerText").innerHTML += title + " | ";
+	}
+</script>
+	
+</body>
+</html>
