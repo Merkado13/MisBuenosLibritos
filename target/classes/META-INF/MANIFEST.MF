@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Implementation-Title: buenos_libritos
 Implementation-Version: 0.0.1-SNAPSHOT
-Built-By: Mercado
+Built-By: andri
 Implementation-Vendor-Id: urjc.es
-Build-Jdk: 1.8.0_241
+Build-Jdk: 1.8.0_201
 Implementation-URL: http://projects.spring.io/spring-boot/buenos_libri
  tos/
 Created-By: Maven Integration for Eclipse

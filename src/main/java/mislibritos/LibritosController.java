@@ -1,22 +1,13 @@
 package mislibritos;
 
-import java.util.Date;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -25,8 +16,7 @@ public class LibritosController {
 
 	@Autowired
 	private BookRepository bookRepository;
-	@Autowired
-	private BookCollectionRepository bookCollectionRepository;
+	
 	@Autowired
 	private UserRepository userRepository;
 	@Autowired
@@ -36,13 +26,12 @@ public class LibritosController {
 	
 	@Autowired
 	private UserService userService;
-	@Autowired
-	private BookService bookService;
+	
 	
 	@PostConstruct
 	public void init() throws ParseException {
 
-		String s = "Soy una descripción";
+	//	String s = "Soy una descripción";
 		
 	//	List<Genre> tagsBiblia = Arrays.asList(Genre.ACTION,Genre.RELIGION);	
 	//	List<Genre> tagsNecronomicon = Arrays.asList(Genre.AUTOBIOGRAPHY,Genre.RELIGION);		
@@ -102,137 +91,10 @@ public class LibritosController {
 		return "home";
 	}
 
-	@GetMapping("/colecciones")
-	public String colecciones(Model model, HttpSession session) {
-		User testUser = (User)session.getAttribute("user");
-		
-		model.addAttribute("user", userRepository.findById(testUser.getId()));
-		return "colecciones";
-
-	}
-	@PostMapping("/colecciones")
-	public String colecciones(Model model, HttpSession session, @RequestParam String colId) {
-		User testUser = (User)session.getAttribute("user");
-		
-		bookCollectionRepository.deleteById(Long.parseLong(colId));
-		
-		model.addAttribute("user", userRepository.findById(testUser.getId()));
-		return "colecciones";
-
-	}
 	
-	@PostMapping("/newCollection")
-	public String addCollection(Model model, HttpSession session, @RequestParam String name, @RequestParam String description) {
-		
-		User testUser = (User)session.getAttribute("user");
-		BookCollection bc = new BookCollection(name, description, BookCollection.CUSTOM);
-		bc.setUser(testUser);
-		bookCollectionRepository.save(bc);
-		
-		testUser.AddCollection(bc);
-		//userRepository.insertBookCollectionToUser(testUser.id, bc.getId());
-		//model.addAttribute("collections", testUser.getBookCollection());
-		
-		model.addAttribute("user", userRepository.findById(testUser.getId()));
-		return "colecciones";
-
-	}
-
 	
-	@GetMapping("/perfil/{name}")
-	public String user(Model model, @PathVariable String name) {
-
-		User user = userRepository.findByName(name);
-		
-		if (user instanceof Author) {
-			model.addAttribute("user", user);
-			model.addAttribute("isAuthor", true);
-			model.addAttribute("isPublisher", false);			
-		}
-
-		else if (user instanceof Publisher) {
-			model.addAttribute("user", user);
-			model.addAttribute("isAuthor", false);	
-			model.addAttribute("isPublisher", true);			
-		}
-		else {
-			model.addAttribute("name", "undefined");
-						
-		}
-		return "perfil";
-
-	}
 	
-	@GetMapping("/usuario/{name}")
-	public String autor(Model model, @PathVariable String name) {
-
-		Author author = authorRepository.findByName(name);
-
-		if (author != null) {
-			model.addAttribute("user", author);
-			model.addAttribute("isAuthor", true);
-		}else {
-			Publisher publisher = publisherRepository.findByName(name);
-			if (publisher != null) {
-				model.addAttribute("user", publisher);			
-			}
-			else {
-				model.addAttribute("user", "undefined");
-			}
-			model.addAttribute("isAuthor", false);
-		}
-		return "usuario";
-	}
 	
-	@GetMapping("/books/{bookTitle}")
-	public String books(Model model, HttpSession session, @PathVariable String bookTitle) {
-
-		//Pillar el usuario a parti de la sesion
-		User testUser = (User)session.getAttribute("user");
-		Book book = bookRepository.findByTitle(bookTitle);
-		
-		if (book != null)
-			model.addAttribute("book", book);
-		else
-			model.addAttribute("book", "undefined");
-		
-		model.addAttribute("added", false);
-		
-		String bookState = bookService.assertBookState(model, book, testUser);
-		model.addAttribute("bookState", bookState);
-		//model.addAttribute("collections", testUser.getBookCollection());
-		model.addAttribute("collections", bookCollectionRepository.findByUser(testUser));
-		return "books";
-
-	}
-	
-	@PostMapping("/books/{bookTitle}")
-	public String addBook(HttpSession session, Model model, @RequestParam String bookTitle, @RequestParam String collName) {
-		
-							
-		//pillar el usuario de la sesión
-		User testUser = (User)session.getAttribute("user");
-		
-		//pillar el libro de la base de datos
-		Book book = bookRepository.findByTitle((bookTitle));
-		model.addAttribute("book", book);
-		model.addAttribute("added", true);
-		
-		//pillar la coleccion de la base de datos
-		BookCollection bc = bookCollectionRepository.findByNameAndUser(collName, testUser);
-		if(bc == null) {
-			model.addAttribute("added", false);
-			
-		}else {
-			bookService.insertBookIntoBookCollection(model, book, bc, testUser);			
-		}
-		
-		
-		String bookState = bookService.assertBookState(model, book, testUser);
-		model.addAttribute("bookState", bookState);
-		
-		return "books";
-	}
 	
 	@RequestMapping("/busqueda")
 	public String busqueda(Model model, @RequestParam String input) {
@@ -245,126 +107,9 @@ public class LibritosController {
 
 	}
 
-	@RequestMapping("/perfil")
-	public String perfil(Model model, HttpSession session) {	
-		User currentUser = (User)session.getAttribute("user");
-		model.addAttribute("user", userRepository.findById(currentUser.getId()));
-		//model.addAttribute("user", authorRepository.findByName("San Pablo"));
-		//model.addAttribute("user", publisherRepository.findByName("HolyPublisher"));
-		model.addAttribute("isAuthor", false);
-		model.addAttribute("isPublisher", false);
-		
-		
-		return "perfil";
-
-	}
-	@GetMapping("/addBook")
-	public String addBook(Model model) {
-		
-		model.addAttribute("genres", Genre.values());
-		return "nuevolibro";
-	}
-	@PostMapping("/addBook")
-	public String addedBook(Model model, @RequestParam String title, @RequestParam String description, 
-			@RequestParam String author, @RequestParam String publisher, @RequestParam String isbn,
-			@RequestParam Genre genre, @RequestParam List<Genre> tags) {		
-		
-		Author a = authorRepository.findByName(author);		
-		Publisher p = publisherRepository.findByName(publisher);
-		
-		model.addAttribute("isbnIncorrect", false);
-		model.addAttribute("bookTitleExists", false);
-		model.addAttribute("isbnExists", false);
-		model.addAttribute("ok", false);
-		
-		model.addAttribute("genres", Genre.values());	
-		
-		if(a == null || p == null || isbn.length() != 13) {						
-			if(isbn.length()!=13) {
-				model.addAttribute("isbnIncorrect", true);
-			}			
-			return "nuevolibro";
-		}		
-		Book auxB = bookRepository.findByTitle(title);
-		if(auxB!=null) {		
-			model.addAttribute("bookTitleExists", true);
-			return "nuevolibro";
-		}
-		auxB = bookRepository.findByIsbn(Long.parseLong(isbn));
-		if(auxB!=null) {		
-			model.addAttribute("isbnExists", true);		
-			return "nuevolibro";
-		}		
-		
-		Book b = new Book(title, Arrays.asList(a), p, genre, tags, description, 0.0,0, Long.parseLong(isbn));
-		bookRepository.save(b);		
-		
-		a.getPublishedBooks().addBook(b);
-		bookCollectionRepository.save(a.getPublishedBooks());	
-		
-		p.getPublishedBooks().addBook(b);
-		bookCollectionRepository.save(p.getPublishedBooks());
-		
-		model.addAttribute("ok", true);		
-		return "nuevolibro";
-	}
-
-	@GetMapping("/micoleccion/{colId}")
-	public String showCollection(HttpSession session, Model model, @PathVariable long colId) {
-		
-		User user = (User)session.getAttribute("user");
-		BookCollection bc = bookCollectionRepository.findById(colId);
-		
-		model.addAttribute("collection",bc);
-		
-		return "micoleccion";
-	}
 	
-	@GetMapping("/editarcoleccion/{colId}")
-	public String editCollection(HttpSession session, Model model, @PathVariable long colId) {
-		
-		User user = (User)session.getAttribute("user");
-		BookCollection bc = bookCollectionRepository.findById(colId);
-		/*model.addAttribute("canBeEdited", true);
-		
-		if(!bc.getCustom()) {
-			model.addAttribute("canBeEdited", false);
-				
-		}*/
-		model.addAttribute("canBeEdited",bc.getCustom());
-		
-		model.addAttribute("collection",bc);
-		
-		return "editarcoleccion";
-	}
 	
-	@PostMapping("/editarcoleccion/{colId}")
-	public String editCollection(HttpSession session, Model model, @PathVariable long colId, 
-				@RequestParam String name, @RequestParam String description, @RequestParam String removedBooks) {
-		
-		User user = (User)session.getAttribute("user");
-		BookCollection bc = bookCollectionRepository.findById(colId);
-		
-		String[] removedIdBooks = removedBooks.split(";"); 
-		
-		for(String id : removedIdBooks) {
-			if(id != "") {
-				Book b = bookRepository.findById(Long.parseLong(id));
-				bc.removeBook(b);
-			}
-		}		
-		
-		//llamada al repo de BookCollection para updatear la tabla
-		bc.setName(name);
-		bc.setDescription(description);
-		
-		bookCollectionRepository.save(bc);
-		
-		model.addAttribute("canBeEdited",bc.getCustom());
-		model.addAttribute("collection",bc);
-		
-		return "editarcoleccion";
-	}
+	
 	
 	
 	
