@@ -1,6 +1,9 @@
 package mislibritos;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpSession;
@@ -32,15 +35,15 @@ public class LibritosController {
 	@PostConstruct
 	public void init() throws ParseException {
 
-	//	String s = "Soy una descripción";
+		String s = "Soy una descripción";
 		
-	//	List<Genre> tagsBiblia = Arrays.asList(Genre.ACTION,Genre.RELIGION);	
-	//	List<Genre> tagsNecronomicon = Arrays.asList(Genre.AUTOBIOGRAPHY,Genre.RELIGION);		
+		List<Genre> tagsBiblia = Arrays.asList(Genre.ACTION,Genre.RELIGION);	
+		List<Genre> tagsNecronomicon = Arrays.asList(Genre.AUTOBIOGRAPHY,Genre.RELIGION);		
 		
-	//	Author autor = userService.getNewAuthor("San Pablo", s, new SimpleDateFormat("dd/MM/yyyy").parse("05/05/0005"), "Turquía", "www.vivajesusito.com");
+		Author autor = userService.getNewAuthor("San Pablo", s, new SimpleDateFormat("dd/MM/yyyy").parse("05/05/0005"), "Turquía", "www.vivajesusito.com");
 		
 		
-	/*	List<Author> autoresBiblia = Arrays.asList(autor,
+		List<Author> autoresBiblia = Arrays.asList(autor,
 				userService.getNewAuthor("San Marcos", s, new SimpleDateFormat("dd/MM/yyyy").parse("02/02/0002"), "Grecia", "www.vivajesusito.com"),
 				userService.getNewAuthor("San Mateo",s,  new SimpleDateFormat("dd/MM/yyyy").parse("07/07/0007"), "Israel", "www.vivajesusito.com"),
 				userService.getNewAuthor("San Lucas", s, new SimpleDateFormat("dd/MM/yyyy").parse("12/12/0012"),"Turquía", "www.vivajesusito.com"));
@@ -68,7 +71,7 @@ public class LibritosController {
 		for (Author a : autoresNecronomicon) {
 			a.getPublishedBooks().addBook(b2);
 			bookCollectionRepository.save(a.getPublishedBooks());
-		}*/
+		}
 
 	}
 
@@ -76,8 +79,8 @@ public class LibritosController {
 	public String home(HttpSession session, Model model) {
 		
 		if (session.isNew()) {			
-			User testUser = userService.getNewUser("TestUser#" + session.getId(), "Hola soy un usuario" + session.getId() 
-				+ " , hijo de Dios. Nací en Nazaret y me gustan los libros de acción y aventuras");
+			User testUser = userService.getNewUser("TestUser", "Hola soy un usuario" + session.getId() 
+				+ " , hijo de Dios. Nací en Nazaret y me gustan los libros de acción y aventuras", "usuario@gmail.com", "1234");
 			
 			session.setAttribute("user", testUser);
 		}
@@ -109,9 +112,6 @@ public class LibritosController {
 	}
 
 	
-	
-	
-
 	 @GetMapping("/login")
 	 public String login() {
 		 return "login";

@@ -15,8 +15,8 @@ public class Publisher extends User{
 	public Publisher() {		
 	}
 	
-	public Publisher(String name, String description, int year, String website) {
-		super(name, description);
+	public Publisher(String name, String description, String email, String passwordHash, int year, String website, String... roles) {
+		super(name, description, email, passwordHash, roles);
 		this.name = name;
 		this.year = year;
 		this.website = website;

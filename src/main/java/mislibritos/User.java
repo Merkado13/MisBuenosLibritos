@@ -1,9 +1,13 @@
 package mislibritos;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,17 +21,27 @@ public class User {
 	protected long id; 
 	protected String name; 
 	protected String description;
+	protected String email; 	
+	protected String passwordHash;
+	
 	
 	@OneToMany(mappedBy = "user")
 	private List<BookCollection> bookCollection;
+	
+	@ElementCollection(fetch = FetchType.EAGER)
+	private List<String> roles;
+
 	
 	public User() {
 		
 	}
 
-	public User(String name, String description) {		
+	public User(String name, String description, String email, String passwordHash, String... roles) {		
 		this.name = name;
 		this.description = description;
+		this.email = email; 
+		this.passwordHash = passwordHash; 
+		this.roles = new ArrayList<>(Arrays.asList(roles));
 		bookCollection = new LinkedList<BookCollection>();
 	}
 	
@@ -48,4 +62,18 @@ public class User {
 		return id;
 		
 	}
+	
+	public String getName() {
+		return name; 
+	}
+	
+	public String getPasswordHash() {
+		return passwordHash; 
+	}
+	
+	public List<String> getRoles(){
+		return roles; 
+	}
+	
+	
 }

@@ -18,8 +18,8 @@ public class Author extends User{
 	public Author() {
 		
 	}
-	public Author(String name, String description, Date birth, String country, String website) {
-		super(name, description);
+	public Author(String name, String description,String email, String passwordHash,  Date birth, String country, String website, String... roles) {
+		super(name, description, email, passwordHash, roles);
 		this.birth = birth; 
 		this.website = website;
 		this.country = country;
