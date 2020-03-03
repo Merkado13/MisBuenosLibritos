@@ -18,28 +18,33 @@
 	<a href="/perfil">Mi perfil</a>
 	
 </nav>
-	<h2>Mis colecciones</h2>
-	<button onclick="myFunction()">Añadir colección</button>
+	<h2>Mis colecciones</h2> <button style="display: inline-block; vertical-align: middle;" onclick="myFunction()">Añadir colección</button>
 	<p id='add'></p>
 	
-	<ul>	
 		{{#user}}{{#bookCollection}}
-			<p><a href = /micoleccion/{{id}}><b>{{name}}:</b></a> {{description}} </p>
+		<div style="background-color: #ffffff; margin: 5px; padding: 15px;">
+			
+			<!-- <p><a href = /micoleccion/{{id}}><b>{{name}}:</b></a> {{description}} </p> -->
+			
+			<form action="/micoleccion" method="post">
+  				 <button type="submit" name="id" value="{{id}}" class="btn-link">{{name}}:</button>
+			</form>
+			{{description}}
 			
 			{{#books}}
-				<a href = "/books/{{title}}">
-				<il>{{title}}; </il>
-				</a>
+				<a href ="/books/{{title}}">{{title}};</a>
 			{{/books}}
-			</ul>
-			<form action="/editarcoleccion/{{id}}">
+
+			<form action="/editarcoleccion" method="post">
+				<input type="hidden" name="id" value="{{id}}">
 				<input type='submit' value='Editar'>
 			</form>
-			<ul>
+		</div>
+	
 		{{/bookCollection}}{{/user}}
 		
-	</ul>
-	</form>
+
+	
 	
 	<script>
 function myFunction() {

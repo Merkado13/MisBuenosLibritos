@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -56,27 +57,13 @@ public class BookCollectionController {
 				model.addAttribute("user", "undefined");
 				
 			}
-		
-		
-		//model.addAttribute("user", userRepository.findById(testUser.getId()));
+
 		return "colecciones";
 
 	}
 	
 	@PostMapping("/newCollection")
 	public String addCollection(Model model, HttpServletRequest request, @RequestParam String name, @RequestParam String description) {
-		
-		/*
-		User testUser = (User)session.getAttribute("user");
-		BookCollection bc = new BookCollection(name, description, BookCollection.CUSTOM);
-		bc.setUser(testUser);
-		bookCollectionRepository.save(bc);
-		
-		testUser.AddCollection(bc);
-		//userRepository.insertBookCollectionToUser(testUser.id, bc.getId());
-		//model.addAttribute("collections", testUser.getBookCollection());
-		
-		model.addAttribute("user", userRepository.findById(testUser.getId()));*/
 		
 		String n = request.getUserPrincipal().getName();
 		
@@ -98,21 +85,20 @@ public class BookCollectionController {
 
 	}
 
-	@GetMapping("/micoleccion/{colId}")
-	public String showCollection(HttpSession session, Model model, @PathVariable long colId) {
+	@PostMapping("/micoleccion")
+	public String showCollection(HttpSession session, Model model, @RequestParam String id) {
 		
 		
-		BookCollection bc = bookCollectionRepository.findById(colId);		
+		BookCollection bc = bookCollectionRepository.findById(Long.parseLong(id));		
 		model.addAttribute("collection",bc);
 		
 		return "micoleccion";
 	}
 	
-	@GetMapping("/editarcoleccion/{colId}")
-	public String editCollection(HttpSession session, Model model, @PathVariable long colId) {
+	@PostMapping("/editarcoleccion")
+	public String editCollection(HttpSession session, Model model, @RequestParam long id) {
 		
-		
-		BookCollection bc = bookCollectionRepository.findById(colId);
+		BookCollection bc = bookCollectionRepository.findById(id);
 		
 		model.addAttribute("canBeEdited",bc.getCustom());		
 		model.addAttribute("collection",bc);
@@ -120,17 +106,17 @@ public class BookCollectionController {
 		return "editarcoleccion";
 	}
 	
-	@PostMapping("/editarcoleccion/{colId}")
-	public String editCollection(HttpSession session, Model model, @PathVariable long colId, 
+	@PostMapping("/submitcollectionchanges")
+	public String editCollection(HttpSession session, Model model, @RequestParam long id, 
 				@RequestParam String name, @RequestParam String description, @RequestParam String removedBooks) {
-		
-		BookCollection bc = bookCollectionRepository.findById(colId);
+
+		BookCollection bc = bookCollectionRepository.findById(id);
 		
 		String[] removedIdBooks = removedBooks.split(";"); 
 		
-		for(String id : removedIdBooks) {
-			if(id != "") {
-				Book b = bookRepository.findById(Long.parseLong(id));
+		for(String s : removedIdBooks) {
+			if(s != "") {
+				Book b = bookRepository.findById(Long.parseLong(s));
 				bc.removeBook(b);
 			}
 		}		

@@ -23,7 +23,8 @@
 	
 	{{#collection}}
 	
-	<form method = "post" action="/editarcoleccion/{{id}}">
+	<form method = "post" action="/submitcollectionchanges">
+	<input type="hidden" name="id" value="{{id}}">
 		
 		{{#canBeEdited}}
 			<p><b>Nombre:</b> <input type ='input' name='name' value = "{{name}}"> </p>

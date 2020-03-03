@@ -21,8 +21,10 @@
 
 <h1 id = "name">Perfil de {{#user}}{{name}}{{/user}}</h1>		
 	<p>
-		<img src="/god.jpeg" alt="User photo" align = "left">	
-		
+	<table>
+	<tr>
+		<td><img style="imgLibro" src="/god.jpeg" alt="User photo" align = "left">	</td>
+		<td>
 			
 			{{#isAuthor}}
 		    	<p id = "info">URL: <b>{{#user}}{{website}}{{/user}}</b> Fecha de nacimiento: <b>{{#user}}{{birth}}{{/user}}</b>	 
@@ -69,8 +71,9 @@
 				{{/bookCollection}}{{/user}}
 				
 			</ul>					
-		
-	</p>
+		</td>
+	</tr>
+	</table>
 
 </body>
 </html>

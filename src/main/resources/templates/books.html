@@ -19,9 +19,11 @@
 	</nav>
 	<h1 align = "center"> {{#book}}{{title}}{{/book}} </h1>
 	<p>
-		<img src="/god.jpeg" alt="User photo" align = "left">			
-			
-			<h2>Valoración: {{#book}}{{rating}}{{/book}} Número de valoraciones: {{#book}}{{numRatings}}{{/book}}</h2>
+	<table>
+	<tr><td><img class="imgLibro" src="/god.jpeg" alt="User photo" align = "left">	</td>
+
+	<td>
+	<h2>Valoración: {{#book}}{{rating}}{{/book}} Número de valoraciones: {{#book}}{{numRatings}}{{/book}}</h2>
 			
 			<h3>Autor/es: </h3>
 			<ul>	
@@ -82,6 +84,12 @@
  			Ha sido añadido
 		{{/added}}
 	</p>
+	</td>
+	</tr>
+	</table>
+				
+			
+			
 	
 </body>
 </html>
