@@ -34,9 +34,9 @@ public class UserController {
 
 	}	
 	
-	@GetMapping("/perfil/{name}")
+/*	@GetMapping("/perfil/{name}")
 	public String user(Model model, @PathVariable String name) {
-
+		
 		User user = userRepository.findByName(name);
 		
 		if (user instanceof Author) {
@@ -56,7 +56,7 @@ public class UserController {
 		}
 		return "perfil";
 
-	}
+	}*/
 	
 	@GetMapping("/usuario/{name}")
 	public String autor(Model model, @PathVariable String name) {

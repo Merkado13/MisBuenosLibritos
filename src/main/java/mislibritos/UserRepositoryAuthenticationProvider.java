@@ -21,14 +21,16 @@ public class UserRepositoryAuthenticationProvider implements AuthenticationProvi
 	 
 	 @Override
 	 public Authentication authenticate(Authentication auth) throws AuthenticationException {
-		 
+		 System.out.println("HOLA");
 		 User user = userRepository.findByName(auth.getName());
 		 if (user == null) {
+			 System.out.println("user = null");
 		 throw new BadCredentialsException("User not found");
 		 }
 		 
 		 String password = (String) auth.getCredentials();
 		 if (!new BCryptPasswordEncoder().matches(password, user.getPasswordHash())) {
+			 System.out.println("wrong password "+password+" "+user.getPasswordHash());
 		 throw new BadCredentialsException("Wrong password");
 		 }
 		

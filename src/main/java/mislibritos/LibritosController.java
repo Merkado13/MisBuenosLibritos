@@ -9,6 +9,7 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,7 +32,8 @@ public class LibritosController {
 	@Autowired
 	private UserService userService;
 	
-	
+	@Autowired BookCollectionRepository bookCollectionRepository;
+	BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 	@PostConstruct
 	public void init() throws ParseException {
 
@@ -40,20 +42,20 @@ public class LibritosController {
 		List<Genre> tagsBiblia = Arrays.asList(Genre.ACTION,Genre.RELIGION);	
 		List<Genre> tagsNecronomicon = Arrays.asList(Genre.AUTOBIOGRAPHY,Genre.RELIGION);		
 		
-		Author autor = userService.getNewAuthor("San Pablo", s, new SimpleDateFormat("dd/MM/yyyy").parse("05/05/0005"), "Turquía", "www.vivajesusito.com");
+		Author autor = userService.getNewAuthor("San Pablo", s, "sanpablo@gmail.com", "1234",new SimpleDateFormat("dd/MM/yyyy").parse("05/05/0005"), "Turquía", "www.vivajesusito.com", "ROLE_USER", "ROLE_AUTHOR");
 		
 		
 		List<Author> autoresBiblia = Arrays.asList(autor,
-				userService.getNewAuthor("San Marcos", s, new SimpleDateFormat("dd/MM/yyyy").parse("02/02/0002"), "Grecia", "www.vivajesusito.com"),
-				userService.getNewAuthor("San Mateo",s,  new SimpleDateFormat("dd/MM/yyyy").parse("07/07/0007"), "Israel", "www.vivajesusito.com"),
-				userService.getNewAuthor("San Lucas", s, new SimpleDateFormat("dd/MM/yyyy").parse("12/12/0012"),"Turquía", "www.vivajesusito.com"));
+				userService.getNewAuthor("San Marcos", s, "sanmarcos@email.com", passwordEncoder.encode("1234"), new SimpleDateFormat("dd/MM/yyyy").parse("02/02/0002"), "Grecia", "www.vivajesusito.com", "ROLE_USER", "ROLE_AUTHOR"),
+				userService.getNewAuthor("San Mateo",s, "sanmateo@email.com", passwordEncoder.encode("1234"), new SimpleDateFormat("dd/MM/yyyy").parse("07/07/0007"), "Israel", "www.vivajesusito.com", "ROLE_USER", "ROLE_AUTHOR"),
+				userService.getNewAuthor("San Lucas", s, "sanlucas@email.com", passwordEncoder.encode("1234"),new SimpleDateFormat("dd/MM/yyyy").parse("12/12/0012"),"Turquía", "www.vivajesusito.com", "ROLE_USER", "ROLE_AUTHOR"));
 		List<Author> autoresNecronomicon = Arrays.asList(
-				userService.getNewAuthor("Jose", s, new SimpleDateFormat("dd/MM/yyyy").parse("09/05/1883"), "Españita", "www.soyjose.com"),
-				userService.getNewAuthor("Ortega",s, new SimpleDateFormat("dd/MM/yyyy").parse("09/05/1883"),"Españita",  "www.soyortega.com"),
-				userService.getNewAuthor("Gasset",s, new SimpleDateFormat("dd/MM/yyyy").parse("09/05/1883"), "ESpañita", "www.juntosformamosjoseortegaygasset.com"));
+				userService.getNewAuthor("Jose", s, "jose@email.com", passwordEncoder.encode("1234"), new SimpleDateFormat("dd/MM/yyyy").parse("09/05/1883"), "Españita", "www.soyjose.com", "ROLE_USER", "ROLE_AUTHOR"),
+				userService.getNewAuthor("Ortega",s, "ortega@email.com", passwordEncoder.encode("1234"),new SimpleDateFormat("dd/MM/yyyy").parse("09/05/1883"),"Españita",  "www.soyortega.com", "ROLE_USER", "ROLE_AUTHOR"),
+				userService.getNewAuthor("Gasset",s, "gasset@email.com", passwordEncoder.encode("1234"),new SimpleDateFormat("dd/MM/yyyy").parse("09/05/1883"), "ESpañita", "www.juntosformamosjoseortegaygasset.com", "ROLE_USER", "ROLE_AUTHOR"));
 			
 		
-		Publisher holyPublisher = userService.getNewPublisher("HolyPublisher",s, 2010,"holy.god");
+		Publisher holyPublisher = userService.getNewPublisher("HolyPublisher",s, "holyemail@gmail.com", passwordEncoder.encode("1234"), 2010,"holy.god", "ROLE_USER", "ROLE_PUBLISHER");
 		
 		
 		Book b1 = new Book("La Biblia", autoresBiblia, holyPublisher, Genre.ACTION, tagsBiblia, "Jesusito nace, se muere, vuelve a la vida, y siguen pasando cosas", 3, 30,1234567891012L);		
