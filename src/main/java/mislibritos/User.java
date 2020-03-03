@@ -75,5 +75,9 @@ public class User {
 		return roles; 
 	}
 	
+	public String getEmail() {
+		return email;
+	}
+	
 	
 }

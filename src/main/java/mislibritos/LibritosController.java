@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,9 +79,9 @@ public class LibritosController {
 	}
 
 	@RequestMapping("/home")
-	public String home(HttpSession session, Model model) {
+	public String home(HttpServletRequest request, Model model) {
 		
-		if (session.isNew()) {			
+		/*if (session.isNew()) {			
 			User testUser = userService.getNewUser("TestUser", "Hola soy un usuario" + session.getId() 
 				+ " , hijo de Dios. Nací en Nazaret y me gustan los libros de acción y aventuras", "usuario@gmail.com", "1234");
 			
@@ -90,8 +91,23 @@ public class LibritosController {
 		//mostrar las listas del test user
 		User testUser = (User)session.getAttribute("user");
 		
-		model.addAttribute("user", userRepository.findById(testUser.getId()));
+		model.addAttribute("user", userRepository.findById(testUser.getId()));*/
 		
+			
+		if(request.getUserPrincipal()!=null) {
+			
+		
+		String name = request.getUserPrincipal().getName();
+		User currentUser = (User) userRepository.findByName(name);
+			if(currentUser != null) {
+				System.out.println("El usuario: " + name);
+				model.addAttribute("user", currentUser);
+			}else {
+				System.out.println("El usuario no está");
+				model.addAttribute("user", "undefined");
+			}
+		}else {
+		model.addAttribute("user", "undefined");}
 		model.addAttribute("all_books", bookRepository.findAll());
 
 		return "home";

@@ -10,6 +10,7 @@ public interface UserRepository extends CrudRepository<User,Long>{
 	
 	User findByName(String name);
 	User findById(long id);
+	User findByEmail(String email);
 	
 	@Modifying
 	@Query (value = "insert into user_book_collection (user_id, book_collection_id) VALUES(:idUser, :idColl)", nativeQuery = true)
@@ -17,4 +18,5 @@ public interface UserRepository extends CrudRepository<User,Long>{
 	void insertBookCollectionToUser(@Param("idUser") long idUser, @Param("idColl") long idColl);
 	
 	BookCollection findByBookCollection_Name(String name);
+	
 }

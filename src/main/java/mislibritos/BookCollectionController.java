@@ -1,5 +1,6 @@
 package mislibritos;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,27 +22,51 @@ public class BookCollectionController {
 	private UserRepository userRepository;
 	
 	@GetMapping("/colecciones")
-	public String colecciones(Model model, HttpSession session) {
-		User testUser = (User)session.getAttribute("user");
+	public String colecciones(Model model, HttpServletRequest request) {
+		/*User testUser = (User)session.getAttribute("user");
 		
-		model.addAttribute("user", userRepository.findById(testUser.getId()));
+		model.addAttribute("user", userRepository.findById(testUser.getId()));*/
+		
+		String name = request.getUserPrincipal().getName();
+		
+		User currentUser = (User) userRepository.findByName(name);
+			if(currentUser != null) {
+				model.addAttribute("user", currentUser);
+				
+			}else {
+				model.addAttribute("user", "undefined");
+				
+			}
 		return "colecciones";
 
 	}
 	@PostMapping("/colecciones")
-	public String colecciones(Model model, HttpSession session, @RequestParam String colId) {
-		User testUser = (User)session.getAttribute("user");
+	public String colecciones(Model model, HttpServletRequest request, @RequestParam String colId) {
+		//User testUser = (User)session.getAttribute("user");
 		
 		bookCollectionRepository.deleteById(Long.parseLong(colId));
 		
-		model.addAttribute("user", userRepository.findById(testUser.getId()));
+		String name = request.getUserPrincipal().getName();
+		
+		User currentUser = (User) userRepository.findByName(name);
+			if(currentUser != null) {
+				model.addAttribute("user", currentUser);
+				
+			}else {
+				model.addAttribute("user", "undefined");
+				
+			}
+		
+		
+		//model.addAttribute("user", userRepository.findById(testUser.getId()));
 		return "colecciones";
 
 	}
 	
 	@PostMapping("/newCollection")
-	public String addCollection(Model model, HttpSession session, @RequestParam String name, @RequestParam String description) {
+	public String addCollection(Model model, HttpServletRequest request, @RequestParam String name, @RequestParam String description) {
 		
+		/*
 		User testUser = (User)session.getAttribute("user");
 		BookCollection bc = new BookCollection(name, description, BookCollection.CUSTOM);
 		bc.setUser(testUser);
@@ -51,7 +76,24 @@ public class BookCollectionController {
 		//userRepository.insertBookCollectionToUser(testUser.id, bc.getId());
 		//model.addAttribute("collections", testUser.getBookCollection());
 		
-		model.addAttribute("user", userRepository.findById(testUser.getId()));
+		model.addAttribute("user", userRepository.findById(testUser.getId()));*/
+		
+		String n = request.getUserPrincipal().getName();
+		
+		User currentUser = (User) userRepository.findByName(n);
+			if(currentUser != null) {
+				model.addAttribute("user", currentUser);
+				BookCollection bc = new BookCollection(name, description, BookCollection.CUSTOM);
+				bc.setUser(currentUser);
+				bookCollectionRepository.save(bc);
+				currentUser.AddCollection(bc);		
+				
+			}else {
+				model.addAttribute("user", "undefined");
+				
+			}
+		
+		
 		return "colecciones";
 
 	}
