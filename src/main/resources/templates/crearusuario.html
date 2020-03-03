@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="UTF-8">
+   <link rel= "stylesheet" type= "text/css" href= "/mystyle.css">
+</head>
+<body>
+<h1> SOY LA PÁGINA DE CREAR USUARIO^^</h1>
+	<nav>
+	
+	<a href="/home">Home</a>
+	<a href="/colecciones">Colecciones</a>
+	
+	<form style="display: inline-block;" action="/busqueda" method = "get">
+		<input type ='input' name = 'input'>
+		<input type='submit' value='Buscar'>
+	</form>
+	<a href="/perfil">Mi perfil</a>
+	</nav>
+	<h1 align = "center"> CREAR USUARIO: </h1>
+	<p>
+	<form style="display: inline-block;" action="/createuser" method = "post">
+				
+		<h2>Nombre: </h2>
+		<input type='input' name = 'username' required>
+		<h2>Descripción: </h2>
+		<input type='input' name = 'description' required>	
+		<h2>Email: </h2>
+		<input type='input' name = 'email' required>	
+		<h2>Contraseña: </h2>
+		<input type='input' name = 'password' required>	
+		</br>
+		<input type="radio" id="rol" name="rol" value="rol" >
+ 		 <label > Lector</label><br>
+		<input type="radio" id="rol" name="rol" value="rol" >
+ 		 <label > Autor</label><br>
+			 <input type="radio" id="rol" name="rol" value="rol" >
+ 		 <label > Editorial</label><br>
+
+		<h2>Fecha de nacimiento DD/MM/AAAA: </h2>
+		<input type='input' name = 'birth' >	
+		<h2>País: </h2>
+		<input type='input' name = 'country' >	
+		<h2>Website: </h2>
+		<input type='input' name = 'website' >	
+		<input type='submit' value='Enviar'>
+	</form>	
+	</p>
+	
+	<p>
+		
+	</p>
+	
+</body>
+</html>

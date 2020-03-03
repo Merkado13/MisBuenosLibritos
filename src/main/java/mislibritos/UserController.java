@@ -41,29 +41,13 @@ public class UserController {
 
 	}	
 	
-/*	@GetMapping("/perfil/{name}")
-	public String user(Model model, @PathVariable String name) {
+	@RequestMapping("/crearusuario")
+	public String crearUsuario(Model model) {	
 		
-		User user = userRepository.findByName(name);
-		
-		if (user instanceof Author) {
-			model.addAttribute("user", user);
-			model.addAttribute("isAuthor", true);
-			model.addAttribute("isPublisher", false);			
-		}
+		return "crearusuario";
 
-		else if (user instanceof Publisher) {
-			model.addAttribute("user", user);
-			model.addAttribute("isAuthor", false);	
-			model.addAttribute("isPublisher", true);			
-		}
-		else {
-			model.addAttribute("name", "undefined");
-						
-		}
-		return "perfil";
+	}	
 
-	}*/
 	
 	@GetMapping("/usuario/{name}")
 	public String autor(Model model, @PathVariable String name) {
