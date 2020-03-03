@@ -21,7 +21,7 @@ public class UserRepositoryAuthenticationProvider implements AuthenticationProvi
 	 
 	 @Override
 	 public Authentication authenticate(Authentication auth) throws AuthenticationException {
-		 System.out.println("HOLA");
+	
 		 User user = userRepository.findByName(auth.getName());
 		 if (user == null) {
 			 System.out.println("user = null");

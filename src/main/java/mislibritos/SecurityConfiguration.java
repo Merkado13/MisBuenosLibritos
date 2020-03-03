@@ -30,9 +30,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		 http.authorizeRequests().antMatchers("/books").permitAll();
 		 http.authorizeRequests().antMatchers("/usuario").permitAll();
 		 http.authorizeRequests().antMatchers("/loginerror").permitAll();
-		 //http.authorizeRequests().antMatchers("/logout").permitAll();
+		 http.authorizeRequests().antMatchers("/addBook").hasAnyRole("ROLE_AUTHOR", "ROLE_PUBLISHER", "ROLE_ADMIN");
 		 // Private pages (all other pages)
 		 http.authorizeRequests().anyRequest().authenticated();
+		 
 		 // Login form
 		 http.formLogin().loginPage("/login");
 		 http.formLogin().usernameParameter("username");

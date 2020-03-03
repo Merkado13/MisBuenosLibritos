@@ -1,5 +1,6 @@
 package mislibritos;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,16 +22,22 @@ public class UserController {
 
 	
 	@RequestMapping("/perfil")
-	public String perfil(Model model, HttpSession session) {	
-		User currentUser = (User)session.getAttribute("user");
-		model.addAttribute("user", userRepository.findById(currentUser.getId()));
-		//model.addAttribute("user", authorRepository.findByName("San Pablo"));
-		//model.addAttribute("user", publisherRepository.findByName("HolyPublisher"));
-		model.addAttribute("isAuthor", false);
-		model.addAttribute("isPublisher", false);
-		
-		
-		return "perfil";
+	public String perfil(Model model, HttpServletRequest request) {	
+		String name = request.getUserPrincipal().getName();
+		System.out.println(name);
+		User currentUser = (User) userRepository.findByName(name);
+			if(currentUser != null) {
+				model.addAttribute("user", userRepository.findById(currentUser.getId()));
+				//model.addAttribute("user", authorRepository.findByName("San Pablo"));
+				
+				//model.addAttribute("user", publisherRepository.findByName("HolyPublisher"));
+				model.addAttribute("isAuthor", request.isUserInRole("ROLE_AUTHOR"));
+				model.addAttribute("isPublisher", request.isUserInRole("ROLE_PUBLISHER"));
+				
+				
+				return "perfil";
+			}
+		return "home";
 
 	}	
 	
