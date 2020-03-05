@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,11 +27,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		 // Public pages
 		 http.authorizeRequests().antMatchers("/home").permitAll();
 		 http.authorizeRequests().antMatchers("/mystyle.css").permitAll();
+		 http.authorizeRequests().antMatchers("/*.jpeg").permitAll();
+		 
 		 http.authorizeRequests().antMatchers("/login").permitAll();
-		 http.authorizeRequests().antMatchers("/books").permitAll();
-		 http.authorizeRequests().antMatchers("/usuario").permitAll();
+		 http.authorizeRequests().antMatchers("/books/*").permitAll();
+		 http.authorizeRequests().antMatchers("/usuario/*").permitAll();
 		 http.authorizeRequests().antMatchers("/crearusuario").permitAll();
-		 http.authorizeRequests().antMatchers("/loginerror").permitAll();
 		 http.authorizeRequests().antMatchers("/addBook?").hasAnyRole("ROLE_AUTHOR", "ROLE_PUBLISHER", "ROLE_ADMIN");
 		 // Private pages (all other pages)
 		 http.authorizeRequests().anyRequest().authenticated();
@@ -40,10 +42,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		 http.formLogin().usernameParameter("username");
 		 http.formLogin().passwordParameter("password");
 		 http.formLogin().defaultSuccessUrl("/home");
-		 http.formLogin().failureUrl("/loginerror");
+		 http.formLogin().failureUrl("/login");
 		 // Logout
-		 //http.logout().logoutUrl("/logout");
-		 //http.logout().logoutSuccessUrl("/");
+		 http.logout().logoutUrl("/logout");
+		 http.logout().logoutSuccessUrl("/home");
 
 		 // Disable CSRF at the moment
 		 http.csrf().disable();
@@ -57,6 +59,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		 
 	 }
 	 
-	 
+
+	
 	 
 }
