@@ -13,7 +13,7 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 	@Autowired
-	private UserRepository authorRepository;
+	private AuthorRepository authorRepository;
 	@Autowired
 	private UserRepository publisherRepository;
 	@Autowired
@@ -88,5 +88,9 @@ public class UserService {
 		}
 		
 		return defaultColl;
+	}
+	
+	public boolean isUserSubscribedToAuthor(long userId) {
+		return authorRepository.findBySubUsers_Id(userId) != null;
 	}
 }

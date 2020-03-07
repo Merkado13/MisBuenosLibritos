@@ -43,7 +43,7 @@ public class LibritosController {
 		List<Genre> tagsBiblia = Arrays.asList(Genre.ACTION,Genre.RELIGION);	
 		List<Genre> tagsNecronomicon = Arrays.asList(Genre.AUTOBIOGRAPHY,Genre.RELIGION);		
 		
-		Author autor = userService.getNewAuthor("San Pablo", s, "sanpablo@gmail.com", "1234",new SimpleDateFormat("dd/MM/yyyy").parse("05/05/0005"), "Turquía", "www.vivajesusito.com", "ROLE_USER", "ROLE_AUTHOR");
+		Author autor = userService.getNewAuthor("San Pablo", s, "sanpablo@gmail.com", passwordEncoder.encode("1234"),new SimpleDateFormat("dd/MM/yyyy").parse("05/05/0005"), "Turquía", "www.vivajesusito.com", "ROLE_USER", "ROLE_AUTHOR");
 		
 		
 		List<Author> autoresBiblia = Arrays.asList(autor,
