@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -96,8 +97,52 @@ public class UserController {
 	
 	
 	@GetMapping("/usuario/{name}")
-	public String autor(Model model, @PathVariable String name) {
+	public String autor(HttpServletRequest request,Model model, @PathVariable String name) {
 
+		String nameUser = request.getUserPrincipal().getName();
+		User user = (User) userRepository.findByName(nameUser);
+		String strSubButton = us.isUserSubscribedToAuthor(user.id) ? "Desuscribirse" : "Suscribirse";
+		model.addAttribute("strSubButton",strSubButton);
+		
+		Author author = authorRepository.findByName(name);
+
+		if (author != null) {
+			model.addAttribute("user", author);
+			model.addAttribute("isAuthor", true);
+		}else {
+			Publisher publisher = publisherRepository.findByName(name);
+			if (publisher != null) {
+				model.addAttribute("user", publisher);			
+			}
+			else {
+				model.addAttribute("user", "undefined");
+			}
+			model.addAttribute("isAuthor", false);
+		}
+		return "usuario";
+	}
+	
+	@PostMapping("/usuario/{name}")
+	public String autorSub(HttpServletRequest request, Model model, @PathVariable String name) {
+
+		String nameUser = request.getUserPrincipal().getName();
+		User user = (User) userRepository.findByName(nameUser);
+		boolean isSub = us.isUserSubscribedToAuthor(user.id);
+		Author au = authorRepository.findByName(name);
+		String strSubButton;
+		if(isSub) {
+			//Desuscribirme
+			au.getSubUsers().remove(user);
+			authorRepository.save(au);
+			strSubButton = "Suscribirse";
+		}else {
+			//Suscribirse
+			au.getSubUsers().add(user);
+			authorRepository.save(au);
+			strSubButton =  "Desuscribirse";
+		}
+		model.addAttribute("strSubButton",strSubButton);
+		
 		Author author = authorRepository.findByName(name);
 
 		if (author != null) {

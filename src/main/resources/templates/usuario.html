@@ -22,7 +22,12 @@
 
 </nav>
 
-<h1 id = "name">Perfil de {{#user}}{{name}}{{/user}}</h1>		
+<h1 id = "name">Perfil de {{#user}}{{name}}{{/user}}</h1>
+	<div align = "center">
+	<form style="display: inline-block;" action="/usuario/{{name}}" method = "post" >
+		<input type='submit' value={{strSubButton}}>
+	</form>
+	</div>
 	<p>
 	<table>
 	<tr>
