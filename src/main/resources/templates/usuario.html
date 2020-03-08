@@ -28,15 +28,17 @@
 
 <h1 id = "name">Perfil de {{#user}}{{name}}{{/user}}</h1>
 	<div align = "center">
+	{{#registered}}
 	<form style="display: inline-block;" action="/usuario/{{name}}" method = "post" >
 		<input type="hidden" name="_csrf" value="{{token}}"/>
 		<input type='submit' value={{strSubButton}}>
 	</form>
+	{{/registered}}
 	</div>
 	<p>
 	<table>
 	<tr>
-		<td><img style="imgLibro" src="/god.jpeg" alt="User photo" align = "left">	</td>
+		<td><img class="imgLibro" src="/god.jpeg" alt="User photo" align = "left">	</td>
 		<td>
 			
 			{{#isAuthor}}
@@ -54,7 +56,7 @@
 				<p>{{#user}}{{description}}{{/user}}</p>
 			
 		
-	    	<ul>	
+	    	<p>	
 			{{#user}}{{#publishedBooks}}
 				<h2>Libros publicados: </h2>
 				<ul>
@@ -65,7 +67,7 @@
 				{{/books}}
 				</ul>
 				{{/publishedBooks}}{{/user}}				
-			</ul>
+			</p>
 	
 		
 			

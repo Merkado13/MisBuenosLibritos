@@ -56,7 +56,7 @@
 	
 	<script>
 function myFunction() {
-  document.getElementById("add").innerHTML = "<form action='/newCollection' method='post'> <p>Nombre: <input type='input' name='name' value=''></p> <p>Descripción: <input type='input' name='description' value=''><input type='submit' value='Crear'></p></form>";
+  document.getElementById("add").innerHTML = "<form action='/newCollection' method='post'> <p>Nombre: <input type='input' name='name' value=''></p> <p>Descripción: <input type='input' name='description' value=''><input type='hidden' name='_csrf' value='{{token}}'/><input type='submit' value='Crear'></p></form>";
 }
 </script>
 </body>

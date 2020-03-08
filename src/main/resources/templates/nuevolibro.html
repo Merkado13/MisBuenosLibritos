@@ -57,7 +57,7 @@
 		<input type="checkbox" id="tags{{-index}}" name="tags" value="{{.}}" >
  		 <label for="tags{{-index}}"> {{.}}</label><br>
 	{{/genres}}
-	
+	<input type="hidden" name="_csrf" value="{{token}}"/>	
 	<input type='submit' value='Aceptar' >
 	</form>
 	

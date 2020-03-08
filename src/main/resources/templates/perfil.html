@@ -28,7 +28,7 @@
 
 <h1 id = "name">{{#user}}{{name}}{{/user}}</h1>		
 	<table><tr>
-		<td><img src="/god.jpeg" alt="User photo" align = "left">	</td>
+		<td><img class="imgLibro" src="/god.jpeg" alt="User photo" align = "left">	</td>
 		<td>
 			
 			{{#isAuthor}}
@@ -44,7 +44,7 @@
 			<p>{{#user}}{{description}}{{/user}}</p>
 			
 			{{#isAuthor}}
-		    	<ul>	
+		    	<p>	
 				{{#user}}{{#publishedBooks}}
 					<b>Libros publicados: </b>
 					<ul>
@@ -55,13 +55,13 @@
 					</ul>
 					{{/publishedBooks}}{{/user}}
 				
-				</ul>
+				</p>
 		
 			{{/isAuthor}}
 			
 			
 			{{#isPublisher}}
-		    	<ul>	
+		    	<p>	
 				{{#user}}{{#publishedBooks}}
 					<b>Libros publicados: </b>
 					<ul>
@@ -72,7 +72,7 @@
 					</ul>
 					{{/publishedBooks}}{{/user}}
 				
-				</ul>
+				</p>
 		
 			{{/isPublisher}}
 			

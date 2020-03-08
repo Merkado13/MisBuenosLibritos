@@ -94,13 +94,11 @@ public class LibritosController {
 		model.addAttribute("user", userRepository.findById(testUser.getId()));*/
 		
 			
-		if(request.getUserPrincipal()!=null) {
-			
+		if(request.getUserPrincipal()!=null) {		
 		
 		String name = request.getUserPrincipal().getName();
 		User currentUser = (User) userRepository.findByName(name);
 			if(currentUser != null) {
-				System.out.println("El usuario: " + name);
 				model.addAttribute("user", currentUser);
 			}else {
 				System.out.println("El usuario no está");

@@ -98,12 +98,15 @@ public class UserController {
 	
 	@GetMapping("/usuario/{name}")
 	public String autor(HttpServletRequest request,Model model, @PathVariable String name) {
-
-		String nameUser = request.getUserPrincipal().getName();
-		User user = (User) userRepository.findByName(nameUser);
-		String strSubButton = us.isUserSubscribedToAuthor(user.id) ? "Desuscribirse" : "Suscribirse";
-		model.addAttribute("strSubButton",strSubButton);
 		
+		model.addAttribute("registered", false);
+		if(request.getUserPrincipal()!=null) {
+			String nameUser = request.getUserPrincipal().getName();
+			User user = (User) userRepository.findByName(nameUser);
+			String strSubButton = us.isUserSubscribedToAuthor(user.id) ? "Desuscribirse" : "Suscribirse";
+			model.addAttribute("strSubButton",strSubButton);
+			model.addAttribute("registered", true);
+		}
 		Author author = authorRepository.findByName(name);
 
 		if (author != null) {

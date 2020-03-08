@@ -27,11 +27,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		 // Public pages
 		 http.authorizeRequests().antMatchers("/home").permitAll();
 		 http.authorizeRequests().antMatchers("/mystyle.css").permitAll();
-		 http.authorizeRequests().antMatchers("/*.jpeg").permitAll();
-		 
+		 http.authorizeRequests().antMatchers("/*.jpeg").permitAll();		 
 		 http.authorizeRequests().antMatchers("/login").permitAll();
 		 http.authorizeRequests().antMatchers("/books/*").permitAll();
 		 http.authorizeRequests().antMatchers("/usuario/*").permitAll();
+		 http.authorizeRequests().antMatchers("/busqueda").permitAll();
 		 http.authorizeRequests().antMatchers("/crearusuario").permitAll();
 		 http.authorizeRequests().antMatchers("/addBook?").hasAnyRole("ROLE_AUTHOR", "ROLE_PUBLISHER", "ROLE_ADMIN");
 		 http.authorizeRequests().antMatchers("/logout").permitAll();
