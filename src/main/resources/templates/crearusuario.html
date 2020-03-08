@@ -18,7 +18,11 @@
 	<a href="/perfil">Mi perfil</a>
 	<a href="/login">Iniciar sesión</a>
 	<a href="/crearusuario">Registrarse</a>
-	<a href="/logout">Cerrar sesión</a>
+	<form action="/logout" method=post>
+			<input type="hidden" name="_csrf" value="{{token}}"/>
+			<button type="submit" name="id" value="logout" class="btn-link">logout</button>
+			
+	</form>
 	</nav>
 	<h1 align = "center"> CREAR USUARIO: </h1>
 	<p>

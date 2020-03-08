@@ -18,7 +18,11 @@
 	<a href="/perfil">Mi perfil</a>
 	<a href="/login">Iniciar sesión</a>
 	<a href="/crearusuario">Registrarse</a>
-	<a href="/logout">Cerrar sesión</a>
+	<form action="/logout" method=post>
+			<input type="hidden" name="_csrf" value="{{token}}"/>
+			<button type="submit" name="id" value="logout" class="btn-link">logout</button>
+			
+	</form>
 </nav>
 	<h2>Mis colecciones</h2> <button style="display: inline-block; vertical-align: middle;" onclick="myFunction()">Añadir colección</button>
 	<p id='add'></p>
@@ -29,6 +33,7 @@
 			<!-- <p><a href = /micoleccion/{{id}}><b>{{name}}:</b></a> {{description}} </p> -->
 			
 			<form action="/micoleccion" method="post">
+				<input type="hidden" name="_csrf" value="{{token}}"/>
   				 <button type="submit" name="id" value="{{id}}" class="btn-link">{{name}}:</button>
 			</form>
 			{{description}}
@@ -38,6 +43,7 @@
 			{{/books}}
 
 			<form action="/editarcoleccion" method="post">
+				<input type="hidden" name="_csrf" value="{{token}}"/>	
 				<input type="hidden" name="id" value="{{id}}">
 				<input type='submit' value='Editar'>
 			</form>

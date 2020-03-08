@@ -18,7 +18,11 @@
 	<a href="/perfil">Mi perfil</a>
 	<a href="/login">Iniciar sesión</a>
 	<a href="/crearusuario">Registrarse</a>
-	<a href="/logout">Cerrar sesión</a>
+	<form action="/logout" method=post>
+			<input type="hidden" name="_csrf" value="{{token}}"/>
+			<button type="submit" name="id" value="logout" class="btn-link">logout</button>
+			
+	</form>
 	</nav>
 	<h1 align = "center"> {{#book}}{{title}}{{/book}} </h1>
 	<p>
@@ -71,6 +75,7 @@
 		{{^added}}
 		<form method="post" action="/books/{{#book}}{{title}}{{/book}}">
 			<input hidden type ='input' name = 'bookTitle' value = "{{#book}}{{title}}{{/book}}">
+			<input type="hidden" name="_csrf" value="{{token}}"/>
 			<input list="collName" name="collName" autocomplete="off">
 					  <datalist id="collName">
 						  <select>
