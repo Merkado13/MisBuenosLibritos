@@ -28,7 +28,7 @@
 	{{/ok}}
 	
 	<form style="display: inline-block;" action="/crearusuario" method = "post">
-				
+		<input type="hidden" name="_csrf" value="{{token}}"/>
 		<h2>Nombre: </h2>
 		<input type='input' name = 'username' required>
 		<h2>Descripción: </h2>
