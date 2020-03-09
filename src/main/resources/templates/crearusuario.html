@@ -31,37 +31,31 @@
 		<p>{{message}}</p>
 	{{/ok}}
 	
-	<form style="display: inline-block;" action="/crearusuario" method = "post">
-		<input type="hidden" name="_csrf" value="{{token}}"/>
-		<h2>Nombre: </h2>
-		<input type='input' name = 'username' required>
-		<h2>Descripción: </h2>
-		<input type='input' name = 'description' required>	
-		<h2>Email: </h2>
-		<input type='input' name = 'email' required>	
-		<h2>Contraseña: </h2>
-		<input type='input' name = 'password' required>	
-		</br>
-		<input type="radio" id="rol" name="rol" value="User" required>
- 		 <label > Lector</label><br>
-		<input type="radio" id="rol" name="rol" value="Author" >
- 		 <label > Autor</label><br>
-		<input type="radio" id="rol" name="rol" value="Publisher">
- 		 <label > Editorial</label><br>
 
-		<h2>Fecha de nacimiento DD/MM/AAAA: </h2>
-		<input type='input' name = 'birth' >	
-		<h2>País: </h2>
-		<input type='input' name = 'country' >	
-		<h2>Website: </h2>
-		<input type='input' name = 'website' >	
-		<input type='submit' value='Enviar'>
-	</form>	
+	<button style="display: inline-block; vertical-align: middle;" onclick="funcUsuario()">LECTOR</button>
+	<button style="display: inline-block; vertical-align: middle;" onclick="funcAutor()">AUTOR</button>
+	<button style="display: inline-block; vertical-align: middle;" onclick="funcPublisher()">EDITORIAL</button>
+
+	<p id='add'>
 	</p>
-	
-	<p>
-		
-	</p>
-	
+	<input type='hidden' name='rol' value='ROLE_USER'/>
+	<input type='hidden' name='website' value='1234'/>
+	<input type='hidden' name='country' value='1234'/>
+
+	<script>
+		function funcUsuario() {
+		  document.getElementById("add").innerHTML = "<form style='display: inline-block;' action='/crearusuario' method = 'post'><input type='hidden' name='_csrf' value='{{token}}'/><h2>Nombre: </h2><input type='input' name = 'username' required><h2>Descripción: </h2><input type='input' name = 'description' required>	<h2>Email: </h2><input type='input' name = 'email' required><h2>Contraseña: </h2><input type='input' name = 'password' required></br><input type='hidden' name='rol' value='ROLE_USER'/><input type='hidden' name='birth' value='1234'/><input type='hidden' name='website' value='1234'/><input type='hidden' name='country' value='1234'/><input type='submit' value='Enviar'></form>"
+		}
+</script>
+<script>
+		function funcAutor() {
+			  document.getElementById("add").innerHTML = "<form style='display: inline-block;' action='/crearusuario' method = 'post'><input type='hidden' name='_csrf' value='{{token}}'/><h2>Nombre: </h2><input type='input' name = 'username' required><h2>Descripción: </h2><input type='input' name = 'description' required>	<h2>Email: </h2><input type='input' name = 'email' required><h2>Contraseña: </h2><input type='input' name = 'password' required></br><h2>Fecha de nacimiento DD/MM/AAAA: </h2><input type='input' name = 'birth' ><h2>País: </h2><input type='input' name = 'country' ><h2>Website: </h2><input type='input' name = 'website' ><input type='hidden' name='rol' value='ROLE_AUTHOR'/><input type='submit' value='Enviar'></form>"
+		}
+</script>
+<script>
+		function funcPublisher() {
+			  document.getElementById("add").innerHTML = "<form style='display: inline-block;' action='/crearusuario' method = 'post'><input type='hidden' name='_csrf' value='{{token}}'/><h2>Nombre: </h2><input type='input' name = 'username' required><h2>Descripción: </h2><input type='input' name = 'description' required>	<h2>Email: </h2><input type='input' name = 'email' required><h2>Contraseña: </h2><input type='input' name = 'password' required></br><h2>Año de creación:</h2><input type='input' name='birth'></br><h2>Website: </h2><input type='input' name ='website'><input type='hidden' name='country' value='1234'/><input type='hidden' name='rol' value='ROLE_PUBLISHER'/><input type='submit' value='Enviar'></form>"
+		}
+</script>
 </body>
 </html>

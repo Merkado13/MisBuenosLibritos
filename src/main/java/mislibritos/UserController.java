@@ -72,10 +72,10 @@ public class UserController {
 		else if(user2 != null) {
 			model.addAttribute("message", "Ya existe un usuario con ese email");		
 		}else {
-			if(rol.equals("User")) {
+			if(rol.equals("ROLE_USER")) {
 				u = us.getNewUser(username, description, email, passwordEncoder.encode(password), "ROLE_USER");		
 				
-			}else if(rol.equals("Author")) {
+			}else if(rol.equals("ROLE_AUTHOR")) {
 				u = us.getNewAuthor(username, description, email, passwordEncoder.encode(password), new SimpleDateFormat("dd/MM/yyyy").parse(birth), country, website, "ROLE_AUTHOR");
 				
 			}else {			
