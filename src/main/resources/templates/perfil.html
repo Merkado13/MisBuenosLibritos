@@ -16,14 +16,20 @@
 		<input type='submit' value='Buscar'>
 	</form>
 	<a href="/perfil">Mi perfil</a>
-	<a href="/perfil/Jose">Perfil de Autor</a>
-	<a href="/perfil/HolyPublisher">Perfil de Editorial</a>
+	<a href="/login">Iniciar sesión</a>
+	<a href="/crearusuario">Registrarse</a>
+	<form action="/logout" method=post>
+			<input type="hidden" name="_csrf" value="{{token}}"/>
+			<button type="submit" name="id" value="logout" class="btn-link">logout</button>
+			
+	</form>
+	
 </nav>
 
 <h1 id = "name">{{#user}}{{name}}{{/user}}</h1>		
-	<p>
-		<img src="/god.jpeg" alt="User photo" align = "left">	
-		
+	<table><tr>
+		<td><img class="imgLibro" src="/god.jpeg" alt="User photo" align = "left">	</td>
+		<td>
 			
 			{{#isAuthor}}
 		    	<p id = "info">URL: <b>{{#user}}{{website}}{{/user}}</b> Fecha de nacimiento: <b>{{#user}}{{birth}}{{/user}}</b>	 
@@ -38,7 +44,7 @@
 			<p>{{#user}}{{description}}{{/user}}</p>
 			
 			{{#isAuthor}}
-		    	<ul>	
+		    	<p>	
 				{{#user}}{{#publishedBooks}}
 					<b>Libros publicados: </b>
 					<ul>
@@ -49,13 +55,13 @@
 					</ul>
 					{{/publishedBooks}}{{/user}}
 				
-				</ul>
+				</p>
 		
 			{{/isAuthor}}
 			
 			
 			{{#isPublisher}}
-		    	<ul>	
+		    	<p>	
 				{{#user}}{{#publishedBooks}}
 					<b>Libros publicados: </b>
 					<ul>
@@ -66,7 +72,7 @@
 					</ul>
 					{{/publishedBooks}}{{/user}}
 				
-				</ul>
+				</p>
 		
 			{{/isPublisher}}
 			
@@ -88,8 +94,8 @@
 		{{#isPublisher}}
 			<form action="/addBook"><input type="submit" value="Añadir libro"></form>
 		{{/isPublisher}}
-		
-	</p>
+		</td></tr></table>
+
 
 </body>
 </html>

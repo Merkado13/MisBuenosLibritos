@@ -11,13 +11,21 @@
 		<a href="/home">Home</a> <a href="/colecciones">Colecciones</a>
 
 		<form style="display: inline-block;" action="/busqueda" method="get">
+		
 			<input type='input' name='input'> <input type='submit'
 				value='Buscar'>
 		</form>
 		<a href="/perfil">Mi perfil</a>
-		<a href="/perfil/Jose">Perfil de Autor</a>
-		<a href="/perfil/HolyPublisher">Perfil de Editorial</a>
-		<a href="/login">LOGIN</a>
+		
+		<a href="/login">Iniciar sesión</a>
+		<a href="/crearusuario">Registrarse</a>
+		<form action="/logout" method=post>
+			<input type="hidden" name="_csrf" value="{{token}}"/>
+			 <button type="submit" name="id" value="logout" class="btn-link">logout</button>
+			
+		</form>
+		
+
 
 		<ul>	
 			{{#user}}{{#bookCollection}}

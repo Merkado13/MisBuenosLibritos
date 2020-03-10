@@ -16,7 +16,7 @@ public class BookService {
 	
 	public String assertBookState(Model model, Book book, User user) {
 		String bookState = getBookState(book,user);
-		
+		System.out.println(bookState);
 		if(bookState.equals(BookState.NONE.toString())) {
 			model.addAttribute("bookState", "No Info");
 			return "No info";
@@ -29,7 +29,7 @@ public class BookService {
 	private String getBookState(Book book, User user) {
 		//Pillar las collecciones del usuario
 		List<BookCollection> defaultCollections = bookCollectionRepository.findFirst3ByDescriptionContainingAndUser("Libros que", user);
-		
+		System.out.println("Estoy aquí");
 		BookState state = BookState.NONE;
 		
 		Iterator iterator = defaultCollections.iterator();
@@ -37,9 +37,10 @@ public class BookService {
 		int i = 0;
 		while(iterator.hasNext() && !found) {
 			BookCollection col = (BookCollection)iterator.next();
-			
+			System.out.println("Hay");
 			if(bookCollectionRepository.getRowFromBookCollectionBooks(col.getId(), book.getId()) != null) {
 				state = BookState.values()[i];
+				System.out.println("Está, i = " +i);
 				found = true;
 			}
 			i++;

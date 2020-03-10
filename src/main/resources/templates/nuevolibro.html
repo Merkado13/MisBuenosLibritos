@@ -16,8 +16,14 @@
 		<input type='submit' value='Buscar'>
 	</form>
 	<a href="/colecciones">Mi perfil</a>
-	<a href="/perfil/Jose">Perfil de Autor</a>
-	<a href="/perfil/HolyPublisher">Perfil de Editorial</a>
+	<a href="/login">Iniciar sesión</a>
+	<a href="/crearusuario">Registrarse</a>
+	<form action="/logout" method=post>
+			<input type="hidden" name="_csrf" value="{{token}}"/>
+			<button type="submit" name="id" value="logout" class="btn-link">logout</button>
+			
+	</form>
+
 	</nav>
 
 	{{#ok}}
@@ -51,7 +57,7 @@
 		<input type="checkbox" id="tags{{-index}}" name="tags" value="{{.}}" >
  		 <label for="tags{{-index}}"> {{.}}</label><br>
 	{{/genres}}
-	
+	<input type="hidden" name="_csrf" value="{{token}}"/>	
 	<input type='submit' value='Aceptar' >
 	</form>
 	
