@@ -16,17 +16,24 @@
 		<input type='submit' value='Buscar'>
 	</form>
 	<a href="/perfil">Mi perfil</a>
-	<a href="/perfil/Jose">Perfil de Autor</a>
-	<a href="/perfil/HolyPublisher">Perfil de Editorial</a>
+	<a href="/login">Iniciar sesión</a>
+	<a href="/crearusuario">Registrarse</a>
+	<form action="/logout" method=post>
+			<input type="hidden" name="_csrf" value="{{token}}"/>
+			<button type="submit" name="id" value="logout" class="btn-link">logout</button>
+			
+	</form>
 	</nav>
 	<h1 align = "center"> {{#book}}{{title}}{{/book}} </h1>
 	<p>
-		<img src="/god.jpeg" alt="User photo" align = "left">			
-			
-			<h2>Valoración: {{#book}}{{rating}}{{/book}} Número de valoraciones: {{#book}}{{numRatings}}{{/book}}</h2>
+	<table>
+	<tr><td><img class="imgLibro" src="/god.jpeg" alt="User photo" align = "left">	</td>
+
+	<td>
+	<h2>Valoración: {{#book}}{{rating}}{{/book}} Número de valoraciones: {{#book}}{{numRatings}}{{/book}}</h2>
 			
 			<h3>Autor/es: </h3>
-			<ul>	
+			<p>	
 				{{#book}}{{#authors}}					
 					<ul>					
 						<il>
@@ -36,7 +43,7 @@
 					</ul>
 					{{/authors}}{{/book}}
 				
-				</ul>
+				</p>
 				<!-- Referencia a la editorial -->
 			<h3> Editorial:  <a href="/usuario/{{#book}}{{#publisher}}{{name}}{{/publisher}}{{/book}}">
 				<h5>{{#book}}{{#publisher}}{{name}}{{/publisher}}{{/book}}</h5> </a> </h3>
@@ -46,9 +53,9 @@
 			<p> {{#book}}{{description}}{{/book}}</p>
 			<h3>Detalles del libro: </h3>
 			
-
+			{{#registered}}
 			<h3>Estado: {{bookState}} </h3>
-
+			{{/registered}}
 			
 			<p> <b>ISBN: </b>{{#book}}{{isbn}}{{/book}}
 				<p><b>Género: </b> <p> {{#book}}{{genre}}{{/book}}</p>
@@ -65,25 +72,33 @@
 	</p>
 	
 	<p>
-		{{^added}}
-		<form method="post" action="/books/{{#book}}{{title}}{{/book}}">
-			<input hidden type ='input' name = 'bookTitle' value = "{{#book}}{{title}}{{/book}}">
-			<input list="collName" name="collName" autocomplete="off">
-					  <datalist id="collName">
-						  <select>
-						  {{#collections}}
-						  <option value="{{name}}">
-						  {{/collections}}
-						  </select>
-					  </datalist>
-	    	<input type='submit' value='Agregar a colección'>
-		</form>
-		{{/added}}
-		
+		{{#registered}}
+			{{^added}}
+			<form method="post" action="/books/{{#book}}{{title}}{{/book}}">
+				<input hidden type ='input' name = 'bookTitle' value = "{{#book}}{{title}}{{/book}}">
+				<input type="hidden" name="_csrf" value="{{token}}"/>
+				<input list="collName" name="collName" autocomplete="off">
+						  <datalist id="collName">
+							  <select>
+							  {{#collections}}
+							  <option value="{{name}}">
+							  {{/collections}}
+							  </select>
+						  </datalist>
+		    	<input type='submit' value='Agregar a colección'>
+			</form>
+			{{/added}}
+		{{/registered}}
 		{{#added}}
  			Ha sido añadido
 		{{/added}}
 	</p>
+	</td>
+	</tr>
+	</table>
+				
+			
+			
 	
 </body>
 </html>

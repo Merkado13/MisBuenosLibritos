@@ -16,14 +16,22 @@
 		<input type='submit' value='Buscar'>
 	</form>
 	<a href="/perfil">Mi perfil</a>
-	<a href="/perfil/Jose">Perfil de Autor</a>
-	<a href="/perfil/HolyPublisher">Perfil de Editorial</a>
+	<a href="/login">Iniciar sesión</a>
+	<a href="/crearusuario">Registrarse</a>
+	<form action="/logout" method=post>
+			<input type="hidden" name="_csrf" value="{{token}}"/>
+			<button type="submit" name="id" value="logout" class="btn-link">logout</button>
+			
+	</form>
+	
 </nav>
 	<h2>Mis colecciones >> {{#collection}}{{name}}{{/collection}}</h2>
-	<h3>{{#collection}}{{name}}{{/collection}}</h3>
+	
+	<h3 style="display: inline-block;">{{#collection}}{{name}}{{/collection}}</h3>
 	
 	{{#collection}}
-	<form action="/editarcoleccion/{{id}}">
+	<form style="display: inline-block;" action="/editarcoleccion" method="post">
+		<input type="hidden" name="id" value="{{id}}">
 		<input type='submit' value='Editar'>
 	</form>
 	{{#books}}
@@ -34,6 +42,7 @@
 		</ul>
 	{{/books}}
 	{{/collection}}
+
 	
 </body>
 </html>

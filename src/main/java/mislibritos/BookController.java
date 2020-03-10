@@ -3,6 +3,7 @@ package mislibritos;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +27,14 @@ public class BookController {
 	private PublisherRepository publisherRepository;	
 	@Autowired
 	private BookService bookService;
+	@Autowired
+	private UserRepository userRepository;
+	
 	
 	@GetMapping("/books/{bookTitle}")
-	public String books(Model model, HttpSession session, @PathVariable String bookTitle) {
+	public String books(Model model, HttpServletRequest request, @PathVariable String bookTitle) {
 
-		//Pillar el usuario a parti de la sesion
-		User testUser = (User)session.getAttribute("user");
+		model.addAttribute("registered", false);
 		Book book = bookRepository.findByTitle(bookTitle);
 		
 		if (book != null)
@@ -41,38 +44,58 @@ public class BookController {
 		
 		model.addAttribute("added", false);
 		
-		String bookState = bookService.assertBookState(model, book, testUser);
-		model.addAttribute("bookState", bookState);
-		//model.addAttribute("collections", testUser.getBookCollection());
-		model.addAttribute("collections", bookCollectionRepository.findByUser(testUser));
+		if(request.getUserPrincipal()!=null) {
+			String name = request.getUserPrincipal().getName();			
+			User currentUser = (User) userRepository.findByName(name);
+			if(currentUser != null) {
+				model.addAttribute("user", userRepository.findById(currentUser.getId()));			
+				
+				model.addAttribute("registered", true);
+				String bookState = bookService.assertBookState(model, book, currentUser);
+				model.addAttribute("bookState", bookState);
+				//model.addAttribute("collections", testUser.getBookCollection());
+				System.out.println(bookState+ "en el controller GET");
+				model.addAttribute("collections", bookCollectionRepository.findByUser(currentUser));
+			}
+		}else {
+		model.addAttribute("bookState", BookState.NONE);
+		
+		}
 		return "books";
 
 	}
 	
 	@PostMapping("/books/{bookTitle}")
-	public String addBook(HttpSession session, Model model, @RequestParam String bookTitle, @RequestParam String collName) {
+	public String addBook(HttpServletRequest request, Model model, @RequestParam String bookTitle, @RequestParam String collName) {
 		
-							
-		//pillar el usuario de la sesión
-		User testUser = (User)session.getAttribute("user");
+		model.addAttribute("registered", false);	
 		
-		//pillar el libro de la base de datos
-		Book book = bookRepository.findByTitle((bookTitle));
-		model.addAttribute("book", book);
-		model.addAttribute("added", true);
-		
-		//pillar la coleccion de la base de datos
-		BookCollection bc = bookCollectionRepository.findByNameAndUser(collName, testUser);
-		if(bc == null) {
-			model.addAttribute("added", false);
-			
-		}else {
-			bookService.insertBookIntoBookCollection(model, book, bc, testUser);			
+		if(request.getUserPrincipal()!=null){
+			String name = request.getUserPrincipal().getName();			
+			User currentUser = (User) userRepository.findByName(name);
+			if(currentUser != null) {
+				model.addAttribute("registered", true);
+				//pillar el libro de la base de datos
+				Book book = bookRepository.findByTitle((bookTitle));
+				model.addAttribute("book", book);
+				model.addAttribute("added", true);
+				
+				//pillar la coleccion de la base de datos
+				BookCollection bc = bookCollectionRepository.findByNameAndUser(collName, currentUser);
+				if(bc == null) {
+					model.addAttribute("added", false);
+					
+				}else {
+					bookService.insertBookIntoBookCollection(model, book, bc, currentUser);			
+				}
+				
+				
+				String bookState = bookService.assertBookState(model, book, currentUser);
+				System.out.println(bookState+ "en el controller POST");
+				model.addAttribute("bookState", bookState);
+			}
 		}
 		
-		
-		String bookState = bookService.assertBookState(model, book, testUser);
-		model.addAttribute("bookState", bookState);
 		
 		return "books";
 	}
