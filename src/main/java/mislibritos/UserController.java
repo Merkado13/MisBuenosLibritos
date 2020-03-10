@@ -2,11 +2,14 @@ package mislibritos;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestTemplate;
 
 @Controller
 public class UserController {
@@ -27,7 +31,8 @@ public class UserController {
 	private PublisherRepository publisherRepository;
 	@Autowired
 	private UserService us;
-
+	
+	RestTemplate restTemplate = new RestTemplate();
 	
 	@RequestMapping("/perfil")
 	public String perfil(Model model, HttpServletRequest request) {	
@@ -84,6 +89,11 @@ public class UserController {
 			
 			if(u!=null) {
 				model.addAttribute("message", "El usuario se ha creado correctamente");	
+				// conectarse con servicio interno para enviar email de bienvenida.
+				String url = "http://localhost:8888/welcomeemail";
+				//Map<String, String> params = new HashMap<String, String>();
+			    //params.put("email", email);
+				restTemplate.postForObject(url, email, String.class);
 				
 			}else {
 				model.addAttribute("message", "Ha ocurrido un problema. Inténtalo de nuevo");	
