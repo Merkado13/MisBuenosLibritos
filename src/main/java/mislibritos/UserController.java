@@ -31,6 +31,8 @@ public class UserController {
 	private PublisherRepository publisherRepository;
 	@Autowired
 	private UserService us;
+	@Autowired
+	private EmailService emailService;
 	
 	RestTemplate restTemplate = new RestTemplate();
 	
@@ -90,10 +92,7 @@ public class UserController {
 			if(u!=null) {
 				model.addAttribute("message", "El usuario se ha creado correctamente");	
 				// conectarse con servicio interno para enviar email de bienvenida.
-				String url = "http://localhost:8888/welcomeemail";
-				//Map<String, String> params = new HashMap<String, String>();
-			    //params.put("email", email);
-				restTemplate.postForObject(url, email, String.class);
+				emailService.sendWelcomeEmail(email);
 				
 			}else {
 				model.addAttribute("message", "Ha ocurrido un problema. Inténtalo de nuevo");	

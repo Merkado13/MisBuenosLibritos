@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestClientException;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 @Controller
 public class BookController {
@@ -29,6 +32,8 @@ public class BookController {
 	private BookService bookService;
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private EmailService emailService;
 	
 	
 	@GetMapping("/books/{bookTitle}")
@@ -109,7 +114,7 @@ public class BookController {
 	@PostMapping("/addBook")
 	public String addedBook(Model model, @RequestParam String title, @RequestParam String description, 
 			@RequestParam String author, @RequestParam String publisher, @RequestParam String isbn,
-			@RequestParam Genre genre, @RequestParam List<Genre> tags) {		
+			@RequestParam Genre genre, @RequestParam List<Genre> tags) throws RestClientException, JsonProcessingException {		
 		
 		Author a = authorRepository.findByName(author);		
 		Publisher p = publisherRepository.findByName(publisher);
@@ -146,6 +151,10 @@ public class BookController {
 		
 		p.getPublishedBooks().addBook(b);
 		bookCollectionRepository.save(p.getPublishedBooks());
+		
+		//Enviar correo a todos los usuarios
+		emailService.sendNewBookEmail(author, title);
+		//
 		
 		model.addAttribute("ok", true);		
 		return "nuevolibro";
