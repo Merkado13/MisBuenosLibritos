@@ -1,6 +1,7 @@
 package mislibritos;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -9,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -33,20 +33,23 @@ public class EmailService {
 	@PostConstruct
 	public void init() {
 		objectMapper = new ObjectMapper();
-		objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+		//objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+		
 	}
 	
 	
-	public void sendWelcomeEmail(String email) {
+	public void sendWelcomeEmail(String email) {		
 		restTemplate.postForObject(URI_WELCOME_EMAIL, email, String.class);
 	}
 	
+	
+	
 	public void sendNewBookEmail(String author, String title) throws RestClientException, JsonProcessingException {
 		
-		NewBookEmailData emailData = getNewBookEmailData(author, title);
+		NewBookEmailData emailData = getNewBookEmailData(author, title);		
 		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON);
-		HttpEntity<String> request = new HttpEntity<String>(objectMapper.writeValueAsString(emailData),headers);
+		headers.setContentType(MediaType.APPLICATION_JSON);		
+		HttpEntity<String> request = new HttpEntity<>(objectMapper.writeValueAsString(emailData),headers);
 		restTemplate.postForObject(URI_NEW_BOOK_EMAIL, request, String.class);
 		
 	}
