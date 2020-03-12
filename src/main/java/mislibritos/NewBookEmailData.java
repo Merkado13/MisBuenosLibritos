@@ -4,17 +4,20 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+
 public class NewBookEmailData implements Serializable{
 
+	/**
+	 * 
+	 */
+	//private static final long serialVersionUID = 1L;
 	public String authorName;
 	public String title;
 	public List<String> userEmails;
 	
 	public NewBookEmailData() {
-		super();
+	
 	}
 	
 	public NewBookEmailData(String authorName, String title, List<String> userEmails) {
@@ -23,4 +26,16 @@ public class NewBookEmailData implements Serializable{
 		this.userEmails = userEmails;
 	}
 	
+	public String getAuthorName() {
+		return authorName;
+		
+	}
+	
+	public String getTitle() {
+		return title;
+	}
+	
+	public List<String> getUserEmails(){
+		return userEmails;
+	}
 }
