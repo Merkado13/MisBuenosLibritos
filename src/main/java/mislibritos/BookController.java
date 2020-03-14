@@ -32,6 +32,8 @@ public class BookController {
 	@Autowired
 	private BookService bookService;
 	@Autowired
+	private UserService userService;
+	@Autowired
 	private UserRepository userRepository;
 	@Autowired
 	private EmailService emailService;
@@ -40,7 +42,7 @@ public class BookController {
 	@GetMapping("/books/{bookTitle}")
 	public String books(Model model, HttpServletRequest request, @PathVariable String bookTitle) {
 
-		model.addAttribute("registered", false);
+		model.addAttribute("isRegistered", !userService.isRegistered(request));	
 		Book book = bookRepository.findByTitle(bookTitle);
 		
 		if (book != null)
@@ -49,14 +51,11 @@ public class BookController {
 			model.addAttribute("book", "undefined");
 		
 		model.addAttribute("added", false);
-		
 		if(request.getUserPrincipal()!=null) {
 			String name = request.getUserPrincipal().getName();			
 			User currentUser = (User) userRepository.findByName(name);
 			if(currentUser != null) {
 				model.addAttribute("user", userRepository.findById(currentUser.getId()));			
-				
-				model.addAttribute("registered", true);
 				String bookState = bookService.assertBookState(model, book, currentUser);
 				model.addAttribute("bookState", bookState);
 				//model.addAttribute("collections", testUser.getBookCollection());
@@ -74,13 +73,11 @@ public class BookController {
 	@PostMapping("/books/{bookTitle}")
 	public String addBook(HttpServletRequest request, Model model, @RequestParam String bookTitle, @RequestParam String collName) {
 		
-		model.addAttribute("registered", false);	
-		
+		model.addAttribute("isRegistered", !userService.isRegistered(request));	
 		if(request.getUserPrincipal()!=null){
 			String name = request.getUserPrincipal().getName();			
 			User currentUser = (User) userRepository.findByName(name);
 			if(currentUser != null) {
-				model.addAttribute("registered", true);
 				//pillar el libro de la base de datos
 				Book book = bookRepository.findByTitle((bookTitle));
 				model.addAttribute("book", book);

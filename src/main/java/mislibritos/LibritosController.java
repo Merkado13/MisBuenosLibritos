@@ -96,16 +96,21 @@ public class LibritosController {
 			
 		if(request.getUserPrincipal()!=null) {		
 		
-		String name = request.getUserPrincipal().getName();
-		User currentUser = (User) userRepository.findByName(name);
+			String name = request.getUserPrincipal().getName();
+			User currentUser = (User) userRepository.findByName(name);
 			if(currentUser != null) {
 				model.addAttribute("user", currentUser);
+				
 			}else {
 				System.out.println("El usuario no está");
 				model.addAttribute("user", "undefined");
+				
 			}
 		}else {
-		model.addAttribute("user", "undefined");}
+			model.addAttribute("user", "undefined");
+			
+		}
+		model.addAttribute("isRegistered", !userService.isRegistered(request));
 		model.addAttribute("all_books", bookRepository.findAll());
 
 		return "home";
@@ -117,12 +122,13 @@ public class LibritosController {
 	
 	
 	@RequestMapping("/busqueda")
-	public String busqueda(Model model, @RequestParam String input) {
+	public String busqueda(HttpServletRequest request, Model model, @RequestParam String input) {
 		
 		model.addAttribute("books",bookRepository.findByTitleContaining(input));
 		model.addAttribute("authors", authorRepository.findByNameContaining(input));
 		model.addAttribute("publishers", publisherRepository.findByNameContaining(input));
 		model.addAttribute("input", input);
+		model.addAttribute("isRegistered", !userService.isRegistered(request));
 		return "busqueda";
 
 	}

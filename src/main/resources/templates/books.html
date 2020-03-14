@@ -16,8 +16,10 @@
 		<input type='submit' value='Buscar'>
 	</form>
 	<a href="/perfil">Mi perfil</a>
+	{{#isRegistered}}
 	<a href="/login">Iniciar sesión</a>
 	<a href="/crearusuario">Registrarse</a>
+	{{/isRegistered}}
 	<form action="/logout" method=post>
 			<input type="hidden" name="_csrf" value="{{token}}"/>
 			<button type="submit" name="id" value="logout" class="btn-link">logout</button>
@@ -53,9 +55,9 @@
 			<p> {{#book}}{{description}}{{/book}}</p>
 			<h3>Detalles del libro: </h3>
 			
-			{{#registered}}
+			{{#isRegistered}}
 			<h3>Estado: {{bookState}} </h3>
-			{{/registered}}
+			{{/isRegistered}}
 			
 			<p> <b>ISBN: </b>{{#book}}{{isbn}}{{/book}}
 				<p><b>Género: </b> <p> {{#book}}{{genre}}{{/book}}</p>
@@ -72,7 +74,7 @@
 	</p>
 	
 	<p>
-		{{#registered}}
+		{{#isRegistered}}
 			{{^added}}
 			<form method="post" action="/books/{{#book}}{{title}}{{/book}}">
 				<input hidden type ='input' name = 'bookTitle' value = "{{#book}}{{title}}{{/book}}">
@@ -88,7 +90,7 @@
 		    	<input type='submit' value='Agregar a colección'>
 			</form>
 			{{/added}}
-		{{/registered}}
+		{{/isRegistered}}
 		{{#added}}
  			Ha sido añadido
 		{{/added}}

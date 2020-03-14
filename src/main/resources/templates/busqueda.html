@@ -16,8 +16,10 @@
 		<input type='submit' value='Buscar'>
 	</form>
 	<a href="/perfil">Mi perfil</a>
+	{{#isRegistered}}
 	<a href="/login">Iniciar sesión</a>
 	<a href="/crearusuario">Registrarse</a>
+	{{/isRegistered}}
 	<form action="/logout" method=post>
 			<input type="hidden" name="_csrf" value="{{token}}"/>
 			<button type="submit" name="id" value="logout" class="btn-link">logout</button>

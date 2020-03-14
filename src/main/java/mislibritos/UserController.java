@@ -39,37 +39,37 @@ public class UserController {
 	@RequestMapping("/perfil")
 	public String perfil(Model model, HttpServletRequest request) {	
 		String name = request.getUserPrincipal().getName();
-		
+		//model.addAttribute("isRegistered", us.isRegistered(request));
 		User currentUser = (User) userRepository.findByName(name);
-			if(currentUser != null) {
-				model.addAttribute("user", userRepository.findById(currentUser.getId()));
-				//model.addAttribute("user", authorRepository.findByName("San Pablo"));				
-				//model.addAttribute("user", publisherRepository.findByName("HolyPublisher"));
-				model.addAttribute("isAuthor", request.isUserInRole("ROLE_AUTHOR"));
-				model.addAttribute("isPublisher", request.isUserInRole("ROLE_PUBLISHER"));		
-				
-				return "perfil";
-			}
+		if(currentUser != null) {
+			model.addAttribute("user", userRepository.findById(currentUser.getId()));
+			//model.addAttribute("user", authorRepository.findByName("San Pablo"));				
+			//model.addAttribute("user", publisherRepository.findByName("HolyPublisher"));
+			model.addAttribute("isAuthor", request.isUserInRole("ROLE_AUTHOR"));
+			model.addAttribute("isPublisher", request.isUserInRole("ROLE_PUBLISHER"));		
+			
+			return "perfil";
+		}
 		return "home";
 	}	
 	
 	@RequestMapping("/crearusuario")
-	public String crearUsuario(Model model) {	
+	public String crearUsuario(HttpServletRequest request,Model model) {	
 		model.addAttribute("ok", false);
 		model.addAttribute("message", "Crear usuario");	
-		
+		model.addAttribute("isRegistered",us.isRegistered(request));
 		return "crearusuario";
 
 	}	
 
 	@PostMapping("/crearusuario")
-	public String addedBook(Model model, @RequestParam String username, @RequestParam String description, 
+	public String addedBook(HttpServletRequest request,Model model, @RequestParam String username, @RequestParam String description, 
 			@RequestParam String email, @RequestParam String password, @RequestParam String rol,
 			@RequestParam String birth, @RequestParam String country, @RequestParam String website) throws ParseException {		
 	
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		model.addAttribute("ok", false);
-		
+		model.addAttribute("isRegistered",!us.isRegistered(request));
 		User user = userRepository.findByName(username);
 		User user2 = userRepository.findByEmail(email);
 		User u = new User();
@@ -108,14 +108,17 @@ public class UserController {
 	@GetMapping("/usuario/{name}")
 	public String autor(HttpServletRequest request,Model model, @PathVariable String name) {
 		
-		model.addAttribute("registered", false);
-		if(request.getUserPrincipal()!=null) {
+		boolean isRegistered = us.isRegistered(request);
+		
+		model.addAttribute("isRegistered", !isRegistered);
+		model.addAttribute("canSub", isRegistered);
+		if(isRegistered) {
 			String nameUser = request.getUserPrincipal().getName();
 			User user = (User) userRepository.findByName(nameUser);
 			
 			String strSubButton = us.isUserSubscribedToAuthor(user.id) ? "Desuscribirse" : "Suscribirse";
 			model.addAttribute("strSubButton",strSubButton);
-			model.addAttribute("registered", true);
+			
 		}
 		Author author = authorRepository.findByName(name);
 
@@ -139,6 +142,7 @@ public class UserController {
 	public String autorSub(HttpServletRequest request, Model model, @PathVariable String name) {
 
 		String nameUser = request.getUserPrincipal().getName();
+		model.addAttribute("isRegistered",!us.isRegistered(request));
 		User user = (User) userRepository.findByName(nameUser);
 		boolean isSub = us.isUserSubscribedToAuthor(user.id);
 		Author au = authorRepository.findByName(name);
