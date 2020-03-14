@@ -1,5 +1,6 @@
 package mislibritos;
 
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -114,7 +115,7 @@ public class BookController {
 	@PostMapping("/addBook")
 	public String addedBook(Model model, @RequestParam String title, @RequestParam String description, 
 			@RequestParam String author, @RequestParam String publisher, @RequestParam String isbn,
-			@RequestParam Genre genre, @RequestParam List<Genre> tags) throws RestClientException, JsonProcessingException {		
+			@RequestParam Genre genre, @RequestParam List<Genre> tags) throws RestClientException, JsonProcessingException, URISyntaxException {		
 		
 		Author a = authorRepository.findByName(author);		
 		Publisher p = publisherRepository.findByName(publisher);

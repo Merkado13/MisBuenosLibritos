@@ -112,6 +112,7 @@ public class UserController {
 		if(request.getUserPrincipal()!=null) {
 			String nameUser = request.getUserPrincipal().getName();
 			User user = (User) userRepository.findByName(nameUser);
+			
 			String strSubButton = us.isUserSubscribedToAuthor(user.id) ? "Desuscribirse" : "Suscribirse";
 			model.addAttribute("strSubButton",strSubButton);
 			model.addAttribute("registered", true);

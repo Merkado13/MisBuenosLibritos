@@ -1,8 +1,13 @@
 package mislibritos;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
@@ -10,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.RequestEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -44,25 +50,36 @@ public class EmailService {
 	
 	
 	
-	public void sendNewBookEmail(String author, String title) throws RestClientException, JsonProcessingException {
-		
-		NewBookEmailData emailData = getNewBookEmailData(author, title);		
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON);		
-		HttpEntity<String> request = new HttpEntity<>(objectMapper.writeValueAsString(emailData),headers);
-		restTemplate.postForObject(URI_NEW_BOOK_EMAIL, request, String.class);
-		
-	}
+	public void sendNewBookEmail(String author, String title) throws RestClientException, JsonProcessingException, URISyntaxException {
+
+		Map<String, String> map = new HashMap<>();
+		String emails = getEmailsData(author, title);
+			
+		map.put("authorName", author);
+		map.put("title", title);
+		map.put("userEmails", emails);
+		if(emails != null)
+			restTemplate.postForObject("http://localhost:8888/newbookemail/", map, String.class);
+		}
 	
-	public NewBookEmailData getNewBookEmailData(String authorName, String title) {
-		
+	public String getEmailsData(String authorName, String title) {
+		//System.out.println("2. DOS. Preparando datos para enviar al servidor");
+		StringBuilder salida = new StringBuilder();
 		List<User> subUsers = authorRepo.findByName(authorName).getSubUsers();
-		List<String> userEmails = new ArrayList<String>();
-		for(User user: subUsers) {
-			userEmails.add(user.email);
+		if(subUsers.isEmpty()) {
+			return null;
 		}
 		
-		return new NewBookEmailData(authorName, title, userEmails);
+		for(User user: subUsers) {
+			System.out.println(salida);
+			//userEmails.add(user.email);
+			String e = user.email.toString();
+			salida.append(e);
+			salida.append(";");
+		}
+		System.out.println(salida);
+		
+		return salida.toString();
 	}
 	
 }
