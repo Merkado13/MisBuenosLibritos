@@ -29,7 +29,6 @@ public class BookService {
 	private String getBookState(Book book, User user) {
 		//Pillar las collecciones del usuario
 		List<BookCollection> defaultCollections = bookCollectionRepository.findFirst3ByDescriptionContainingAndUser("Libros que", user);
-		System.out.println("Estoy aquí");
 		BookState state = BookState.NONE;
 		
 		Iterator iterator = defaultCollections.iterator();
@@ -37,10 +36,10 @@ public class BookService {
 		int i = 0;
 		while(iterator.hasNext() && !found) {
 			BookCollection col = (BookCollection)iterator.next();
-			System.out.println("Hay");
+			//System.out.println("Hay");
 			if(bookCollectionRepository.getRowFromBookCollectionBooks(col.getId(), book.getId()) != null) {
 				state = BookState.values()[i];
-				System.out.println("Está, i = " +i);
+				//System.out.println("Está, i = " +i);
 				found = true;
 			}
 			i++;
@@ -59,15 +58,15 @@ public class BookService {
 			BookCollection bc = null; 
 			if(bookState.equals(BookState.PARA_LEER.toString())) {
 				bc = bookCollectionRepository.findByNameAndUser("Por leer", user);	
-				System.out.println("Estaba en PARA LEER");
+				//System.out.println("Estaba en PARA LEER");
 			}
 			if(bookState.equals(BookState.LEYENDO.toString())) {
 				bc = bookCollectionRepository.findByNameAndUser("Leyendo", user);
-				System.out.println("Estaba en LEYENDO");
+				//System.out.println("Estaba en LEYENDO");
 			}
 			if(bookState.equals(BookState.LEÍDO.toString())) {
 				bc = bookCollectionRepository.findByNameAndUser("Leído", user);	
-				System.out.println("Estaba en LEÍDO");
+				//System.out.println("Estaba en LEÍDO");
 			}
 			
 			if(bc!=null) {

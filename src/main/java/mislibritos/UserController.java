@@ -39,7 +39,7 @@ public class UserController {
 	@RequestMapping("/perfil")
 	public String perfil(Model model, HttpServletRequest request) {	
 		String name = request.getUserPrincipal().getName();
-		//model.addAttribute("isRegistered", us.isRegistered(request));
+		model.addAttribute("isRegistered", us.isRegistered(request));
 		User currentUser = (User) userRepository.findByName(name);
 		if(currentUser != null) {
 			model.addAttribute("user", userRepository.findById(currentUser.getId()));
@@ -69,7 +69,7 @@ public class UserController {
 	
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		model.addAttribute("ok", false);
-		model.addAttribute("isRegistered",!us.isRegistered(request));
+		model.addAttribute("isRegistered", us.isRegistered(request));
 		User user = userRepository.findByName(username);
 		User user2 = userRepository.findByEmail(email);
 		User u = new User();
@@ -110,7 +110,7 @@ public class UserController {
 		
 		boolean isRegistered = us.isRegistered(request);
 		
-		model.addAttribute("isRegistered", !isRegistered);
+		model.addAttribute("isRegistered", isRegistered);
 		model.addAttribute("canSub", isRegistered);
 		if(isRegistered) {
 			String nameUser = request.getUserPrincipal().getName();
@@ -142,7 +142,7 @@ public class UserController {
 	public String autorSub(HttpServletRequest request, Model model, @PathVariable String name) {
 
 		String nameUser = request.getUserPrincipal().getName();
-		model.addAttribute("isRegistered",!us.isRegistered(request));
+		model.addAttribute("isRegistered",us.isRegistered(request));
 		User user = (User) userRepository.findByName(nameUser);
 		boolean isSub = us.isUserSubscribedToAuthor(user.id);
 		Author au = authorRepository.findByName(name);

@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
-Built-By: reskinshi
-Build-Jdk: 11.0.2
+Built-By: celiamerinovalladolid
+Build-Jdk: 13.0.2
 Implementation-Title: buenos_libritos
 Implementation-Version: 0.0.1-SNAPSHOT
 Implementation-Vendor-Id: urjc.es

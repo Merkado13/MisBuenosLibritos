@@ -21,13 +21,14 @@ public class BookCollectionController {
 	private BookCollectionRepository bookCollectionRepository;
 	@Autowired
 	private UserRepository userRepository;
-	
+	@Autowired
+	private UserService userService;
 	@GetMapping("/colecciones")
 	public String colecciones(Model model, HttpServletRequest request) {
 		/*User testUser = (User)session.getAttribute("user");
 		
 		model.addAttribute("user", userRepository.findById(testUser.getId()));*/
-		
+		model.addAttribute("isRegistered", userService.isRegistered(request));	
 		String name = request.getUserPrincipal().getName();
 		
 		User currentUser = (User) userRepository.findByName(name);
@@ -44,7 +45,7 @@ public class BookCollectionController {
 	@PostMapping("/colecciones")
 	public String colecciones(Model model, HttpServletRequest request, @RequestParam String colId) {
 		//User testUser = (User)session.getAttribute("user");
-		
+		model.addAttribute("isRegistered", userService.isRegistered(request));	
 		bookCollectionRepository.deleteById(Long.parseLong(colId));
 		
 		String name = request.getUserPrincipal().getName();
@@ -66,7 +67,7 @@ public class BookCollectionController {
 	public String addCollection(Model model, HttpServletRequest request, @RequestParam String name, @RequestParam String description) {
 		
 		String n = request.getUserPrincipal().getName();
-		
+		model.addAttribute("isRegistered", userService.isRegistered(request));	
 		User currentUser = (User) userRepository.findByName(n);
 			if(currentUser != null) {
 				model.addAttribute("user", currentUser);
@@ -86,8 +87,8 @@ public class BookCollectionController {
 	}
 
 	@PostMapping("/micoleccion")
-	public String showCollection(HttpSession session, Model model, @RequestParam String id) {
-		
+	public String showCollection(HttpServletRequest request,  Model model, @RequestParam String id) {
+		model.addAttribute("isRegistered", userService.isRegistered(request));	
 		
 		BookCollection bc = bookCollectionRepository.findById(Long.parseLong(id));		
 		model.addAttribute("collection",bc);
@@ -96,8 +97,8 @@ public class BookCollectionController {
 	}
 	
 	@PostMapping("/editarcoleccion")
-	public String editCollection(HttpSession session, Model model, @RequestParam long id) {
-		
+	public String editCollection(HttpServletRequest request,  Model model, @RequestParam long id) {
+		model.addAttribute("isRegistered", userService.isRegistered(request));	
 		BookCollection bc = bookCollectionRepository.findById(id);
 		
 		model.addAttribute("canBeEdited",bc.getCustom());		
@@ -107,11 +108,11 @@ public class BookCollectionController {
 	}
 	
 	@PostMapping("/submitcollectionchanges")
-	public String editCollection(HttpSession session, Model model, @RequestParam long id, 
+	public String editCollection(HttpServletRequest request,  Model model, @RequestParam long id, 
 				@RequestParam String name, @RequestParam String description, @RequestParam String removedBooks) {
 
 		BookCollection bc = bookCollectionRepository.findById(id);
-		
+		model.addAttribute("isRegistered", userService.isRegistered(request));	
 		String[] removedIdBooks = removedBooks.split(";"); 
 		
 		for(String s : removedIdBooks) {

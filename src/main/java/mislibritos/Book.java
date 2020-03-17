@@ -1,5 +1,6 @@
 package mislibritos;
 
+import java.text.DecimalFormat;
 import java.util.Collection;
 import java.util.List;
 
@@ -42,6 +43,7 @@ public class Book {
 	private long isbn;
 	private String title;
 	private double rating;
+	private double sumRatings;
 	private int numRatings; 
 	private String description;
 
@@ -68,14 +70,15 @@ public class Book {
 	public Book() {}
 	
 	public Book(String title, List<Author> authors, Publisher publisher, Genre genre, List<Genre> tags, 
-			String description, double rating, int numRatings, long isbn) {
+			String description, double sumRatings, int numRatings, long isbn) {
 		this.title = title;
 		this.authors = authors;
 		this.publisher = publisher;
 		this.genre = genre;
 		this.tags = tags;
 		this.description = description;
-		this.rating = rating;
+		this.sumRatings = sumRatings;
+		this.rating = sumRatings/numRatings;
 		this.numRatings = numRatings;
 		this.isbn = isbn;
 		
@@ -83,6 +86,16 @@ public class Book {
 
 	public long getId() {
 		return id;
+	}
+	public void addNewRating(double r) {
+		sumRatings+=r;
+		numRatings+=1;
+		rating = sumRatings/numRatings;
+	}
+	public void updateRating(double old, double newR) {
+		sumRatings-=old;
+		sumRatings+=newR;
+		rating = sumRatings/numRatings;
 	}
 	
 	public long getIsbn() {
@@ -120,6 +133,19 @@ public class Book {
 	public Publisher getPublisher() {
 		return publisher;
 	}
+
+	public double getSumRatings() {
+		return sumRatings;
+	}
+
+	public void setSumRatings(double sumRatings) {
+		this.sumRatings = sumRatings;
+	}
+
+	public void setNumRatings(int numRatings) {
+		this.numRatings = numRatings;
+	}
+	
 	
 	
 	

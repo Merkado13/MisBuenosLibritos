@@ -1,6 +1,7 @@
 package mislibritos;
 
 import java.net.URISyntaxException;
+import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.List;
 
@@ -37,20 +38,24 @@ public class BookController {
 	private UserRepository userRepository;
 	@Autowired
 	private EmailService emailService;
-	
+	DecimalFormat numberFormat = new DecimalFormat("#.00");
 	
 	@GetMapping("/books/{bookTitle}")
 	public String books(Model model, HttpServletRequest request, @PathVariable String bookTitle) {
-
-		model.addAttribute("isRegistered", !userService.isRegistered(request));	
-		Book book = bookRepository.findByTitle(bookTitle);
 		
-		if (book != null)
+		model.addAttribute("isRegistered", userService.isRegistered(request));	
+		Book book = bookRepository.findByTitle(bookTitle);
+		if (book != null) {
 			model.addAttribute("book", book);
+
+			model.addAttribute("rating", numberFormat.format(book.getRating()));
+			}
 		else
 			model.addAttribute("book", "undefined");
+			
 		
 		model.addAttribute("added", false);
+		
 		if(request.getUserPrincipal()!=null) {
 			String name = request.getUserPrincipal().getName();			
 			User currentUser = (User) userRepository.findByName(name);
@@ -59,7 +64,7 @@ public class BookController {
 				String bookState = bookService.assertBookState(model, book, currentUser);
 				model.addAttribute("bookState", bookState);
 				//model.addAttribute("collections", testUser.getBookCollection());
-				System.out.println(bookState+ "en el controller GET");
+				System.out.println(bookState+ " en el controller GET");
 				model.addAttribute("collections", bookCollectionRepository.findByUser(currentUser));
 			}
 		}else {
@@ -71,36 +76,77 @@ public class BookController {
 	}
 	
 	@PostMapping("/books/{bookTitle}")
-	public String addBook(HttpServletRequest request, Model model, @RequestParam String bookTitle, @RequestParam String collName) {
-		
-		model.addAttribute("isRegistered", !userService.isRegistered(request));	
+	public String addBook(HttpServletRequest request, Model model, @RequestParam String peticion, @RequestParam String bookTitle, @RequestParam String datos) {
+		model.addAttribute("isRegistered", userService.isRegistered(request));					
+		//System.out.println("POST. "+peticion);
 		if(request.getUserPrincipal()!=null){
-			String name = request.getUserPrincipal().getName();			
-			User currentUser = (User) userRepository.findByName(name);
-			if(currentUser != null) {
-				//pillar el libro de la base de datos
+			
+				String name = request.getUserPrincipal().getName();			
+				User currentUser = (User) userRepository.findByName(name);
 				Book book = bookRepository.findByTitle((bookTitle));
-				model.addAttribute("book", book);
-				model.addAttribute("added", true);
 				
-				//pillar la coleccion de la base de datos
-				BookCollection bc = bookCollectionRepository.findByNameAndUser(collName, currentUser);
-				if(bc == null) {
-					model.addAttribute("added", false);
+				
+				if(currentUser != null) {
 					
-				}else {
-					bookService.insertBookIntoBookCollection(model, book, bc, currentUser);			
+					
+					if(peticion.equals("col")) {	
+						//pillar el libro de la base de datos
+						
+						
+						model.addAttribute("added", true);
+	
+				
+						//pillar la coleccion de la base de datos
+						BookCollection bc = bookCollectionRepository.findByNameAndUser(datos, currentUser);
+						
+						if(bc == null) {
+							model.addAttribute("added", false);
+							
+						}else {
+							bookService.insertBookIntoBookCollection(model, book, bc, currentUser);			
+						}
+					}else if(peticion.equals("rate")) {
+						if(currentUser.Ratings.get(book.getTitle()) != null) {
+							// ya había votado
+							double oldRating = currentUser.Ratings.get(book.getTitle());
+							book.updateRating(oldRating, Double.valueOf(datos));
+							currentUser.Ratings.put(book.getTitle(), Integer.valueOf(datos));
+							bookRepository.save(book);
+							
+							//System.out.println("Cambiando puntuación. Nueva: "+ datos);
+						}else {
+							// vota por primera vez
+							book.addNewRating(Double.valueOf(datos));
+							currentUser.Ratings.put(book.getTitle(), Integer.valueOf(datos));
+							bookRepository.save(book);
+							
+							//System.out.println("Añadiendo puntuacion: "+ datos);
+						}
+						
+							
+					}
+					
+					book = bookRepository.findByTitle((bookTitle));
+					model.addAttribute("book", book);
+					model.addAttribute("user", userRepository.findById(currentUser.getId()));			
+					String bookState = bookService.assertBookState(model, book, currentUser);
+					model.addAttribute("bookState", bookState);
+					System.out.println(bookState+ " en el controller GET");
+					model.addAttribute("collections", bookCollectionRepository.findByUser(currentUser));
+					model.addAttribute("rating", numberFormat.format(book.getRating()));
+					
 				}
 				
-				
-				String bookState = bookService.assertBookState(model, book, currentUser);
-				System.out.println(bookState+ "en el controller POST");
-				model.addAttribute("bookState", bookState);
+			}else {
+				model.addAttribute("bookState", BookState.NONE);
 			}
-		}
+		
 		
 		
 		return "books";
+
+		
+		
 	}
 	
 	@GetMapping("/addBook")
@@ -141,7 +187,7 @@ public class BookController {
 			return "nuevolibro";
 		}		
 		
-		Book b = new Book(title, Arrays.asList(a), p, genre, tags, description, 0.0,0, Long.parseLong(isbn));
+		Book b = new Book(title, Arrays.asList(a), p, genre, tags, description, 0, 0, Long.parseLong(isbn));
 		bookRepository.save(b);		
 		
 		a.getPublishedBooks().addBook(b);
