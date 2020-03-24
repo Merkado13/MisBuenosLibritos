@@ -73,8 +73,7 @@ public class BookCollectionController {
 				model.addAttribute("user", currentUser);
 				BookCollection bc = new BookCollection(name, description, BookCollection.CUSTOM);
 				bc.setUser(currentUser);
-				bookCollectionRepository.save(bc);
-				currentUser.AddCollection(bc);		
+				bookCollectionRepository.save(bc);	
 				
 			}else {
 				model.addAttribute("user", "undefined");
