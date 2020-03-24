@@ -78,7 +78,7 @@ public class Book {
 		this.tags = tags;
 		this.description = description;
 		this.sumRatings = sumRatings;
-		this.rating = sumRatings/numRatings;
+		this.rating = numRatings == 0 ? 0 : sumRatings/numRatings;
 		this.numRatings = numRatings;
 		this.isbn = isbn;
 		

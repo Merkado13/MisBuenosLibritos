@@ -187,7 +187,7 @@ public class BookController {
 			return "nuevolibro";
 		}		
 		
-		Book b = new Book(title, Arrays.asList(a), p, genre, tags, description, 0, 0, Long.parseLong(isbn));
+		Book b = new Book(title, Arrays.asList(a), p, genre, tags, description, 0.0, 0, Long.parseLong(isbn));
 		bookRepository.save(b);		
 		
 		a.getPublishedBooks().addBook(b);
