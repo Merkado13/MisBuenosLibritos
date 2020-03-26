@@ -1,11 +1,11 @@
 Manifest-Version: 1.0
-Built-By: reskinshi
-Build-Jdk: 11.0.2
 Implementation-Title: buenos_libritos
 Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: PSullivan
 Implementation-Vendor-Id: urjc.es
-Implementation-Vendor: Pivotal Software, Inc.
-Implementation-URL: http://projects.spring.io/spring-boot/buenos_librito
- s/
+Build-Jdk: 1.8.0_241
+Implementation-URL: http://projects.spring.io/spring-boot/buenos_libri
+ tos/
 Created-By: Maven Integration for Eclipse
+Implementation-Vendor: Pivotal Software, Inc.
 

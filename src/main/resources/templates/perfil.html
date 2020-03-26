@@ -97,6 +97,11 @@
 		{{#isPublisher}}
 			<form action="/addBook"><input type="submit" value="Añadir libro"></form>
 		{{/isPublisher}}
+		
+		{{#isAdmin}}
+			<form action="/addBook"><input type="submit" value="Añadir libro"></form>
+		{{/isAdmin}}
+		
 		</td></tr></table>
 
 

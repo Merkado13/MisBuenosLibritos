@@ -46,6 +46,7 @@ public class EmailService {
 	
 	public void sendWelcomeEmail(String email) {		
 		restTemplate.postForObject(URI_WELCOME_EMAIL, email, String.class);
+		
 	}
 	
 	

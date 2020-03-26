@@ -16,7 +16,7 @@ public class BookService {
 	
 	public String assertBookState(Model model, Book book, User user) {
 		String bookState = getBookState(book,user);
-		System.out.println(bookState);
+		//System.out.println(bookState);
 		if(bookState.equals(BookState.NONE.toString())) {
 			model.addAttribute("bookState", "No Info");
 			return "No info";

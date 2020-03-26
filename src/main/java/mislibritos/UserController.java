@@ -47,6 +47,7 @@ public class UserController {
 			//model.addAttribute("user", publisherRepository.findByName("HolyPublisher"));
 			model.addAttribute("isAuthor", request.isUserInRole("ROLE_AUTHOR"));
 			model.addAttribute("isPublisher", request.isUserInRole("ROLE_PUBLISHER"));		
+			model.addAttribute("isAdmin", request.isUserInRole("ROLE_ADMIN"));
 			
 			return "perfil";
 		}

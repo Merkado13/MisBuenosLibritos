@@ -150,15 +150,49 @@ public class BookController {
 	}
 	
 	@GetMapping("/addBook")
-	public String addBook(Model model) {
+	public String addBook(Model model, HttpServletRequest request) {
 		
+		model.addAttribute("author", request.isUserInRole("AUTHOR"));
+		model.addAttribute("publisher", request.isUserInRole("PUBLISHER"));
+		model.addAttribute("admin", request.isUserInRole("ADMIN"));
+		
+		
+		if(request.getUserPrincipal()!=null){
+			
+			String name = request.getUserPrincipal().getName();			
+			User currentUser = (User) userRepository.findByName(name);
+			model.addAttribute("user", currentUser); 
+			
+		}			
+		
+		model.addAttribute("publishers", publisherRepository.findAll());
+		model.addAttribute("authors", authorRepository.findAll());
+		
+		model.addAttribute("isRegistered", userService.isRegistered(request));
 		model.addAttribute("genres", Genre.values());
 		return "nuevolibro";
 	}
 	@PostMapping("/addBook")
 	public String addedBook(Model model, @RequestParam String title, @RequestParam String description, 
 			@RequestParam String author, @RequestParam String publisher, @RequestParam String isbn,
-			@RequestParam Genre genre, @RequestParam List<Genre> tags) throws RestClientException, JsonProcessingException, URISyntaxException {		
+			@RequestParam Genre genre, @RequestParam List<Genre> tags, HttpServletRequest request) throws RestClientException, JsonProcessingException, URISyntaxException {		
+		
+		
+		model.addAttribute("author", request.isUserInRole("AUTHOR"));
+		model.addAttribute("publisher", request.isUserInRole("PUBLISHER"));
+		model.addAttribute("admin", request.isUserInRole("ADMIN"));
+		
+		if(request.getUserPrincipal()!=null){
+			
+			String name = request.getUserPrincipal().getName();			
+			User currentUser = (User) userRepository.findByName(name);
+			model.addAttribute("user", currentUser); 
+			
+		}			
+		
+		model.addAttribute("publishers", publisherRepository.findAll());
+		model.addAttribute("authors", authorRepository.findAll());			
+		model.addAttribute("isRegistered", userService.isRegistered(request));
 		
 		Author a = authorRepository.findByName(author);		
 		Publisher p = publisherRepository.findByName(publisher);

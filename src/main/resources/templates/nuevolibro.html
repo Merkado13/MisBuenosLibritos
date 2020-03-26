@@ -45,10 +45,65 @@
 	<form action="/addBook" method = "post" onsubmit="return validate(this)" > <!-- onsubmit="return validate(this)" -->
 	<p>Título: <input type='input' name='title' value='' required></p>
 	<p>Sinopsis: <input type='input' name='description' value='' required></p>
-	<p>Autor: <input type='input' name='author' required></p>
-	<p>Editorial:<input type='input' name='publisher' required></p>
-	<p>ISBN:<input type='number' name='isbn' required> Debe contener 13 dígitos</p>
 	
+	{{#author}}
+		<p>Autor: {{#user}}{{name}}{{/user}}
+		<input type='hidden' name='author' value = "{{#user}}{{name}}{{/user}}" ></p>
+		<p>Editorial:
+		<input list="editoriales" name="publisher" autocomplete="off">
+						  <datalist id="editoriales">
+							  <select>
+							  {{#publishers}}
+							  <option value="{{name}}">
+							  {{/publishers}}
+							  </select>
+						  </datalist>
+		</p>
+	{{/author}}
+	
+	{{#publisher}}
+		<p>Autor: 		
+		<input list="authors" name="author" autocomplete="off">
+						  <datalist id="authors">
+							  <select>
+							  {{#authors}}
+							  <option value="{{name}}">
+							  {{/authors}}
+							  </select>
+						  </datalist>
+		
+		<p>Editorial: {{#user}}{{name}}{{/user}}
+		<input type='hidden' name='publisher' value = "{{#user}}{{name}}{{/user}}" ></p>
+	{{/publisher}}
+	
+	
+	{{#admin}}
+		<p>Autor: 		
+		<input list="authors" name="author" autocomplete="off">
+						  <datalist id="authors">
+							  <select>
+							  {{#authors}}
+							  <option value="{{name}}">
+							  {{/authors}}
+							  </select>
+						  </datalist>
+		
+		<p>Editorial:
+		<input list="editoriales" name="publisher" autocomplete="off">
+						  <datalist id="editoriales">
+							  <select>
+							  {{#publishers}}
+							  <option value="{{name}}">
+							  {{/publishers}}
+							  </select>
+						  </datalist>
+		</p>
+		
+	{{/admin}}
+	
+	
+	
+	<p>ISBN:<input type='number' name='isbn' required> Debe contener 13 dígitos</p>	
 	<p>Género </p>
 	{{#genres}}
 		<input type="radio" id="genre{{-index}}" name="genre" value="{{.}}" required>
