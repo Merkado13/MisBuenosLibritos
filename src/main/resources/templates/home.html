@@ -17,14 +17,17 @@
 		</form>
 		<a href="/perfil">Mi perfil</a>
 		
+		{{^isRegistered}}
 		<a href="/login">Iniciar sesión</a>
 		<a href="/crearusuario">Registrarse</a>
-		<form action="/logout" method=post>
+		{{/isRegistered}}
+		{{#isRegistered}}
+		<form action="/logout" method=post style="display: inline-block;">
 			<input type="hidden" name="_csrf" value="{{token}}"/>
-			 <button type="submit" name="id" value="logout" class="btn-link">logout</button>
-			
+			 <button type="submit" name="id" value="logout" class="btn-link">Cerrar sesión</button>
 		</form>
-		
+		{{/isRegistered}}
+		</nav>
 
 
 		<ul>	
@@ -48,7 +51,7 @@
 			<a href="/books/{{title}}">{{title}}</a></il>
 			{{/all_books}}
 		</ul>
-	</nav>
+	
 
 
 </body>

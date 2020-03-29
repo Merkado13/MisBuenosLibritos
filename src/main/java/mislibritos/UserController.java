@@ -2,11 +2,14 @@ package mislibritos;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestTemplate;
 
 @Controller
 public class UserController {
@@ -27,42 +31,46 @@ public class UserController {
 	private PublisherRepository publisherRepository;
 	@Autowired
 	private UserService us;
-
+	@Autowired
+	private EmailService emailService;
+	
+	RestTemplate restTemplate = new RestTemplate();
 	
 	@RequestMapping("/perfil")
 	public String perfil(Model model, HttpServletRequest request) {	
 		String name = request.getUserPrincipal().getName();
-		
+		model.addAttribute("isRegistered", us.isRegistered(request));
 		User currentUser = (User) userRepository.findByName(name);
-			if(currentUser != null) {
-				model.addAttribute("user", userRepository.findById(currentUser.getId()));
-				//model.addAttribute("user", authorRepository.findByName("San Pablo"));				
-				//model.addAttribute("user", publisherRepository.findByName("HolyPublisher"));
-				model.addAttribute("isAuthor", request.isUserInRole("ROLE_AUTHOR"));
-				model.addAttribute("isPublisher", request.isUserInRole("ROLE_PUBLISHER"));		
-				
-				return "perfil";
-			}
+		if(currentUser != null) {
+			model.addAttribute("user", userRepository.findById(currentUser.getId()));
+			//model.addAttribute("user", authorRepository.findByName("San Pablo"));				
+			//model.addAttribute("user", publisherRepository.findByName("HolyPublisher"));
+			model.addAttribute("isAuthor", request.isUserInRole("ROLE_AUTHOR"));
+			model.addAttribute("isPublisher", request.isUserInRole("ROLE_PUBLISHER"));		
+			model.addAttribute("isAdmin", request.isUserInRole("ROLE_ADMIN"));
+			
+			return "perfil";
+		}
 		return "home";
 	}	
 	
 	@RequestMapping("/crearusuario")
-	public String crearUsuario(Model model) {	
+	public String crearUsuario(HttpServletRequest request,Model model) {	
 		model.addAttribute("ok", false);
 		model.addAttribute("message", "Crear usuario");	
-		
+		model.addAttribute("isRegistered",us.isRegistered(request));
 		return "crearusuario";
 
 	}	
 
 	@PostMapping("/crearusuario")
-	public String addedBook(Model model, @RequestParam String username, @RequestParam String description, 
+	public String addedBook(HttpServletRequest request,Model model, @RequestParam String username, @RequestParam String description, 
 			@RequestParam String email, @RequestParam String password, @RequestParam String rol,
 			@RequestParam String birth, @RequestParam String country, @RequestParam String website) throws ParseException {		
 	
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		model.addAttribute("ok", false);
-		
+		model.addAttribute("isRegistered", us.isRegistered(request));
 		User user = userRepository.findByName(username);
 		User user2 = userRepository.findByEmail(email);
 		User u = new User();
@@ -84,6 +92,8 @@ public class UserController {
 			
 			if(u!=null) {
 				model.addAttribute("message", "El usuario se ha creado correctamente");	
+				// conectarse con servicio interno para enviar email de bienvenida.
+				emailService.sendWelcomeEmail(email);
 				
 			}else {
 				model.addAttribute("message", "Ha ocurrido un problema. Inténtalo de nuevo");	
@@ -99,13 +109,17 @@ public class UserController {
 	@GetMapping("/usuario/{name}")
 	public String autor(HttpServletRequest request,Model model, @PathVariable String name) {
 		
-		model.addAttribute("registered", false);
-		if(request.getUserPrincipal()!=null) {
+		boolean isRegistered = us.isRegistered(request);
+		
+		model.addAttribute("isRegistered", isRegistered);
+		model.addAttribute("canSub", isRegistered);
+		if(isRegistered) {
 			String nameUser = request.getUserPrincipal().getName();
 			User user = (User) userRepository.findByName(nameUser);
+			
 			String strSubButton = us.isUserSubscribedToAuthor(user.id) ? "Desuscribirse" : "Suscribirse";
 			model.addAttribute("strSubButton",strSubButton);
-			model.addAttribute("registered", true);
+			
 		}
 		Author author = authorRepository.findByName(name);
 
@@ -129,6 +143,7 @@ public class UserController {
 	public String autorSub(HttpServletRequest request, Model model, @PathVariable String name) {
 
 		String nameUser = request.getUserPrincipal().getName();
+		model.addAttribute("isRegistered",us.isRegistered(request));
 		User user = (User) userRepository.findByName(nameUser);
 		boolean isSub = us.isUserSubscribedToAuthor(user.id);
 		Author au = authorRepository.findByName(name);

@@ -2,8 +2,10 @@ package mislibritos;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -24,7 +26,8 @@ public class User {
 	protected String description;
 	protected String email; 	
 	protected String passwordHash;
-	
+	@ElementCollection(fetch = FetchType.EAGER)
+	protected Map<String, Integer> Ratings;
 	
 	
 	@OneToMany(mappedBy = "user")
@@ -45,6 +48,7 @@ public class User {
 		this.passwordHash = passwordHash; 
 		this.roles = new ArrayList<>(Arrays.asList(roles));
 		bookCollection = new LinkedList<BookCollection>();
+		Ratings = new HashMap<String, Integer>();
 	}
 	
 	public void AddCollection(BookCollection bc) {

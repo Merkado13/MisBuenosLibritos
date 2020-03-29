@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -92,5 +94,9 @@ public class UserService {
 	
 	public boolean isUserSubscribedToAuthor(long userId) {
 		return authorRepository.findBySubUsers_Id(userId) != null;
+	}
+	
+	public boolean isRegistered(HttpServletRequest request) {
+		return request.getUserPrincipal() != null;
 	}
 }

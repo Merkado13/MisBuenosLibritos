@@ -1,5 +1,7 @@
 package mislibritos;
 
+import java.net.URISyntaxException;
+import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.List;
 
@@ -13,6 +15,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestClientException;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 @Controller
 public class BookController {
@@ -28,19 +33,26 @@ public class BookController {
 	@Autowired
 	private BookService bookService;
 	@Autowired
+	private UserService userService;
+	@Autowired
 	private UserRepository userRepository;
-	
+	@Autowired
+	private EmailService emailService;
+	DecimalFormat numberFormat = new DecimalFormat("#.00");
 	
 	@GetMapping("/books/{bookTitle}")
 	public String books(Model model, HttpServletRequest request, @PathVariable String bookTitle) {
-
-		model.addAttribute("registered", false);
-		Book book = bookRepository.findByTitle(bookTitle);
 		
-		if (book != null)
+		model.addAttribute("isRegistered", userService.isRegistered(request));	
+		Book book = bookRepository.findByTitle(bookTitle);
+		if (book != null) {
 			model.addAttribute("book", book);
+
+			model.addAttribute("rating", numberFormat.format(book.getRating()));
+			}
 		else
 			model.addAttribute("book", "undefined");
+			
 		
 		model.addAttribute("added", false);
 		
@@ -49,12 +61,10 @@ public class BookController {
 			User currentUser = (User) userRepository.findByName(name);
 			if(currentUser != null) {
 				model.addAttribute("user", userRepository.findById(currentUser.getId()));			
-				
-				model.addAttribute("registered", true);
 				String bookState = bookService.assertBookState(model, book, currentUser);
 				model.addAttribute("bookState", bookState);
 				//model.addAttribute("collections", testUser.getBookCollection());
-				System.out.println(bookState+ "en el controller GET");
+				System.out.println(bookState+ " en el controller GET");
 				model.addAttribute("collections", bookCollectionRepository.findByUser(currentUser));
 			}
 		}else {
@@ -66,50 +76,123 @@ public class BookController {
 	}
 	
 	@PostMapping("/books/{bookTitle}")
-	public String addBook(HttpServletRequest request, Model model, @RequestParam String bookTitle, @RequestParam String collName) {
-		
-		model.addAttribute("registered", false);	
-		
+	public String addBook(HttpServletRequest request, Model model, @RequestParam String peticion, @RequestParam String bookTitle, @RequestParam String datos) {
+		model.addAttribute("isRegistered", userService.isRegistered(request));					
+		//System.out.println("POST. "+peticion);
 		if(request.getUserPrincipal()!=null){
-			String name = request.getUserPrincipal().getName();			
-			User currentUser = (User) userRepository.findByName(name);
-			if(currentUser != null) {
-				model.addAttribute("registered", true);
-				//pillar el libro de la base de datos
+			
+				String name = request.getUserPrincipal().getName();			
+				User currentUser = (User) userRepository.findByName(name);
 				Book book = bookRepository.findByTitle((bookTitle));
-				model.addAttribute("book", book);
-				model.addAttribute("added", true);
 				
-				//pillar la coleccion de la base de datos
-				BookCollection bc = bookCollectionRepository.findByNameAndUser(collName, currentUser);
-				if(bc == null) {
-					model.addAttribute("added", false);
+				
+				if(currentUser != null) {
 					
-				}else {
-					bookService.insertBookIntoBookCollection(model, book, bc, currentUser);			
+					
+					if(peticion.equals("col")) {	
+						//pillar el libro de la base de datos
+						
+						
+						model.addAttribute("added", true);
+	
+				
+						//pillar la coleccion de la base de datos
+						BookCollection bc = bookCollectionRepository.findByNameAndUser(datos, currentUser);
+						
+						if(bc == null) {
+							model.addAttribute("added", false);
+							
+						}else {
+							bookService.insertBookIntoBookCollection(model, book, bc, currentUser);			
+						}
+					}else if(peticion.equals("rate")) {
+						if(currentUser.Ratings.get(book.getTitle()) != null) {
+							// ya había votado
+							double oldRating = currentUser.Ratings.get(book.getTitle());
+							book.updateRating(oldRating, Double.valueOf(datos));
+							currentUser.Ratings.put(book.getTitle(), Integer.valueOf(datos));
+							bookRepository.save(book);
+							
+							//System.out.println("Cambiando puntuación. Nueva: "+ datos);
+						}else {
+							// vota por primera vez
+							book.addNewRating(Double.valueOf(datos));
+							currentUser.Ratings.put(book.getTitle(), Integer.valueOf(datos));
+							bookRepository.save(book);
+							
+							//System.out.println("Añadiendo puntuacion: "+ datos);
+						}
+						
+							
+					}
+					
+					book = bookRepository.findByTitle((bookTitle));
+					model.addAttribute("book", book);
+					model.addAttribute("user", userRepository.findById(currentUser.getId()));			
+					String bookState = bookService.assertBookState(model, book, currentUser);
+					model.addAttribute("bookState", bookState);
+					System.out.println(bookState+ " en el controller GET");
+					model.addAttribute("collections", bookCollectionRepository.findByUser(currentUser));
+					model.addAttribute("rating", numberFormat.format(book.getRating()));
+					
 				}
 				
-				
-				String bookState = bookService.assertBookState(model, book, currentUser);
-				System.out.println(bookState+ "en el controller POST");
-				model.addAttribute("bookState", bookState);
+			}else {
+				model.addAttribute("bookState", BookState.NONE);
 			}
-		}
+		
 		
 		
 		return "books";
+
+		
+		
 	}
 	
 	@GetMapping("/addBook")
-	public String addBook(Model model) {
+	public String addBook(Model model, HttpServletRequest request) {
 		
+		model.addAttribute("author", request.isUserInRole("AUTHOR"));
+		model.addAttribute("publisher", request.isUserInRole("PUBLISHER"));
+		model.addAttribute("admin", request.isUserInRole("ADMIN"));
+		
+		
+		if(request.getUserPrincipal()!=null){
+			
+			String name = request.getUserPrincipal().getName();			
+			User currentUser = (User) userRepository.findByName(name);
+			model.addAttribute("user", currentUser); 
+			
+		}			
+		
+		model.addAttribute("publishers", publisherRepository.findAll());
+		model.addAttribute("authors", authorRepository.findAll());
+		
+		model.addAttribute("isRegistered", userService.isRegistered(request));
 		model.addAttribute("genres", Genre.values());
 		return "nuevolibro";
 	}
 	@PostMapping("/addBook")
 	public String addedBook(Model model, @RequestParam String title, @RequestParam String description, 
 			@RequestParam String author, @RequestParam String publisher, @RequestParam String isbn,
-			@RequestParam Genre genre, @RequestParam List<Genre> tags) {		
+			@RequestParam Genre genre, @RequestParam List<Genre> tags, HttpServletRequest request) throws RestClientException, JsonProcessingException, URISyntaxException {		
+		
+		
+		model.addAttribute("author", request.isUserInRole("AUTHOR"));
+		model.addAttribute("publisher", request.isUserInRole("PUBLISHER"));
+		model.addAttribute("admin", request.isUserInRole("ADMIN"));
+		
+		if(request.getUserPrincipal()!=null){
+			
+			String name = request.getUserPrincipal().getName();			
+			User currentUser = (User) userRepository.findByName(name);
+			model.addAttribute("user", currentUser); 
+			
+		}			
+		
+		model.addAttribute("publishers", publisherRepository.findAll());
+		model.addAttribute("authors", authorRepository.findAll());			
+		model.addAttribute("isRegistered", userService.isRegistered(request));
 		
 		Author a = authorRepository.findByName(author);		
 		Publisher p = publisherRepository.findByName(publisher);
@@ -138,7 +221,7 @@ public class BookController {
 			return "nuevolibro";
 		}		
 		
-		Book b = new Book(title, Arrays.asList(a), p, genre, tags, description, 0.0,0, Long.parseLong(isbn));
+		Book b = new Book(title, Arrays.asList(a), p, genre, tags, description, 0.0, 0, Long.parseLong(isbn));
 		bookRepository.save(b);		
 		
 		a.getPublishedBooks().addBook(b);
@@ -146,6 +229,10 @@ public class BookController {
 		
 		p.getPublishedBooks().addBook(b);
 		bookCollectionRepository.save(p.getPublishedBooks());
+		
+		//Enviar correo a todos los usuarios
+		emailService.sendNewBookEmail(author, title);
+		//
 		
 		model.addAttribute("ok", true);		
 		return "nuevolibro";

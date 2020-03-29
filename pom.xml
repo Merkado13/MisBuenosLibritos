@@ -45,6 +45,13 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
+		<!-- Jackson  -->
+	    <dependency>
+	      <groupId>org.codehaus.jackson</groupId>
+	      <artifactId>jackson-mapper-asl</artifactId>
+	       <version>1.9.13</version>
+	    </dependency>
+		
 		
 	</dependencies>
 </project>

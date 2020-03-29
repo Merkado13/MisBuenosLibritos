@@ -59,7 +59,7 @@ public class LibritosController {
 		Publisher holyPublisher = userService.getNewPublisher("HolyPublisher",s, "holyemail@gmail.com", passwordEncoder.encode("1234"), 2010,"holy.god", "ROLE_USER", "ROLE_PUBLISHER");
 		
 		
-		Book b1 = new Book("La Biblia", autoresBiblia, holyPublisher, Genre.ACTION, tagsBiblia, "Jesusito nace, se muere, vuelve a la vida, y siguen pasando cosas", 3, 30,1234567891012L);		
+		Book b1 = new Book("La Biblia", autoresBiblia, holyPublisher, Genre.ACTION, tagsBiblia, "Jesusito nace, se muere, vuelve a la vida, y siguen pasando cosas", 54, 11,1234567891012L);		
 		bookRepository.save(b1);	
 		for (Author a : autoresBiblia) {
 			a.getPublishedBooks().addBook(b1);
@@ -69,7 +69,7 @@ public class LibritosController {
 
 		
 		
-		Book b2 = new Book("El Necronomicón", autoresNecronomicon, holyPublisher, Genre.AUTOBIOGRAPHY, tagsNecronomicon, "Ocurren cosas oscuras", 4.5, 45,9876543211012L);		
+		Book b2 = new Book("El Necronomicón", autoresNecronomicon, holyPublisher, Genre.AUTOBIOGRAPHY, tagsNecronomicon, "Ocurren cosas oscuras",19 , 6,9876543211012L);		
 		bookRepository.save(b2);
 		for (Author a : autoresNecronomicon) {
 			a.getPublishedBooks().addBook(b2);
@@ -80,32 +80,26 @@ public class LibritosController {
 
 	@RequestMapping("/home")
 	public String home(HttpServletRequest request, Model model) {
-		
-		/*if (session.isNew()) {			
-			User testUser = userService.getNewUser("TestUser", "Hola soy un usuario" + session.getId() 
-				+ " , hijo de Dios. Nací en Nazaret y me gustan los libros de acción y aventuras", "usuario@gmail.com", "1234");
-			
-			session.setAttribute("user", testUser);
-		}
-		
-		//mostrar las listas del test user
-		User testUser = (User)session.getAttribute("user");
-		
-		model.addAttribute("user", userRepository.findById(testUser.getId()));*/
+
 		
 			
 		if(request.getUserPrincipal()!=null) {		
 		
-		String name = request.getUserPrincipal().getName();
-		User currentUser = (User) userRepository.findByName(name);
+			String name = request.getUserPrincipal().getName();
+			User currentUser = (User) userRepository.findByName(name);
 			if(currentUser != null) {
 				model.addAttribute("user", currentUser);
+				
 			}else {
 				System.out.println("El usuario no está");
 				model.addAttribute("user", "undefined");
+				
 			}
 		}else {
-		model.addAttribute("user", "undefined");}
+			model.addAttribute("user", "undefined");
+			
+		}
+		model.addAttribute("isRegistered", userService.isRegistered(request));
 		model.addAttribute("all_books", bookRepository.findAll());
 
 		return "home";
@@ -117,12 +111,13 @@ public class LibritosController {
 	
 	
 	@RequestMapping("/busqueda")
-	public String busqueda(Model model, @RequestParam String input) {
+	public String busqueda(HttpServletRequest request, Model model, @RequestParam String input) {
 		
 		model.addAttribute("books",bookRepository.findByTitleContaining(input));
 		model.addAttribute("authors", authorRepository.findByNameContaining(input));
 		model.addAttribute("publishers", publisherRepository.findByNameContaining(input));
 		model.addAttribute("input", input);
+		model.addAttribute("isRegistered", userService.isRegistered(request));
 		return "busqueda";
 
 	}
