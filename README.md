@@ -27,9 +27,19 @@ Se trata de una aplicación de catalogación de lecturas en la que los usuarios 
 ## Páginas
 
 **Página de Bienvenida**
-Página de inicio, se muestran todas las colecciones del usuario y todo los libros disponibles.
+Página de inicio, se muestran todas las colecciones del usuario y todos los libros disponibles.
 
 ![alt text](/ImgsREADME/pantallazosV2/home.png "home")
+
+**Página de Inicio de Sesión**
+Página de inicio de sesión, se deben introducir el nombre de usuario y la contraseña de un usuario registrado para poder acceder a las páginas privadas. 
+
+![alt text](/ImgsREADME/pantallazosV2/login.png "inicio sesión")
+
+**Página de Registro de un Nuevo Usuario**
+Página de registro de nuevos usuarios, en función del rol elegido, se mostrarán unos campos que se deben rellenar u otros. 
+
+![alt text](/ImgsREADME/pantallazosV2/crearUsuario.png "registro usuarios")
 
 **Mis Colecciones**
 Presenta todas las colecciones del usuario, en está página también se pueden crear nuevas colecciones de libros.
@@ -83,7 +93,7 @@ Muestra el perfil de un autor/editorial si se es un usuario normal. En esta pág
 ![alt text](/ImgsREADME/pantallazosV2/usuario.png "perfil usuario")
 
 ## Diagrama de Navegación
-![alt text](/ImgsREADME/flujo_ventanas.png "uml")
+![alt text](/ImgsREADME/navegacion.png "diagrama navegacion")
 
 ## Funcionalidades servicio interno: Envío de correos electrónicos a usuarios
 
