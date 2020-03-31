@@ -37,8 +37,8 @@ public class LibritosController {
 	BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 	@PostConstruct
 	public void init() throws ParseException {
-
-		/*String s = "Soy una descripción";
+		/*
+		String s = "Soy una descripción";
 		
 		List<Genre> tagsBiblia = Arrays.asList(Genre.ACTION,Genre.RELIGION);	
 		List<Genre> tagsNecronomicon = Arrays.asList(Genre.AUTOBIOGRAPHY,Genre.RELIGION);		
