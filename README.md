@@ -19,7 +19,7 @@ Se trata de una aplicación de catalogación de lecturas en la que los usuarios 
 ![alt text](/ImgsREADME/uml.png "uml")
 
 
-##Diagrama de clases 
+## Diagrama de clases 
 ![alt text](/ImgsREADME/diagrama_clases.png "diagrama clases")
 
 ---

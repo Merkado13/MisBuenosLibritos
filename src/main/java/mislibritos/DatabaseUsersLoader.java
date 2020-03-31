@@ -18,7 +18,7 @@ public class DatabaseUsersLoader {
 	 @PostConstruct
 	 private void initDatabase() {
 		 
-		 
+		 /*
 		 userService.getNewUser("user", "soy un user cualquiera", "user@gmail.com", "pass","ROLE_USER");
 		 userService.getNewUser("Celia","Me gustan los libros y los gatos", "celia-merino1997@hotmail.com", passwordEncoder.encode("adminCelia"), "ROLE_USER","ROLE_ADMIN");
 		 userService.getNewUser("Marcos","Me gustan los mangas y los gatos", "m.agudo.2016@alumnos.urjc.es", passwordEncoder.encode("adminMarcos"), "ROLE_USER","ROLE_ADMIN");
