@@ -7,23 +7,43 @@
 <body>
 <h1>VISUALIZAR USUARIO</h1>
 <nav>
-	
-	<a href="/home">Home</a>
-	<a href="/colecciones">Colecciones</a>
-	
-	<form style="display: inline-block;" action="/busqueda" method = "get">
-		<input type ='input' name = 'input'>
-		<input type='submit' value='Buscar'>
-	</form>
-	<a href="/perfil">Mi perfil</a>
-	<a href="/perfil/Jose">Perfil de Autor</a>
-	<a href="/perfil/HolyPublisher">Perfil de Editorial</a>
-</nav>
 
-<h1 id = "name">Perfil de {{#user}}{{name}}{{/user}}</h1>		
-	<p>
-		<img src="/god.jpeg" alt="User photo" align = "left">	
+		<a href="/home">Home</a> <a href="/colecciones">Colecciones</a>
+
+		<form style="display: inline-block;" action="/busqueda" method="get">
 		
+			<input type='input' name='input'> <input type='submit'
+				value='Buscar'>
+		</form>
+		<a href="/perfil">Mi perfil</a>
+		
+		{{^isRegistered}}
+		<a href="/login">Iniciar sesión</a>
+		<a href="/crearusuario">Registrarse</a>
+		{{/isRegistered}}
+		
+		{{#isRegistered}}
+		<form action="/logout" method=post style="display: inline-block;">
+			<input type="hidden" name="_csrf" value="{{token}}"/>
+			 <button type="submit" name="id" value="logout" class="btn-link">Cerrar sesión</button>
+		</form>
+		{{/isRegistered}}
+		</nav>
+
+<h1 id = "name">Perfil de {{#user}}{{name}}{{/user}}</h1>
+	<div align = "center">
+	{{#canSub}}
+	<form style="display: inline-block;" action="/usuario/{{name}}" method = "post" >
+		<input type="hidden" name="_csrf" value="{{token}}"/>
+		<input type='submit' value={{strSubButton}}>
+	</form>
+	{{/canSub}}
+	</div>
+	<p>
+	<table>
+	<tr>
+		<td><img class="imgLibro" src="/god.jpeg" alt="User photo" align = "left">	</td>
+		<td>
 			
 			{{#isAuthor}}
 		    	<p id = "info">URL: <b>{{#user}}{{website}}{{/user}}</b> Fecha de nacimiento: <b>{{#user}}{{birth}}{{/user}}</b>	 
@@ -40,7 +60,7 @@
 				<p>{{#user}}{{description}}{{/user}}</p>
 			
 		
-	    	<ul>	
+	    	<p>	
 			{{#user}}{{#publishedBooks}}
 				<h2>Libros publicados: </h2>
 				<ul>
@@ -51,7 +71,7 @@
 				{{/books}}
 				</ul>
 				{{/publishedBooks}}{{/user}}				
-			</ul>
+			</p>
 	
 		
 			
@@ -70,8 +90,9 @@
 				{{/bookCollection}}{{/user}}
 				
 			</ul>					
-		
-	</p>
+		</td>
+	</tr>
+	</table>
 
 </body>
 </html>

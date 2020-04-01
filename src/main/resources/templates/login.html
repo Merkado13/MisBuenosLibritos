@@ -2,11 +2,11 @@
 <html>
 <head>
  <meta charset="UTF-8">
-  <link rel= "stylesheet" type= "text/css" href= "/mystyle.css">
+   <link rel= "stylesheet" type= "text/css" href= "/mystyle.css">
 </head>
 <body>
-<h1> SOY LA PÁGINA DE COLECCIONES :'D</h1>
-<nav>
+<h1> SOY LA PÁGINA DEL LOGIN ^^</h1>
+	<nav>
 
 		<a href="/home">Home</a> <a href="/colecciones">Colecciones</a>
 
@@ -29,24 +29,21 @@
 		{{/isRegistered}}
 		</nav>
 		
-	<h2>Mis colecciones >> {{#collection}}{{name}}{{/collection}}</h2>
+	<h1 align = "center"> LOGIN </h1>
+	<p>
+	<form style="display: inline-block;" action="/login" method = "post">
+				
+		<h2>Username: </h2>
+		<input type='input' name = 'username'>
+		<h2>Password: </h2>
+		<input type='password' name = 'password'>	
+		<input type='submit' value='Enviar'>
+		<input type="hidden" name="_csrf" value="{{token}}"/>
+	</form>	
 	
-	<h3 style="display: inline-block;">{{#collection}}{{name}}{{/collection}}</h3>
-	
-	{{#collection}}
-	<form style="display: inline-block;" action="/editarcoleccion" method="post">
-		<input type="hidden" name="id" value="{{id}}">
-		<input type='submit' value='Editar'>
-	</form>
-	{{#books}}
-		<ul>
-			<li>
-			<a href="/books/{{title}}">{{title}}</a>
-			</li>	
-		</ul>
-	{{/books}}
-	{{/collection}}
-
+	<p>
+		
+	</p>
 	
 </body>
 </html>

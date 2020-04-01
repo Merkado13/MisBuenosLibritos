@@ -18,5 +18,6 @@ public interface AuthorRepository  extends JpaRepository<Author,Long>{
 	@Transactional
 	void insertBookToPublishedBooks(@Param("idBook") long idBook, @Param("idAuthor") long idAuthor);
 		
-
+	User findBySubUsers_Id(long id);
+	
 }

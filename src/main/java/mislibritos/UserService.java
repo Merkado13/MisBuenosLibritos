@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,16 +15,16 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepository;
 	@Autowired
-	private UserRepository authorRepository;
+	private AuthorRepository authorRepository;
 	@Autowired
 	private UserRepository publisherRepository;
 	@Autowired
 	private BookCollectionRepository bookCollectionRepository;
 
 	/*Crea un nuevo usuario con las listas por defecto correspodientes y lo guarda*/
-	public User getNewUser(String name, String description) {
+	public User getNewUser(String name, String description, String email, String passwordHash, String... roles) {
 		
-		User user = new User(name, description);
+		User user = new User(name, description, email, passwordHash, roles);
 		userRepository.save(user);
 		user.AddCollection(prepareDefaultCollections(user));
 		
@@ -30,9 +32,9 @@ public class UserService {
 	}
 	
 	/*Crea un nuevo autor con las listas por defecto correspodientes y lo guarda*/
-	public Author getNewAuthor(String name, String description, Date birth, String country, String website) {
+	public Author getNewAuthor(String name, String description, String email, String passwordHash, Date birth, String country, String website, String... roles) {
 		
-		Author author = new Author(name, description, birth, country, website);
+		Author author = new Author(name, description, email, passwordHash, birth, country, website, roles);
 		authorRepository.save(author);
 		author.AddCollection(prepareDefaultCollections(author));
 		
@@ -40,9 +42,9 @@ public class UserService {
 	}
 	
 	/*Crea ua nueva editorial con las listas por defecto correspodientes y lo guarda*/
-	public Publisher getNewPublisher(String name, String description, int year, String website) {
+	public Publisher getNewPublisher(String name, String description,  String email, String passwordHash, int year, String website, String... roles) {
 		
-		Publisher publisher = new Publisher(name, description,year,website);
+		Publisher publisher = new Publisher(name, description, email, passwordHash,year,website, roles);
 		publisherRepository.save(publisher);
 		publisher.AddCollection(prepareDefaultCollections(publisher));
 		
@@ -88,5 +90,13 @@ public class UserService {
 		}
 		
 		return defaultColl;
+	}
+	
+	public boolean isUserSubscribedToAuthor(long userId) {
+		return authorRepository.findBySubUsers_Id(userId) != null;
+	}
+	
+	public boolean isRegistered(HttpServletRequest request) {
+		return request.getUserPrincipal() != null;
 	}
 }

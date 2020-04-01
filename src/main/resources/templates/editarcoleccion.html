@@ -7,24 +7,34 @@
 <body>
 <h1> SOY LA PÁGINA DE EDICCIÓN DE COLECCIONES >:D</h1>
 <nav>
-	
-	<a href="/home">Home</a>
-	<a href="/colecciones">Colecciones</a>
-	
-	<form style="display: inline-block;" action="/busqueda" method = "get">
-		<input type ='input' name = 'input'>
-		<input type='submit' value='Buscar'>
-	</form>
-	<a href="/perfil">Mi perfil</a>
-	<a href="/perfil/Jose">Perfil de Autor</a>
-	<a href="/perfil/HolyPublisher">Perfil de Editorial</a>
-</nav>
+
+		<a href="/home">Home</a> <a href="/colecciones">Colecciones</a>
+
+		<form style="display: inline-block;" action="/busqueda" method="get">
+		
+			<input type='input' name='input'> <input type='submit'
+				value='Buscar'>
+		</form>
+		<a href="/perfil">Mi perfil</a>
+		
+		{{^isRegistered}}
+		<a href="/login">Iniciar sesión</a>
+		<a href="/crearusuario">Registrarse</a>
+		{{/isRegistered}}
+		{{#isRegistered}}
+		<form action="/logout" method=post style="display: inline-block;">
+			<input type="hidden" name="_csrf" value="{{token}}"/>
+			 <button type="submit" name="id" value="logout" class="btn-link">Cerrar sesión</button>
+		</form>
+		{{/isRegistered}}
+		</nav>
 
 	<h2>Editar >> {{#collection}}{{name}}{{/collection}}</h2>
 	
 	{{#collection}}
 	
-	<form method = "post" action="/editarcoleccion/{{id}}">
+	<form method = "post" action="/submitcollectionchanges">
+	<input type="hidden" name="id" value="{{id}}">
 		
 		{{#canBeEdited}}
 			<p><b>Nombre:</b> <input type ='input' name='name' value = "{{name}}"> </p>
@@ -38,12 +48,14 @@
 		
 		<p id="removerText"><b>Libros eliminados:</b> </p>
 		<input hidden id = "remover" type = 'input' name = 'removedBooks'>
+		<input type="hidden" name="_csrf" value="{{token}}"/>
 		
 		<input type='submit' value='Guardar'>
 	</form>
 	
 	{{#canBeEdited}}
 	<form method = "post" action = "/colecciones">
+		<input type="hidden" name="_csrf" value="{{token}}"/>
 		<input type ='hidden' name='colId' value = "{{id}}">
 		<input type='submit' value='Borrar Lista'>
 	</form>

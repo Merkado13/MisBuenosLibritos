@@ -1,5 +1,6 @@
 package mislibritos;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -19,58 +21,84 @@ public class BookCollectionController {
 	private BookCollectionRepository bookCollectionRepository;
 	@Autowired
 	private UserRepository userRepository;
-	
+	@Autowired
+	private UserService userService;
 	@GetMapping("/colecciones")
-	public String colecciones(Model model, HttpSession session) {
-		User testUser = (User)session.getAttribute("user");
+	public String colecciones(Model model, HttpServletRequest request) {
+		/*User testUser = (User)session.getAttribute("user");
 		
-		model.addAttribute("user", userRepository.findById(testUser.getId()));
+		model.addAttribute("user", userRepository.findById(testUser.getId()));*/
+		model.addAttribute("isRegistered", userService.isRegistered(request));	
+		String name = request.getUserPrincipal().getName();
+		
+		User currentUser = (User) userRepository.findByName(name);
+			if(currentUser != null) {
+				model.addAttribute("user", currentUser);
+				
+			}else {
+				model.addAttribute("user", "undefined");
+				
+			}
 		return "colecciones";
 
 	}
 	@PostMapping("/colecciones")
-	public String colecciones(Model model, HttpSession session, @RequestParam String colId) {
-		User testUser = (User)session.getAttribute("user");
-		
+	public String colecciones(Model model, HttpServletRequest request, @RequestParam String colId) {
+		//User testUser = (User)session.getAttribute("user");
+		model.addAttribute("isRegistered", userService.isRegistered(request));	
 		bookCollectionRepository.deleteById(Long.parseLong(colId));
 		
-		model.addAttribute("user", userRepository.findById(testUser.getId()));
+		String name = request.getUserPrincipal().getName();
+		
+		User currentUser = (User) userRepository.findByName(name);
+			if(currentUser != null) {
+				model.addAttribute("user", currentUser);
+				
+			}else {
+				model.addAttribute("user", "undefined");
+				
+			}
+
 		return "colecciones";
 
 	}
 	
 	@PostMapping("/newCollection")
-	public String addCollection(Model model, HttpSession session, @RequestParam String name, @RequestParam String description) {
+	public String addCollection(Model model, HttpServletRequest request, @RequestParam String name, @RequestParam String description) {
 		
-		User testUser = (User)session.getAttribute("user");
-		BookCollection bc = new BookCollection(name, description, BookCollection.CUSTOM);
-		bc.setUser(testUser);
-		bookCollectionRepository.save(bc);
+		String n = request.getUserPrincipal().getName();
+		model.addAttribute("isRegistered", userService.isRegistered(request));	
+		User currentUser = (User) userRepository.findByName(n);
+			if(currentUser != null) {
+				model.addAttribute("user", currentUser);
+				BookCollection bc = new BookCollection(name, description, BookCollection.CUSTOM);
+				bc.setUser(currentUser);
+				bookCollectionRepository.save(bc);	
+				
+			}else {
+				model.addAttribute("user", "undefined");
+				
+			}
 		
-		testUser.AddCollection(bc);
-		//userRepository.insertBookCollectionToUser(testUser.id, bc.getId());
-		//model.addAttribute("collections", testUser.getBookCollection());
 		
-		model.addAttribute("user", userRepository.findById(testUser.getId()));
 		return "colecciones";
 
 	}
 
-	@GetMapping("/micoleccion/{colId}")
-	public String showCollection(HttpSession session, Model model, @PathVariable long colId) {
+	@PostMapping("/micoleccion")
+	public String showCollection(HttpServletRequest request,  Model model, @RequestParam String id) {
+		model.addAttribute("isRegistered", userService.isRegistered(request));	
 		
-		
-		BookCollection bc = bookCollectionRepository.findById(colId);		
+		BookCollection bc = bookCollectionRepository.findById(Long.parseLong(id));		
 		model.addAttribute("collection",bc);
 		
 		return "micoleccion";
 	}
 	
-	@GetMapping("/editarcoleccion/{colId}")
-	public String editCollection(HttpSession session, Model model, @PathVariable long colId) {
-		
-		
-		BookCollection bc = bookCollectionRepository.findById(colId);
+	@PostMapping("/editarcoleccion")
+	public String editCollection(HttpServletRequest request,  Model model, @RequestParam long id) {
+		model.addAttribute("isRegistered", userService.isRegistered(request));	
+		BookCollection bc = bookCollectionRepository.findById(id);
 		
 		model.addAttribute("canBeEdited",bc.getCustom());		
 		model.addAttribute("collection",bc);
@@ -78,17 +106,17 @@ public class BookCollectionController {
 		return "editarcoleccion";
 	}
 	
-	@PostMapping("/editarcoleccion/{colId}")
-	public String editCollection(HttpSession session, Model model, @PathVariable long colId, 
+	@PostMapping("/submitcollectionchanges")
+	public String editCollection(HttpServletRequest request,  Model model, @RequestParam long id, 
 				@RequestParam String name, @RequestParam String description, @RequestParam String removedBooks) {
-		
-		BookCollection bc = bookCollectionRepository.findById(colId);
-		
+
+		BookCollection bc = bookCollectionRepository.findById(id);
+		model.addAttribute("isRegistered", userService.isRegistered(request));	
 		String[] removedIdBooks = removedBooks.split(";"); 
 		
-		for(String id : removedIdBooks) {
-			if(id != "") {
-				Book b = bookRepository.findById(Long.parseLong(id));
+		for(String s : removedIdBooks) {
+			if(s != "") {
+				Book b = bookRepository.findById(Long.parseLong(s));
 				bc.removeBook(b);
 			}
 		}		
