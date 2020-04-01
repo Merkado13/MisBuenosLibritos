@@ -120,7 +120,7 @@ vagrant up
 
 Procedemos a continuación con la compilación En Eclipse STS de los proyectos de la aplicación y el servicio interno de manera análoga.
 
-Primeramente, si no lo teníamos ya, necesitaremos un plugin de maven para poder generar el jar ejecutable, el sieguiente nos valdrá:
+Primeramente, si no lo teníamos ya, necesitaremos un plugin de maven para poder generar el jar ejecutable, el siguiente nos valdrá:
 
 ~~~
 <plugin>
