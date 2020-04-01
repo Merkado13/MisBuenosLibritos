@@ -161,7 +161,7 @@ En este punto ya tendremos la máquina virtual y los jars ejecutables, el de la 
 
 Los jars deben encontrarse en la carpeta compartida definida por defecto al levantar la MV.
 
-Para desplegar la aplicación primero necesitaremos instalar el software necesario para que corra. Para ellos instalaremos java 8 y mysql server. Nos conectamos a la aplicacíon con:
+Para desplegar la aplicación primero necesitaremos instalar el software necesario para que corra. Para ello, instalaremos java 8 y mysql server. Nos conectamos a la aplicacíon con:
 
 ~~~
 vagrant up
@@ -184,21 +184,21 @@ Si hay problemas con que no se encuentra el paquete para instalar java tendremos
   sudo apt-get install -y openjdk-8-jre
 ~~~
 
-Necesitaremos abrir tres terminales una para la aplicación, otra para el servicio interno y otra para la bbdd.
+Necesitaremos abrir tres terminales: una para la aplicación, otra para el servicio interno y otra para la bbdd. En todas nos metermos dentro de la VM.
 
-Primeramente nos logeamos en la bbdd
+Primeramente, en una nos logeamos en la bbdd.
 
 ~~~
 mysql -u root -p
 ~~~
 
-Finalemente, en las otras dos terminales ejecutamos los jars correspondientes con:
+Finalmente, en las otras dos terminales ejecutamos los jars correspondientes con:
 
 ~~~
 java -jar <localización del jar>
 ~~~
 
-Si todo ha ido bien con la base de datos levantada y las dos aplicaciones ejecutándose deberíamos poder acceder a través de un navegador en el host con la dirección 192.168.33.10 por el puerto 8443, ya que está por https.
+Si todo ha ido bien, con la base de datos levantada y las dos aplicaciones ejecutándose, deberíamos poder acceder a través de un navegador en el host con la dirección 192.168.33.10 por el puerto 8443, ya que está por https.
 
 ---
 
