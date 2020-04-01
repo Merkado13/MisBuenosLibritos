@@ -97,6 +97,109 @@ Muestra el perfil de un autor/editorial si se es un usuario normal. En esta pág
 
 ## Funcionalidades servicio interno: Envío de correos electrónicos a usuarios
 
+## Intalación Máquina Virtual
+
+Hospedaremos la máquina virtual sobre un host Ubuntu 16.04, para ello primeramente instalaremos en el sistema anfitrión [Vagrant](https://www.vagrantup.com/downloads.html) y [Virtual Box](https://www.virtualbox.org/wiki/Downloads)
+
+Una vez tengamos los dos programas crearemos la máquina virtual, abrimos la consola y escribimos:
+
+~~~
+mkdir -p ~/vagrant/spring
+cd ~/vagrant/spring
+vagrant init ubuntu/trusty64
+~~~
+
+Con esto descagaremos una imagen ubuntu de 64 bits si no se encuentra en local y se generará un Vagrantfile en la carpeta creada. Si existen problemas con Virtual Box debido al Secure Boot puede ser que sea necesario firmar los módulos oportunos. [Cómo firmar módulos Virtual Box](https://slimbook.es/tutoriales/linux/364-firmando-modulo-virtualbox-en-secureboot-uefi-solucion-a-kernel-driver-not-installed-rc-1908)
+
+Ya podremos hacer uso de la máquina virtual con:
+~~~
+vagrant up
+~~~
+
+## Compilación
+
+Procedemos a continuación con la compilación En Eclipse STS de los proyectos de la aplicación y el servicio interno de manera análoga.
+
+Primeramente, si no lo teníamos ya, necesitaremos un plugin de maven para poder generar el jar ejecutable, el sieguiente nos valdrá:
+
+~~~
+<plugin>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-maven-plugin</artifactId>
+    <executions>
+        <execution>
+            <goals>
+                <goal>repackage</goal>
+            </goals>
+            <configuration>
+                <classifier>spring-boot</classifier>
+                <mainClass>
+                  com.baeldung.executable.ExecutableMavenJar
+                </mainClass>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
+~~~
+
+Este puglin deberá ir dentro de las etiquetas <plugins></puglins> localizadas dentro de <build></build>. Actualizamos el proyecto maven.
+
+A continuación, click derecho sobre el proyecto > Run as > Maven Build...
+
+Ponemos en el cuadro de texto goals, en la pestaña Main
+~~~
+clean package
+~~~
+
+Pulsamos sobre Apply y Run. El jar ejecutable se nos habrá generado en la carpeta target dentro del proyecto
+
+Si hay problemas a la hora de hacer la build es posible que sean problemas con la versión de java instalada. En el sistema tiene que encontrarse el jdk8 no basta con el jre8.
+
+## Despliegue
+
+En este punto ya tendremos la máquina virtual y los jars ejecutables, el de la aplicación y el del servicio interno.
+
+Los jars deben encontrarse en la carpeta compartida definida por defecto al levantar la MV.
+
+Para desplegar la aplicación primero necesitaremos instalar el software necesario para que corra. Para ellos instalaremos java 8 y mysql server. Nos conectamos a la aplicacíon con:
+
+~~~
+vagrant up
+vagrant ssh
+~~~
+
+Ahora mismo nos econtraremos en la máquina virtual, procedemos a descargar e instalar los componenetes:
+
+~~~
+sudo apt-get update
+sudo apt-get install -y openjdk-8-jre
+sudo apt-get install -y mysql-server
+~~~
+
+Si hay problemas con que no se encuentra el paquete para instalar java tendremos que indicarle el repositorio de dónde descargarlo explícitamente:
+
+~~~
+  sudo add-apt-repository ppa:openjdk-r/ppa
+  sudo apt-get update
+  sudo apt-get install -y openjdk-8-jre
+~~~
+
+Necesitaremos abrir tres terminales una para la aplicación, otra para el servicio interno y otra para la bbdd.
+
+Primeramente nos logeamos en la bbdd
+
+~~~
+mysql -u root -p
+~~~
+
+Finalemente, en las otras dos terminales ejecutamos los jars correspondientes con:
+
+~~~
+java -jar <localización del jar>
+~~~
+
+Si todo ha ido bien con la base de datos levantada y las dos aplicaciones ejecutándose deberíamos poder acceder a través de un navegador en el host con la dirección 192.168.33.10 por el puerto 8443, ya que está por https.
+
 ---
 
 **Integrantes:**
@@ -105,5 +208,6 @@ Muestra el perfil de un autor/editorial si se es un usuario normal. En esta pág
 * Celia Merino Valladolid: c.merinov.2016@alumnos.urjc.es.
 * Andrea Rodríguez González: a.rodriguezgo.2016@alumnos.urjc.es.
 
-[Github](https://github.com/Merkado13/MisBuenosLibritos).
+[Github Aplicación](https://github.com/Merkado13/MisBuenosLibritos).
+[Github Servicio Interno](https://github.com/Merkado13/SistemaInterno)
 [Trello](https://trello.com/b/rQAO4Dcw/misbuenoslibritos).
