@@ -52,7 +52,16 @@
 	      <artifactId>jackson-mapper-asl</artifactId>
 	       <version>1.9.13</version>
 	    </dependency>
-		
+	    <!-- Spring Sesion -->
+		<dependency>
+			<groupId>org.springframework.session</groupId>
+			<artifactId>spring-session</artifactId>
+		</dependency>
+		<!-- Hazelcast -->
+		<dependency>
+			<groupId>com.hazelcast</groupId>
+			<artifactId>hazelcast</artifactId>
+		</dependency>
 		
 	</dependencies>
 	<build>
@@ -76,5 +85,8 @@
 		</plugin>
 		</plugins>
 	</build>
+	
+	
+
 	
 </project>
