@@ -4,18 +4,27 @@ import java.text.DecimalFormat;
 import java.util.Collection;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
+
+
+
 
 
 enum Genre{ACTION, ART, AUTOBIOGRAPHY, BIOGRAPHY, CHILDREN, COMIC, COOKBOOK, 
@@ -60,10 +69,12 @@ public class Book {
 	private Genre genre;
 	
 
-	@ManyToMany
+	@ManyToMany(mappedBy="publishedBooks")
+	@JsonIgnore
 	private List<Author> authors;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JsonIgnore
 	private Publisher publisher;
 	
 		
@@ -146,7 +157,14 @@ public class Book {
 		this.numRatings = numRatings;
 	}
 	
-	
+	@Override
+	public boolean equals(Object o) {
+		Book b = (Book) o;
+		if(b.title.equals(this.title)){
+			return true;
+		}
+		return false;
+	}
 	
 	
 }

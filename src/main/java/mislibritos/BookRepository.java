@@ -2,16 +2,19 @@ package mislibritos;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.transaction.annotation.Transactional;
 
+
+@CacheConfig(cacheNames="micache")
 public interface BookRepository extends JpaRepository<Book,Long>{
 	
 	Book findByIsbn(long isbn);
+	@Cacheable
 	Book findByTitle(String title);
 	Book findById(long id);
 	List<Book> findByTitleContaining(String search);
+	
 	
 }
