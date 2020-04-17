@@ -99,8 +99,13 @@ public class LibritosController {
 			model.addAttribute("user", "undefined");
 			
 		}
+		/*List<String> title = bookRepository.findTitles();
+		System.out.println(title);*/
 		model.addAttribute("isRegistered", userService.isRegistered(request));
-		model.addAttribute("all_books", bookRepository.findAll());
+		
+		
+		//model.addAttribute("all_books", bookRepository.findAll());
+		model.addAttribute("all_books", bookRepository.findTitles());
 
 		return "home";
 	}
