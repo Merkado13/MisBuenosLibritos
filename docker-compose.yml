@@ -20,15 +20,25 @@ services:
     links:
       - db
     restart: unless-stopped # Restart the container. Necessary to avoid problems if the app starts before the db is ready
-  lbsi:
+  si1:
     build: ../SistemaInterno
-    ports:
-      - "8888:8888" # expose the port to other containers, but it's not exposed to the host
-  lb:
+    expose:
+      - "8083" # expose the port to other containers, but it's not exposed to the host
+    environment:
+      - SERVER_PORT=8083
+  si2:
+    build: ../SistemaInterno
+    expose:
+      - "8084" # expose the port to other containers, but it's not exposed to the host
+    environment:
+      - SERVER_PORT=8084
+  lbsi:
     image: haproxy:1.9.6
     ports:
-      - "9090:443" # Only service that is exposed to the host is the lb 
+      - "443:443" # Only service that is exposed to the host is the lb
       - "80:80"
+    expose:
+      - "8888"
     volumes:
       - "./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro"
     restart: unless-stopped
