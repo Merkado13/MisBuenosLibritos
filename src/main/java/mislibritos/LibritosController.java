@@ -38,6 +38,7 @@ public class LibritosController {
 	@PostConstruct
 	public void init() throws ParseException {
 		
+		/*
 		String s = "Soy una descripción";
 		
 		List<Genre> tagsBiblia = Arrays.asList(Genre.ACTION,Genre.RELIGION);	
@@ -75,7 +76,7 @@ public class LibritosController {
 			a.getPublishedBooks().addBook(b2);
 			bookCollectionRepository.save(a.getPublishedBooks());
 		}
-
+		//*/
 	}
 
 	@RequestMapping("/home")

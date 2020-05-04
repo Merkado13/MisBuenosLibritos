@@ -24,8 +24,9 @@ public class DatabaseUsersLoader {
 		 userService.getNewUser("Marcos","Me gustan los mangas y los gatos", "m.agudo.2016@alumnos.urjc.es", passwordEncoder.encode("adminMarcos"), "ROLE_USER","ROLE_ADMIN");
 		 userService.getNewUser("Andrea","Me gustan los libros y los mangas", "a.rodriguezgo.2016@alumnos.urjc.es",passwordEncoder.encode("adminAndrea"), "ROLE_USER","ROLE_ADMIN");
 		 
-		 /*
-	 userRepository.save(
+		//*/
+		 
+	 /*userRepository.save(
 	 new User("user", "soy un user cualquiera", "user@gmail.com", "pass","ROLE_USER"));
 	 userRepository.save(
 	 new User("Celia","Me gustan los libros y los gatos", "celia-merino1997@hotmail.com", passwordEncoder.encode("adminCelia"), "ROLE_USER","ROLE_ADMIN"));
@@ -33,8 +34,8 @@ public class DatabaseUsersLoader {
 	 new User("Marcos","Me gustan los mangas y los gatos", "m.agudo.2016@alumnos.urjc.es", passwordEncoder.encode("adminMarcos"), "ROLE_USER","ROLE_ADMIN"));
 	 userRepository.save(
 	 new User("Andrea","Me gustan los libros y los mangas", "a.rodriguezgo.2016@alumnos.urjc.es",passwordEncoder.encode("adminAndrea"), "ROLE_USER","ROLE_ADMIN"));
+	 */
 	
-	*/
 	
 	}
 }
