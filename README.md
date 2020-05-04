@@ -202,6 +202,12 @@ Si todo ha ido bien, con la base de datos levantada y las dos aplicaciones ejecu
 
 ---
 
+**Vídeo Fase 4 Balanceo de Carga** 
+  
+[![](http://img.youtube.com/vi/b4cgEMWZkWE/0.jpg)](http://www.youtube.com/watch?v=b4cgEMWZkWE "")
+
+---
+
 **Integrantes:**
 
 * Marcos Agudo Alarcón: m.agudo.2016@alumnos.urjc.es.

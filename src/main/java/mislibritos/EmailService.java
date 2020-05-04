@@ -27,8 +27,8 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 @Service
 public class EmailService {
 
-	public static final String URI_WELCOME_EMAIL = "http://localhost:8888/welcomeemail";
-	public static final String URI_NEW_BOOK_EMAIL = "http://localhost:8888/newbookemail";
+	public static final String URI_WELCOME_EMAIL = "http://lbsi:8888/welcomeemail";
+	public static final String URI_NEW_BOOK_EMAIL = "http://lbsi:8888/newbookemail";
 	
 	private RestTemplate restTemplate = new RestTemplate();
 	private ObjectMapper objectMapper;
@@ -60,7 +60,7 @@ public class EmailService {
 		map.put("title", title);
 		map.put("userEmails", emails);
 		if(emails != null)
-			restTemplate.postForObject("http://localhost:8888/newbookemail/", map, String.class);
+			restTemplate.postForObject("http://lbsi:8888/newbookemail/", map, String.class);
 		}
 	
 	public String getEmailsData(String authorName, String title) {
